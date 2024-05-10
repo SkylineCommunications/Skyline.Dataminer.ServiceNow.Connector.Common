@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils.Snow.Connector.Common", "Skyline.DataMiner.Snow.Connector.Common\Utils.Snow.Connector.Common.csproj", "{AE227CAC-4B04-4722-9A43-B6455E169AB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils.ServiceNow.Connector.Common", "Skyline.DataMiner.ServiceNow.Connector.Common\Utils.ServiceNow.Connector.Common.csproj", "{AE227CAC-4B04-4722-9A43-B6455E169AB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
