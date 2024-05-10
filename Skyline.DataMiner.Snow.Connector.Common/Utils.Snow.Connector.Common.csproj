@@ -17,7 +17,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>SkylineCommunications</Authors>
 		<Company>Skyline Communications</Company>
-		<Description></Description>
+		<Description>Connector class library used to support connector integrations with Service Now.</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
