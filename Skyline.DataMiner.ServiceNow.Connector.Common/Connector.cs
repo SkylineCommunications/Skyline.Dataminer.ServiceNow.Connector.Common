@@ -310,9 +310,6 @@
                                                 new ClassAttribute("u_sw_version", 9, false),
                                                 new ClassAttribute("u_last_network_config", 10, false),
                                                 new ClassAttribute("u_status", 149, true),
-                                                //new ClassAttribute("u_inroute_group_id", 11),
-                                                //new ClassAttribute("u_inroute_group", 12),
-                                                //new ClassAttribute("u_customer_id", 13),
                                                 new ClassAttribute("u_nms_name", -1, false),
 
                                             }
