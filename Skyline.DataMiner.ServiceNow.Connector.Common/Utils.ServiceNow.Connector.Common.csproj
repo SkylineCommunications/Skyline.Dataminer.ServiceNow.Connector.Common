@@ -3,8 +3,8 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<AssemblyName>Skyline.DataMiner.Utils.Snow.Connector.Common</AssemblyName>
-		<RootNamespace>Skyline.DataMiner.Utils.Snow.Connector.Common</RootNamespace>
+		<AssemblyName>Skyline.DataMiner.Utils.ServiceNow.Connector.Common</AssemblyName>
+		<RootNamespace>Skyline.DataMiner.Utils.ServiceNow.Connector.Common</RootNamespace>
 		<PackageVersion>1.0.1</PackageVersion>
 		<Version>1.0.1</Version>
 		<PackageTags>Skyline;DataMiner</PackageTags>
