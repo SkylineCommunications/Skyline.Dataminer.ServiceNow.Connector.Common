@@ -383,31 +383,31 @@
             return elements;
         }
 
-        public static Dictionary<string, List<ParameterDetails>> GetPushParameterDetails(string protocolName)
+        public static List<ParameterDetails> GetPushParameterDetails(string protocolName)
         {
             if (Mappings.ContainsKey(protocolName))
             {
+                var parameterUpdates = new List<ParameterDetails>();
+
                 var connectorMapping = Mappings[protocolName];
 
-                var paramUpdates = new Dictionary<string, List<ParameterDetails>>();
+                var classAttributesByTablePID = connectorMapping.ClassMappings
+                    .SelectMany(x => x.AttributesByTableID)
+                    .ToDictionary(x => x.Key, x => x.Value);
 
-                foreach (var classMapping in connectorMapping.ClassMappings)
+                foreach (var attributeKvp in classAttributesByTablePID)
                 {
-                    var classAttributes = classMapping.AttributesByTableID.Values.SelectMany(list => list)
-                        .Where(attr => attr.HasPushEvent);
+                    var pushAttributes = attributeKvp.Value.Where(x => x.HasPushEvent).ToList();
 
-                    foreach (var attribute in classAttributes)
-                    {
-                        if (!paramUpdates.ContainsKey(attribute.Name))
-                        {
-                            paramUpdates[attribute.Name] = new List<ParameterDetails>();
-                        }
+                    if (pushAttributes.Count == 0) continue;
 
-                        paramUpdates[attribute.Name].Add(new ParameterDetails(attribute.Name, new Tuple<int, int>(attribute.ColumnIdx, 0)));
-                    }
+                    var parameterDetails = pushAttributes
+                        .Select(attribute => new ParameterDetails(attribute.Name, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx)));
+
+                    parameterUpdates.AddRange(parameterDetails);
                 }
 
-                return paramUpdates;
+                return parameterUpdates;
             }
             else
             {
@@ -793,15 +793,18 @@
     {
         public string AttributeName { get; set; }
 
-        public Tuple<int, int> ParameterIdxByPid { get; set; }
+        public KeyValuePair<int, int> ParameterIdxByPid { get; set; }
 
         public string CurrentValue { get; set; }
 
-        public ParameterDetails(string attributeName, Tuple<int, int> paramIdxByPid)
+        public string PreviousValue { get; set; }
+
+        public ParameterDetails(string attributeName, KeyValuePair<int, int> paramIdxByPid)
         {
             AttributeName = attributeName;
             ParameterIdxByPid = paramIdxByPid;
             CurrentValue = String.Empty;
+            PreviousValue = String.Empty;
         }
     }
 
