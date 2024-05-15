@@ -48,6 +48,7 @@
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
+                                        //  ...
                                     },
                                 },
                                 new ClassMapping
