@@ -383,7 +383,7 @@
             return elements;
         }
 
-        public static List<ParameterDetails> GetPushParameterDetails(string protocolName)
+        public static List<ParameterDetails> GetPushParameterDetailsByConnector(string protocolName)
         {
             if (Mappings.ContainsKey(protocolName))
             {
@@ -804,6 +804,14 @@
             AttributeName = attributeName;
             ParameterIdxByPid = paramIdxByPid;
             CurrentValue = String.Empty;
+            PreviousValue = String.Empty;
+        }
+
+        public ParameterDetails(string attributeName, string currentValue)
+        {
+            AttributeName = attributeName;
+            ParameterIdxByPid = new KeyValuePair<int, int>();
+            CurrentValue = currentValue;
             PreviousValue = String.Empty;
         }
     }
