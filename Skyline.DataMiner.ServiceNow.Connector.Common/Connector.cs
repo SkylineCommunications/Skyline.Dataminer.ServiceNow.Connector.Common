@@ -703,6 +703,89 @@
 
             return uniqueID;
         }
+
+        public static void FillTableParameterValues(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<ParameterDetails> pushParameters, List<uint> parameterIndices, Dictionary<string, object[]> rowsByPK)
+        {
+            foreach (var rowKvp in rowsByPK)
+            {
+                if (!parameterValuesByPK.ContainsKey(rowKvp.Key))
+                {
+                    parameterValuesByPK.Add(rowKvp.Key, new List<ParameterDetails>());
+                }
+
+                foreach (var parameter in pushParameters)
+                {
+                    var searchedParameter = parameterValuesByPK[rowKvp.Key].FirstOrDefault(p => p.AttributeName.Equals(parameter.AttributeName));
+
+                    if (searchedParameter == null)
+                    {
+                        searchedParameter = new ParameterDetails(parameter.AttributeName, parameter.ParameterIdxByPid);
+
+                        parameterValuesByPK[rowKvp.Key].Add(searchedParameter);
+                    }
+
+                    if (parameter.ParameterIdxByPid.Value == -1) continue;
+
+                    int rowIdx = parameterIndices.FindIndex(x => x == (uint)parameter.ParameterIdxByPid.Value);
+
+                    if (rowIdx == -1) continue;
+
+                    searchedParameter.CurrentValue = Convert.ToString(rowKvp.Value[rowIdx]);
+                }
+            }
+        }
+
+        public static void RemoveDeprecatedParameterValueKeys(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, Dictionary<string, object[]> rowsByPK)
+        {
+            var deprecatedPKs = parameterValuesByPK.Keys.Where(pk => !rowsByPK.ContainsKey(pk)).ToList();
+
+            foreach (var deprecatedPK in deprecatedPKs)
+            {
+                parameterValuesByPK.Remove(deprecatedPK);
+            }
+        }
+
+        public static void RemoveDeprecatedAttributes(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<ParameterDetails> pushParameters)
+        {
+            var pushParameterNames = pushParameters.Select(p => p.AttributeName).ToList();
+
+            foreach (var parameterValuesKvp in parameterValuesByPK)
+            {
+                parameterValuesKvp.Value.RemoveAll(p => !pushParameterNames.Contains(p.AttributeName));
+            }
+        }
+
+        public static bool TryGetParameterUpdatesToSend(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, out Dictionary<string, List<ParameterDetails>> parameterUpdates)
+        {
+            parameterUpdates = new Dictionary<string, List<ParameterDetails>>();
+
+            foreach (var parameterDetailsKvp in parameterValuesByPK)
+            {
+                foreach (var parameter in parameterDetailsKvp.Value)
+                {
+                    if (!parameter.CurrentValue.Equals(parameter.PreviousValue))
+                    {
+                        if (parameterUpdates.ContainsKey(parameterDetailsKvp.Key))
+                        {
+                            parameterUpdates[parameterDetailsKvp.Key].Add(new ParameterDetails(parameter.AttributeName, parameter.CurrentValue));
+                        }
+                        else
+                        {
+                            parameterUpdates.Add(parameterDetailsKvp.Key, new List<ParameterDetails>
+                        {
+                            new ParameterDetails(parameter.AttributeName, parameter.CurrentValue),
+                        });
+                        }
+                    }
+
+                    //Clear parameter values for next polling cycle
+                    parameter.PreviousValue = parameter.CurrentValue;
+                    parameter.CurrentValue = String.Empty;
+                }
+            }
+
+            return parameterUpdates.Count > 0;
+        }
     }
 
     public class ClassAttribute
