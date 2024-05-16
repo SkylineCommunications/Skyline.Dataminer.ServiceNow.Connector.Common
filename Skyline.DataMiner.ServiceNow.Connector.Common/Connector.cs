@@ -735,9 +735,9 @@
             }
         }
 
-        public static void RemoveDeprecatedParameterValueKeys(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, Dictionary<string, object[]> rowsByPK)
+        public static void RemoveDeprecatedParameterValueKeys(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<string> currentPKs)
         {
-            var deprecatedPKs = parameterValuesByPK.Keys.Where(pk => !rowsByPK.ContainsKey(pk)).ToList();
+            var deprecatedPKs = parameterValuesByPK.Keys.Where(pk => !currentPKs.Contains(pk)).ToList();
 
             foreach (var deprecatedPK in deprecatedPKs)
             {
