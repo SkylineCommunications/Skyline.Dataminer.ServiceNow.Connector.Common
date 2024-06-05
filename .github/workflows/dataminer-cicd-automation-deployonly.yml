@@ -26,7 +26,7 @@ jobs:
       referenceType: ${{ github.ref_type }}
       repository: ${{ github.repository }}
       owner: ${{ github.repository_owner }}
-      sonarCloudProjectName: SkylineCommunications_Skyline.Dataminer.ServiceNow.Connector.Common
+      sonarCloudProjectName: SkylineCommunications_Skyline.Dataminer.Snow.Connector.Common
     secrets:
       sonarCloudToken: ${{ secrets.SONAR_TOKEN }}
       nugetApiKey: ${{ secrets.NUGETAPIKEY_GITHUB }}
