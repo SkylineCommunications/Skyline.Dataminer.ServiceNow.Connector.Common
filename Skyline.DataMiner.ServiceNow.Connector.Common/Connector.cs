@@ -383,6 +383,39 @@
             return elements;
         }
 
+        //public static List<ParameterDetails> GetPushParameterDetailsByConnector(string protocolName)
+        //{
+        //    if (Mappings.ContainsKey(protocolName))
+        //    {
+        //        var parameterUpdates = new List<ParameterDetails>();
+
+        //        var connectorMapping = Mappings[protocolName];
+
+        //        var classAttributesByTablePID = connectorMapping.ClassMappings
+        //            .SelectMany(x => x.AttributesByTableID)
+        //            .GroupBy(x => x.Key)
+        //            .ToDictionary(g => g.Key, g => g.SelectMany(kvp => kvp.Value).ToList());
+
+        //        foreach (var attributeKvp in classAttributesByTablePID)
+        //        {
+        //            var pushAttributes = attributeKvp.Value.Where(x => x.HasPushEvent).ToList();
+
+        //            if (pushAttributes.Count == 0) continue;
+
+        //            var parameterDetails = pushAttributes
+        //                .Select(attribute => new ParameterDetails(attribute.Name, className, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx)));
+
+        //            parameterUpdates.AddRange(parameterDetails);
+        //        }
+
+        //        return parameterUpdates;
+        //    }
+        //    else
+        //    {
+        //        throw new ArgumentException($"Protocol name '{protocolName}' could not be found in connector mappings.");
+        //    }
+        //}
+
         public static List<ParameterDetails> GetPushParameterDetailsByConnector(string protocolName)
         {
             if (Mappings.ContainsKey(protocolName))
@@ -391,21 +424,21 @@
 
                 var connectorMapping = Mappings[protocolName];
 
-                var classAttributesByTablePID = connectorMapping.ClassMappings
-                    .SelectMany(x => x.AttributesByTableID)
-                    .GroupBy(x => x.Key)
-                    .ToDictionary(g => g.Key, g => g.SelectMany(kvp => kvp.Value).ToList());
-
-                foreach (var attributeKvp in classAttributesByTablePID)
+                foreach (var classMapping in connectorMapping.ClassMappings)
                 {
-                    var pushAttributes = attributeKvp.Value.Where(x => x.HasPushEvent).ToList();
+                    var classAttributesByTablePID = classMapping.AttributesByTableID;
 
-                    if (pushAttributes.Count == 0) continue;
+                    foreach (var attributeKvp in classAttributesByTablePID)
+                    {
+                        var pushAttributes = attributeKvp.Value.Where(x => x.HasPushEvent).ToList();
 
-                    var parameterDetails = pushAttributes
-                        .Select(attribute => new ParameterDetails(attribute.Name, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx)));
+                        if (pushAttributes.Count == 0) continue;
 
-                    parameterUpdates.AddRange(parameterDetails);
+                        var parameterDetails = pushAttributes
+                            .Select(attribute => new ParameterDetails(attribute.Name, classMapping.Class, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx)));
+
+                        parameterUpdates.AddRange(parameterDetails);
+                    }
                 }
 
                 return parameterUpdates;
@@ -719,7 +752,7 @@
 
                     if (searchedParameter == null)
                     {
-                        searchedParameter = new ParameterDetails(parameter.AttributeName, parameter.ParameterIdxByPid);
+                        searchedParameter = new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.ParameterIdxByPid);
 
                         parameterValuesByPK[rowKvp.Key].Add(searchedParameter);
                     }
@@ -767,14 +800,15 @@
                     {
                         if (parameterUpdates.ContainsKey(parameterDetailsKvp.Key))
                         {
-                            parameterUpdates[parameterDetailsKvp.Key].Add(new ParameterDetails(parameter.AttributeName, parameter.CurrentValue));
+                            parameterUpdates[parameterDetailsKvp.Key]
+                                .Add(new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue));
                         }
                         else
                         {
                             parameterUpdates.Add(parameterDetailsKvp.Key, new List<ParameterDetails>
-                        {
-                            new ParameterDetails(parameter.AttributeName, parameter.CurrentValue),
-                        });
+                            {
+                                new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue),
+                            });
                         }
                     }
 
@@ -878,23 +912,27 @@
     {
         public string AttributeName { get; set; }
 
+        public string Class { get; set; }
+
         public KeyValuePair<int, int> ParameterIdxByPid { get; set; }
 
         public string CurrentValue { get; set; }
 
         public string PreviousValue { get; set; }
 
-        public ParameterDetails(string attributeName, KeyValuePair<int, int> paramIdxByPid)
+        public ParameterDetails(string attributeName, string className, KeyValuePair<int, int> paramIdxByPid)
         {
             AttributeName = attributeName;
+            Class = className;
             ParameterIdxByPid = paramIdxByPid;
             CurrentValue = String.Empty;
             PreviousValue = String.Empty;
         }
 
-        public ParameterDetails(string attributeName, string currentValue)
+        public ParameterDetails(string attributeName, string className, string currentValue)
         {
             AttributeName = attributeName;
+            Class = className;
             ParameterIdxByPid = new KeyValuePair<int, int>();
             CurrentValue = currentValue;
             PreviousValue = String.Empty;
