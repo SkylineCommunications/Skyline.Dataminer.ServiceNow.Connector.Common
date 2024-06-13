@@ -417,6 +417,12 @@
         //    }
         //}
 
+        /// <summary>
+        /// Method used to retrieve the protocol attribute values to be pushed into the ServiceNow integration.
+        /// </summary>
+        /// <param name="protocolName"></param>
+        /// <returns>List of parameter updates.</returns>
+        /// <exception cref="ArgumentException"></exception>
         public static List<ParameterDetails> GetPushParameterDetailsByConnector(string protocolName)
         {
             if (Mappings.ContainsKey(protocolName))
@@ -594,6 +600,12 @@
 
         public Dictionary<int, List<ClassAttribute>> AttributesByTableID { get; set; }
 
+        /// <summary>
+        /// Method used to retrieve parsed property values organized by instance unique ID.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="element"></param>
+        /// <returns>Dictionary containg a list of properties objects by unique id.</returns>
         public Dictionary<string, List<Property>> GetPropertiesByCiUniqueID(IEngine engine, Element element)
         {
             var propertiesByPK = new Dictionary<string, List<Property>>();
