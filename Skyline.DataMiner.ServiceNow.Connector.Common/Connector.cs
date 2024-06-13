@@ -384,39 +384,6 @@
             return elements;
         }
 
-        //public static List<ParameterDetails> GetPushParameterDetailsByConnector(string protocolName)
-        //{
-        //    if (Mappings.ContainsKey(protocolName))
-        //    {
-        //        var parameterUpdates = new List<ParameterDetails>();
-
-        //        var connectorMapping = Mappings[protocolName];
-
-        //        var classAttributesByTablePID = connectorMapping.ClassMappings
-        //            .SelectMany(x => x.AttributesByTableID)
-        //            .GroupBy(x => x.Key)
-        //            .ToDictionary(g => g.Key, g => g.SelectMany(kvp => kvp.Value).ToList());
-
-        //        foreach (var attributeKvp in classAttributesByTablePID)
-        //        {
-        //            var pushAttributes = attributeKvp.Value.Where(x => x.HasPushEvent).ToList();
-
-        //            if (pushAttributes.Count == 0) continue;
-
-        //            var parameterDetails = pushAttributes
-        //                .Select(attribute => new ParameterDetails(attribute.Name, className, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx)));
-
-        //            parameterUpdates.AddRange(parameterDetails);
-        //        }
-
-        //        return parameterUpdates;
-        //    }
-        //    else
-        //    {
-        //        throw new ArgumentException($"Protocol name '{protocolName}' could not be found in connector mappings.");
-        //    }
-        //}
-
         /// <summary>
         /// Method used to retrieve the protocol attribute values to be pushed into the ServiceNow integration.
         /// </summary>
