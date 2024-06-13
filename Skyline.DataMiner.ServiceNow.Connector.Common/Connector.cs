@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Claims;
     using global::Skyline.DataMiner.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Common;
@@ -434,6 +435,19 @@
 
                         if (pushAttributes.Count == 0) continue;
 
+                        var namingAttributes = GetNamingAttibutes(classMapping.NamingFormat);
+
+                        foreach (var namingAttribute in namingAttributes)
+                        {
+                            var attributeToAdd = pushAttributes.FirstOrDefault(x => x.Name.Equals(namingAttribute));
+
+                            if (attributeToAdd != null)
+                            {
+                                // Add class attributes that will be used to retrieve instances Unique IDs
+                                pushAttributes.Add(attributeToAdd);
+                            }
+                        }
+
                         var parameterDetails = pushAttributes
                             .Select(attribute => new ParameterDetails(attribute.Name, classMapping.Class, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx)));
 
@@ -446,6 +460,91 @@
             else
             {
                 throw new ArgumentException($"Protocol name '{protocolName}' could not be found in connector mappings.");
+            }
+        }
+
+        public string GetInstanceUniqueID(IEngine engine, string elementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
+        {
+            switch (classNamingFormat)
+            {
+                case NamingFormat.Name:
+                    {
+                        return pk;
+                    }
+
+                case NamingFormat.Name_Label:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? pk + "_" + labelAttribute.CurrentValue : String.Empty;
+                    }
+
+                case NamingFormat.Label:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? labelAttribute.CurrentValue : String.Empty;
+                    }
+
+                case NamingFormat.Label_Name:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? labelAttribute.CurrentValue + "_" + pk : String.Empty;
+                    }
+
+                case NamingFormat.NMS_Name:
+                    {
+                        return elementName + "_" + pk;
+                    }
+
+                case NamingFormat.NMS_Label:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? elementName + "_" + labelAttribute.CurrentValue : String.Empty;
+                    }
+
+                case NamingFormat.NMS_Name_Label:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? elementName + "_" + pk + "_" + labelAttribute.CurrentValue : String.Empty;
+                    }
+
+                //case NamingFormat.NMS_Custom:
+                //    {
+                //        return elementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
+                //    }
+
+                //case NamingFormat.Custom:
+                //    {
+                //        return CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
+                //    }
+
+                default:
+                    return String.Empty;
+            }
+        }
+
+        public static List<string> GetNamingAttibutes(NamingFormat classNamingFormat)
+        {
+            switch (classNamingFormat)
+            {
+                case NamingFormat.Name_Label:
+                case NamingFormat.Label:
+                case NamingFormat.Label_Name:
+                case NamingFormat.NMS_Label:
+                case NamingFormat.NMS_Name_Label:
+                    {
+                        return new List<string> { "u_label" };
+                    }
+
+                //case NamingFormat.NMS_Custom:
+                //case NamingFormat.Custom:
+
+                default:
+                    return new List<string>();
             }
         }
     }
