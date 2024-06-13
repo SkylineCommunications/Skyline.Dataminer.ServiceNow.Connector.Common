@@ -436,7 +436,7 @@
             }
         }
 
-        public string GetInstanceUniqueID(IEngine engine, string elementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
+        public static string GetInstanceUniqueID(IEngine engine, string elementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
         {
             switch (classNamingFormat)
             {
