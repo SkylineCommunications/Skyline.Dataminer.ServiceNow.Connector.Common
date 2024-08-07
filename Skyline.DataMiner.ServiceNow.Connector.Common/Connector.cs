@@ -245,7 +245,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Protocol Processor Blade",
-                                    TargetTable = "u_cmdb_ci_evolution_processor_blade",
+                                    TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.NMS_Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
