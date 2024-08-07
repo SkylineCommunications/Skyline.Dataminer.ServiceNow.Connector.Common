@@ -44,6 +44,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution NMS",
+                                    TargetTable = "u_cmdb_ci_evolution_nms",
                                     IsParent = true,
                                     NamingFormat = NamingFormat.Name,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -55,6 +56,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Remote",
+                                    TargetTable = "u_cmdb_ci_evolution_remote",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Custom,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -91,6 +93,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Linecard",
+                                    TargetTable = "u_cmdb_ci_evolution_linecard",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.NMS_Name,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -141,6 +144,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Network",
+                                    TargetTable = "u_cmdb_ci_evolution_network",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Name_Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -170,6 +174,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Chassis",
+                                    TargetTable = "u_cmdb_ci_evolution_chassis",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Name_Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -200,6 +205,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Inroute Group",
+                                    TargetTable = "u_cmdb_ci_evolution_inroute_group",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Name_Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -219,6 +225,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Protocol Processor",
+                                    TargetTable = "u_cmdb_ci_evolution_protocol_processor",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.NMS_Custom,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -238,6 +245,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Protocol Processor Blade",
+                                    TargetTable = "u_cmdb_ci_evolution_processor_blade",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.NMS_Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -281,6 +289,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Dialog TSDB NMS",
+                                    TargetTable = "u_cmdb_ci_dialog_tsdb_nms",
                                     IsParent = true,
                                     NamingFormat = NamingFormat.Name,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -291,6 +300,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Dialog TSDB Remote",
+                                    TargetTable = "u_cmdb_ci_dialog_tsdb_remote",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -331,6 +341,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Dialog TSDB Network",
+                                    TargetTable = "u_cmdb_ci_dialog_tsdb_network",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -382,6 +393,52 @@
             }
 
             return elements;
+        }
+
+        public static List<ParameterDetails> GetParameterDetailsByConnector(string protocolName)
+        {
+            if (Mappings.ContainsKey(protocolName))
+            {
+                var parameterUpdates = new List<ParameterDetails>();
+
+                var connectorMapping = Mappings[protocolName];
+
+                foreach (var classMapping in connectorMapping.ClassMappings)
+                {
+                    var classAttributesByTablePID = classMapping.AttributesByTableID;
+
+                    foreach (var attributeKvp in classAttributesByTablePID)
+                    {
+                        var pushAttributes = attributeKvp.Value.Where(x => x.HasPushEvent).ToList();
+
+                        if (pushAttributes.Count == 0) continue;
+
+                        var namingAttributes = GetNamingAttibutes(classMapping.NamingFormat);
+
+                        foreach (var namingAttribute in namingAttributes)
+                        {
+                            var attributeToAdd = pushAttributes.FirstOrDefault(x => x.Name.Equals(namingAttribute));
+
+                            if (attributeToAdd != null)
+                            {
+                                // Add class attributes that will be used to retrieve instances Unique IDs
+                                pushAttributes.Add(attributeToAdd);
+                            }
+                        }
+
+                        var parameterDetails = pushAttributes
+                            .Select(attribute => new ParameterDetails(attribute.Name, classMapping.Class, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx)));
+
+                        parameterUpdates.AddRange(parameterDetails);
+                    }
+                }
+
+                return parameterUpdates;
+            }
+            else
+            {
+                throw new ArgumentException($"Protocol name '{protocolName}' could not be found in connector mappings.");
+            }
         }
 
         /// <summary>
@@ -560,6 +617,8 @@
         }
 
         public string Class { get; set; }
+
+        public string TargetTable { get; set; }
 
         public bool IsParent { get; set; }
 
