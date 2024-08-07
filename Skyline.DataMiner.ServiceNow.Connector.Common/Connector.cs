@@ -395,52 +395,6 @@
             return elements;
         }
 
-        public static List<ParameterDetails> GetParameterDetailsByConnector(string protocolName)
-        {
-            if (Mappings.ContainsKey(protocolName))
-            {
-                var parameterUpdates = new List<ParameterDetails>();
-
-                var connectorMapping = Mappings[protocolName];
-
-                foreach (var classMapping in connectorMapping.ClassMappings)
-                {
-                    var classAttributesByTablePID = classMapping.AttributesByTableID;
-
-                    foreach (var attributeKvp in classAttributesByTablePID)
-                    {
-                        var pushAttributes = attributeKvp.Value.Where(x => x.HasPushEvent).ToList();
-
-                        if (pushAttributes.Count == 0) continue;
-
-                        var namingAttributes = GetNamingAttibutes(classMapping.NamingFormat);
-
-                        foreach (var namingAttribute in namingAttributes)
-                        {
-                            var attributeToAdd = pushAttributes.FirstOrDefault(x => x.Name.Equals(namingAttribute));
-
-                            if (attributeToAdd != null)
-                            {
-                                // Add class attributes that will be used to retrieve instances Unique IDs
-                                pushAttributes.Add(attributeToAdd);
-                            }
-                        }
-
-                        var parameterDetails = pushAttributes
-                            .Select(attribute => new ParameterDetails(attribute.Name, classMapping.Class, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx)));
-
-                        parameterUpdates.AddRange(parameterDetails);
-                    }
-                }
-
-                return parameterUpdates;
-            }
-            else
-            {
-                throw new ArgumentException($"Protocol name '{protocolName}' could not be found in connector mappings.");
-            }
-        }
-
         /// <summary>
         /// Method used to retrieve the protocol attribute values to be pushed into the ServiceNow integration.
         /// </summary>
