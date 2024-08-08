@@ -44,7 +44,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution NMS",
-                                    TargetTable = "u_cmdb_ci_evolution_nms",
+                                    TargetTable = "u_cmdb_ci_appl_nms_evolution",
                                     IsParent = true,
                                     NamingFormat = NamingFormat.Name,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -56,7 +56,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Remote",
-                                    TargetTable = "u_cmdb_ci_evolution_remote",
+                                    TargetTable = "u_cmdb_ci_modem_evolution_remote",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Custom,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -81,19 +81,12 @@
                                                 new ClassAttribute("u_nms_name", 18, false),
                                             }
                                         },
-                                        //{
-                                        //    2000,
-                                        //    new List<ClassAttribute>
-                                        //    {
-                                        //        new ClassAttribute("pk", 0),
-                                        //    }
-                                        //},
                                     },
                                 },
                                 new ClassMapping
                                 {
                                     Class = "Evolution Linecard",
-                                    TargetTable = "u_cmdb_ci_evolution_linecard",
+                                    TargetTable = "u_cmdb_ci_modem_evolution_linecard",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.NMS_Name,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -118,33 +111,12 @@
                                                 new ClassAttribute("u_nms_name", 17, false),
                                             }
                                         },
-                                        //{
-                                        //    1700,
-                                        //    new List<ClassAttribute>
-                                        //    {
-                                        //        new ClassAttribute("pk", 6),
-                                        //    }
-                                        //},
-                                        //{
-                                        //    6400,
-                                        //    new List<ClassAttribute>
-                                        //    {
-                                        //        new ClassAttribute("pk", 0),
-                                        //    }
-                                        //},
-                                        //{
-                                        //    15000,
-                                        //    new List<ClassAttribute>
-                                        //    {
-                                        //        new ClassAttribute("pk", 0),
-                                        //    }
-                                        //},
                                     },
                                 },
                                 new ClassMapping
                                 {
                                     Class = "Evolution Network",
-                                    TargetTable = "u_cmdb_ci_evolution_network",
+                                    TargetTable = "u_cmdb_ci_group_evolution_network",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Name_Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -162,13 +134,6 @@
                                                 new ClassAttribute("u_nms_name", 8, false),
                                             }
                                         },
-                                        //{
-                                        //    6000,
-                                        //    new List<ClassAttribute>
-                                        //    {
-                                        //        new ClassAttribute("pk", 0),
-                                        //    }
-                                        //},
                                     },
                                 },
                                 new ClassMapping
@@ -225,7 +190,7 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Protocol Processor",
-                                    TargetTable = "u_cmdb_ci_evolution_protocol_processor",
+                                    TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.NMS_Custom,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -266,6 +231,82 @@
                                         },
                                     },
                                 },
+                                //new ClassMapping
+                                //{
+                                //    Class = "Evolution Teleport",
+                                //    TargetTable = "u_cmdb_ci_group_evolution_teleport",
+                                //    IsParent = false,
+                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                //    {
+                                //        //  TODO: Add attributes here
+                                //        {
+                                //            -1,
+                                //            new List<ClassAttribute>
+                                //            {
+
+                                //            }
+                                //        },
+     
+                                //    },
+                                //},
+                                //new ClassMapping
+                                //{
+                                //    Class = "Evolution Application",
+                                //    TargetTable = "u_cmdb_ci_appl_evolution",
+                                //    IsParent = false,
+                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                //    {
+                                //        //  TODO: Add attributes here
+                                //        {
+                                //            -1,
+                                //            new List<ClassAttribute>
+                                //            {
+
+                                //            }
+                                //        },
+     
+                                //    },
+                                //},
+                                //new ClassMapping
+                                //{
+                                //    Class = "Evolution Encapsulator",
+                                //    TargetTable = "u_cmdb_ci_appl_evolution_encapsulator",
+                                //    IsParent = false,
+                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                //    {
+                                //        //  TODO: Add attributes here
+                                //        {
+                                //            -1,
+                                //            new List<ClassAttribute>
+                                //            {
+
+                                //            }
+                                //        },
+     
+                                //    },
+                                //},
+                                //new ClassMapping
+                                //{
+                                //    Class = "Evolution Processing Node",
+                                //    TargetTable = "u_cmdb_ci_appl_evolution_processing_node",
+                                //    IsParent = false,
+                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                //    {
+                                //        //  TODO: Add attributes here
+                                //        {
+                                //            -1,
+                                //            new List<ClassAttribute>
+                                //            {
+
+                                //            }
+                                //        },
+     
+                                //    },
+                                //},
                             },
                             new List<Relationship>
                             {
@@ -288,8 +329,8 @@
                             {
                                 new ClassMapping
                                 {
-                                    Class = "Dialog TSDB NMS",
-                                    TargetTable = "u_cmdb_ci_dialog_tsdb_nms",
+                                    Class = "Dialog NMS",
+                                    TargetTable = "u_cmdb_ci_appl_nms_dialog",
                                     IsParent = true,
                                     NamingFormat = NamingFormat.Name,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -299,8 +340,8 @@
                                 },
                                 new ClassMapping
                                 {
-                                    Class = "Dialog TSDB Remote",
-                                    TargetTable = "u_cmdb_ci_dialog_tsdb_remote",
+                                    Class = "Dialog Remote",
+                                    TargetTable = "u_cmdb_ci_modem_dialog_remote",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -340,8 +381,8 @@
                                 },
                                 new ClassMapping
                                 {
-                                    Class = "Dialog TSDB Network",
-                                    TargetTable = "u_cmdb_ci_dialog_tsdb_network",
+                                    Class = "Dialog Satellite Network",
+                                    TargetTable = "u_cmdb_ci_dialog_satellite_network",
                                     IsParent = false,
                                     NamingFormat = NamingFormat.Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
@@ -361,6 +402,82 @@
                                         },
                                     },
                                 },
+                                //new ClassMapping
+                                //{
+                                //    Class = "Dialog Application",
+                                //    TargetTable = "u_cmdb_ci_dialog_application",
+                                //    IsParent = false,
+                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                //    {
+                                //        //  TODO: Add attributes here
+                                //        {
+                                //            -1,
+                                //            new List<ClassAttribute>
+                                //            {
+
+                                //            }
+                                //        },
+     
+                                //    },
+                                //},
+                                //new ClassMapping
+                                //{
+                                //    Class = "Dialog Hub",
+                                //    TargetTable = "u_cmdb_ci_dialog_hub",
+                                //    IsParent = false,
+                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                //    {
+                                //        //  TODO: Add attributes here
+                                //        {
+                                //            -1,
+                                //            new List<ClassAttribute>
+                                //            {
+
+                                //            }
+                                //        },
+     
+                                //    },
+                                //},
+                                //new ClassMapping
+                                //{
+                                //    Class = "Dialog Modulator",
+                                //    TargetTable = "u_cmdb_ci_dialog_modulator",
+                                //    IsParent = false,
+                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                //    {
+                                //        //  TODO: Add attributes here
+                                //        {
+                                //            -1,
+                                //            new List<ClassAttribute>
+                                //            {
+
+                                //            }
+                                //        },
+     
+                                //    },
+                                //},
+                                //new ClassMapping
+                                //{
+                                //    Class = "Dialog Demodulator",
+                                //    TargetTable = "u_cmdb_ci_dialog_demodulator",
+                                //    IsParent = false,
+                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                //    {
+                                //        //  TODO: Add attributes here
+                                //        {
+                                //            -1,
+                                //            new List<ClassAttribute>
+                                //            {
+
+                                //            }
+                                //        },
+     
+                                //    },
+                                //},
                             },
                             new List<Relationship>
                             {
