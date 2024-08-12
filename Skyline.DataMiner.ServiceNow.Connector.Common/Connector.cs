@@ -482,9 +482,9 @@
                             new List<Relationship>
                             {
                                 // TODO: Add class relationships here
-                                new Relationship("Dialog TSDB Remote", "Dialog TSDB NMS", "u_nms_name", "Managed by::Manages", false),
-                                new Relationship("Dialog TSDB Network", "Dialog TSDB NMS", "u_nms_name", "Managed by::Manages", false),
-                                new Relationship("Dialog TSDB Network", "Dialog TSDB Remote", "u_active_beam", "Receives data from::Sends data to", true),
+                                new Relationship("Dialog Remote", "Dialog NMS", "u_nms_name", "Managed by::Manages", false),
+                                new Relationship("Dialog Satellite Network", "Dialog NMS", "u_nms_name", "Managed by::Manages", false),
+                                new Relationship("Dialog Satellite Network", "Dialog Remote", "u_active_beam", "Receives data from::Sends data to", true),
                             })
                     },
                 };
