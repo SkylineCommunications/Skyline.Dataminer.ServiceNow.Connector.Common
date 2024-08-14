@@ -931,7 +931,7 @@
             {
                 case NamingFormat.Name:
                     {
-                        return pk;
+                        return parentElementName + "_" + pk;
                     }
 
                 case NamingFormat.Name_Label:
