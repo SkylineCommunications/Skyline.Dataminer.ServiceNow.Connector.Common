@@ -3,23 +3,20 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using global::Skyline.DataMiner.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Common;
+    using static Skyline.DataMiner.ServiceNow.Connector.Common.Connector;
 
     public class Connector
     {
         public enum NamingFormat
         {
+            // Naming format always includes parent element name to avoid duplicating unique IDs (for instance in case there are duplicate elements)
             Name,
             Name_Label,
             Label,
             Label_Name,
-            NMS_Name,
-            NMS_Label,
-            NMS_Name_Label,
-            NMS_Custom,
             Custom,
         }
 
@@ -88,7 +85,7 @@
                                     Class = "Evolution Linecard",
                                     TargetTable = "u_cmdb_ci_modem_evolution_linecard",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.NMS_Name,
+                                    NamingFormat = NamingFormat.Name,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -132,6 +129,15 @@
                                                 new ClassAttribute("u_teleport_id", 6, false),
                                                 new ClassAttribute("u_protocol_processor", 7, false),
                                                 new ClassAttribute("u_nms_name", 8, false),
+                                                //TODO: Include Network PP Name ???
+                                            }
+                                        },
+                                        {
+                                            6000,
+                                            new List<ClassAttribute>
+                                            {
+                                                new ClassAttribute("pk", 0, false),
+                                                new ClassAttribute("u_network_pp_name", 30, false),
                                             }
                                         },
                                     },
@@ -141,7 +147,7 @@
                                     Class = "Evolution Chassis",
                                     TargetTable = "u_cmdb_ci_evolution_chassis",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Name_Label,
+                                    NamingFormat = NamingFormat.Custom,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -151,6 +157,7 @@
                                             {
                                                 new ClassAttribute("pk", 0, false),
                                                 new ClassAttribute("u_label", 1, false),
+                                                new ClassAttribute("u_serial_number", 2, false),
                                                 new ClassAttribute("u_status", 3, true),
                                                 new ClassAttribute("u_nms_ip", 4, false),
                                                 new ClassAttribute("u_nms_name", 5, false),
@@ -192,7 +199,7 @@
                                     Class = "Evolution Protocol Processor",
                                     TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.NMS_Custom,
+                                    NamingFormat = NamingFormat.Custom,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -212,7 +219,7 @@
                                     Class = "Evolution Protocol Processor Blade",
                                     TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.NMS_Label,
+                                    NamingFormat = NamingFormat.Name_Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -384,7 +391,7 @@
                                     Class = "Dialog Satellite Network",
                                     TargetTable = "u_cmdb_ci_dialog_satellite_network",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Label,
+                                    NamingFormat = NamingFormat.Name_Label,
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -564,70 +571,6 @@
             }
         }
 
-        public static string GetInstanceUniqueID(IEngine engine, string elementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
-        {
-            switch (classNamingFormat)
-            {
-                case NamingFormat.Name:
-                    {
-                        return pk;
-                    }
-
-                case NamingFormat.Name_Label:
-                    {
-                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
-
-                        return labelAttribute != null ? pk + "_" + labelAttribute.CurrentValue : String.Empty;
-                    }
-
-                case NamingFormat.Label:
-                    {
-                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
-
-                        return labelAttribute != null ? labelAttribute.CurrentValue : String.Empty;
-                    }
-
-                case NamingFormat.Label_Name:
-                    {
-                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
-
-                        return labelAttribute != null ? labelAttribute.CurrentValue + "_" + pk : String.Empty;
-                    }
-
-                case NamingFormat.NMS_Name:
-                    {
-                        return elementName + "_" + pk;
-                    }
-
-                case NamingFormat.NMS_Label:
-                    {
-                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
-
-                        return labelAttribute != null ? elementName + "_" + labelAttribute.CurrentValue : String.Empty;
-                    }
-
-                case NamingFormat.NMS_Name_Label:
-                    {
-                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
-
-                        return labelAttribute != null ? elementName + "_" + pk + "_" + labelAttribute.CurrentValue : String.Empty;
-                    }
-
-                //case NamingFormat.NMS_Custom:
-                //    {
-                //        return elementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
-                //    }
-
-                //case NamingFormat.Custom:
-                //    {
-                //        return CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
-                //    }
-
-                default:
-                    return String.Empty;
-            }
-        }
-
         public static List<string> GetNamingAttibutes(NamingFormat classNamingFormat)
         {
             switch (classNamingFormat)
@@ -635,13 +578,10 @@
                 case NamingFormat.Name_Label:
                 case NamingFormat.Label:
                 case NamingFormat.Label_Name:
-                case NamingFormat.NMS_Label:
-                case NamingFormat.NMS_Name_Label:
                     {
                         return new List<string> { "u_label" };
                     }
 
-                //case NamingFormat.NMS_Custom:
                 //case NamingFormat.Custom:
 
                 default:
@@ -680,6 +620,7 @@
                 {
                     //  TODO: Add methods used to build CIs using custom methods
                     { "Evolution Remote", GetEvolutionRemoteUniqueID },
+                    { "Evolution Chassis", GetEvolutionChassisUniqueID },
                     { "Evolution Protocol Processor", GetEvolutionProtocolProcessorUniqueID },
                 };
 
@@ -693,7 +634,7 @@
 
         public bool IsParent { get; set; }
 
-        public Connector.NamingFormat NamingFormat { get; set; }
+        public NamingFormat NamingFormat { get; set; }
 
         public Dictionary<int, List<ClassAttribute>> AttributesByTableID { get; set; }
 
@@ -858,93 +799,6 @@
             }
         }
 
-        private string GetCiRowUniqueID(IEngine engine, string pk, List<Property> properties, string elementName)
-        {
-            switch (NamingFormat)
-            {
-                case Connector.NamingFormat.Name:
-                    {
-                        return pk;
-                    }
-
-                case Connector.NamingFormat.Name_Label:
-                    {
-                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-                        return labelProperty != null ? pk + "_" + labelProperty.Value : String.Empty;
-                    }
-
-                case Connector.NamingFormat.Label:
-                    {
-                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-                        return labelProperty != null ? labelProperty.Value : String.Empty;
-                    }
-
-                case Connector.NamingFormat.Label_Name:
-                    {
-                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-                        return labelProperty != null ? labelProperty.Value + "_" + pk : String.Empty;
-                    }
-
-                case Connector.NamingFormat.NMS_Name:
-                    {
-                        return elementName + "_" + pk;
-                    }
-
-                case Connector.NamingFormat.NMS_Label:
-                    {
-                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-                        return labelProperty != null ? elementName + "_" + labelProperty.Value : String.Empty;
-                    }
-
-                case Connector.NamingFormat.NMS_Name_Label:
-                    {
-                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-                        return labelProperty != null ? elementName + "_" + pk + "_" + labelProperty.Value : String.Empty;
-                    }
-
-                case Connector.NamingFormat.NMS_Custom:
-                    {
-                        return elementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
-                    }
-
-                case Connector.NamingFormat.Custom:
-                    {
-                        return CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
-                    }
-
-                default:
-                    return String.Empty;
-            }
-        }
-
-        public static string GetEvolutionRemoteUniqueID(Engine engine, List<Property> properties, string pk)
-        {
-            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-            var customerIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_customer_id"));
-
-            return labelProperty != null && customerIdProperty != null ? customerIdProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
-        }
-
-        public static string GetEvolutionProtocolProcessorUniqueID(Engine engine, List<Property> properties, string pk)
-        {
-            string uniqueID = "PP Controller " + pk.Split('_').First();
-
-            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-            if (labelProperty != null)
-            {
-                labelProperty.Value = uniqueID;
-            }
-
-            return uniqueID;
-        }
-
         public static void FillTableParameterValues(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<ParameterDetails> pushParameters, List<uint> parameterIndices, Dictionary<string, object[]> rowsByPK)
         {
             foreach (var rowKvp in rowsByPK)
@@ -1027,6 +881,122 @@
             }
 
             return parameterUpdates.Count > 0;
+        }
+
+        public string GetInstanceUniqueID(IEngine engine, string parentElementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
+        {
+            switch (classNamingFormat)
+            {
+                case NamingFormat.Name:
+                    {
+                        return parentElementName + "_" + pk;
+                    }
+
+                case NamingFormat.Name_Label:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? parentElementName + "_" + pk + "_" + labelAttribute.CurrentValue : String.Empty;
+                    }
+
+                case NamingFormat.Label:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? parentElementName + "_" + labelAttribute.CurrentValue : String.Empty;
+                    }
+
+                case NamingFormat.Label_Name:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? parentElementName + "_" + labelAttribute.CurrentValue + "_" + pk : String.Empty;
+                    }
+
+                case NamingFormat.Custom:
+                    {
+                        var properties = parameterDetails.Select(p => new Property(p.AttributeName, p.CurrentValue)).ToList();
+
+                        return parentElementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
+                    }
+
+                default:
+                    return String.Empty;
+            }
+        }
+
+        private string GetCiRowUniqueID(IEngine engine, string pk, List<Property> properties, string parentElementName)
+        {
+            switch (NamingFormat)
+            {
+                case NamingFormat.Name:
+                    {
+                        return pk;
+                    }
+
+                case NamingFormat.Name_Label:
+                    {
+                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+                        return labelProperty != null ? parentElementName + "_" + pk + "_" + labelProperty.Value : String.Empty;
+                    }
+
+                case NamingFormat.Label:
+                    {
+                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+                        return labelProperty != null ? parentElementName + "_" + labelProperty.Value : String.Empty;
+                    }
+
+                case NamingFormat.Label_Name:
+                    {
+                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+                        return labelProperty != null ? parentElementName + "_" + labelProperty.Value + "_" + pk : String.Empty;
+                    }
+
+                case NamingFormat.Custom:
+                    {
+                        return parentElementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
+                    }
+
+                default:
+                    return String.Empty;
+            }
+        }
+
+        public static string GetEvolutionRemoteUniqueID(Engine engine, List<Property> properties, string pk)
+        {
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            var customerIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_customer_id"));
+
+            return labelProperty != null && customerIdProperty != null ? customerIdProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
+        }
+
+        public static string GetEvolutionChassisUniqueID(Engine engine, List<Property> properties, string pk)
+        {
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            var serialNumberProperty = properties.FirstOrDefault(x => x.Name.Equals("u_serial_number"));
+
+            return labelProperty != null && serialNumberProperty != null ? serialNumberProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
+        }
+
+        public static string GetEvolutionProtocolProcessorUniqueID(Engine engine, List<Property> properties, string pk)
+        {
+            //TODO: Change the method to use the configured PP Name
+
+            string uniqueID = "ppstack " + pk.Split('_').First();
+
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            if (labelProperty != null)
+            {
+                labelProperty.Value = uniqueID;
+            }
+
+            return uniqueID;
         }
     }
 
