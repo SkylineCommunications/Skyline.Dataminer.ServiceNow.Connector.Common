@@ -6,7 +6,6 @@
     using global::Skyline.DataMiner.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Common;
-    using SLDataGateway.API.Tasks.Upsert;
     using static Skyline.DataMiner.ServiceNow.Connector.Common.Connector;
 
     public class Connector
@@ -501,6 +500,11 @@
             }
         }
 
+        /// <summary>
+        /// Get elements running supported connectors as defined by the in the Connector class mappings.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <returns>list of elements running supported connectors.</returns>
         public static List<Element> GetSupportedDmsElements(IEngine engine)
         {
             var elements = new List<Element>();
@@ -603,7 +607,7 @@
         public List<Relationship> Relationships { get; set; }
 
         /// <summary>
-        /// Connector mapping class contructor.
+        /// ConnectorMapping class contructor.
         /// </summary>
         /// <param name="classMappings"></param>
         /// <param name="relationships"></param>
@@ -1088,6 +1092,12 @@
 
         public bool HasPushEvent { get; set; }
 
+        /// <summary>
+        /// ClassAttribute class constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="columnIdx"></param>
+        /// <param name="hasPushEvent"></param>
         public ClassAttribute(string name, int columnIdx, bool hasPushEvent)
         {
             Name = name;
@@ -1113,6 +1123,11 @@
 
         public string Value { get; set; }
 
+        /// <summary>
+        /// Property class constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
         public Property(string name, string value)
         {
             Name = name;
@@ -1120,6 +1135,12 @@
             Value = GetPropertyValueByName(value);
         }
 
+        /// <summary>
+        /// Property class constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="className"></param>
+        /// <param name="value"></param>
         public Property(string name, string className, string value)
         {
             Name = name;
