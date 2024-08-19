@@ -715,6 +715,8 @@
 
                 var propertyList = propertyValuesByName.Select(kvp => new Property(kvp.Key, String.Join(";", kvp.Value))).ToList();
 
+                engine.GenerateInformation("GetPropertiesByCiUniqueID| Property List:\n\n" + JsonConvert.SerializeObject(propertyList) + "\n\n");
+
                 propertiesByUniqueID[uniqueID].AddRange(propertyList);
             }
 
