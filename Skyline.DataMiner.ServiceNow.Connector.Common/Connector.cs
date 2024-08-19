@@ -544,7 +544,7 @@
 
                         if (pushAttributes.Count == 0) continue;
 
-                        var namingAttributes = GetNamingAttibutes(classMapping.NamingFormat);
+                        var namingAttributes = GetNamingAttributes(classMapping.NamingFormat);
 
                         foreach (var namingAttribute in namingAttributes)
                         {
@@ -572,7 +572,12 @@
             }
         }
 
-        public static List<string> GetNamingAttibutes(NamingFormat classNamingFormat)
+        /// <summary>
+        /// Method used to retrieve attributes necessary to build unique IDs.
+        /// </summary>
+        /// <param name="classNamingFormat"></param>
+        /// <returns>List containg attributes used to build a given CI unique id.</returns>
+        public static List<string> GetNamingAttributes(NamingFormat classNamingFormat)
         {
             switch (classNamingFormat)
             {
@@ -656,7 +661,7 @@
             {
                 if (rowsByTableID.Values.Count == 0) continue;
 
-                ParseRowProperties(engine, propertiesByPK, propertiesByFK, rowByTableKvp);
+                ParseRowProperties(propertiesByPK, propertiesByFK, rowByTableKvp);
             }
 
             var propertiesByUniqueID = new Dictionary<string, List<Property>>();
@@ -704,6 +709,13 @@
             return propertiesByUniqueID;
         }
 
+        /// <summary>
+        /// Method used to retrieve a list of rows containg data related to CIs of a given Class.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="element"></param>
+        /// <param name="tablePid"></param>
+        /// <returns>Dictionary containg a list of properties objects by unique id.</returns>
         private static List<object[]> GetClassCiRows(IEngine engine, Element element, int tablePid)
         {
             try
@@ -742,7 +754,7 @@
             return rowList;
         }
 
-        private void ParseRowProperties(IEngine engine, Dictionary<string, List<Property>> propertiesByPK, Dictionary<string, Dictionary<string, List<string>>> propertiesByFK, KeyValuePair<int, List<object[]>> rowByTableKvp)
+        private void ParseRowProperties(Dictionary<string, List<Property>> propertiesByPK, Dictionary<string, Dictionary<string, List<string>>> propertiesByFK, KeyValuePair<int, List<object[]>> rowByTableKvp)
         {
             int tablePid = rowByTableKvp.Key;
             var rows = rowByTableKvp.Value;
@@ -754,7 +766,7 @@
             {
                 if (primaryKeyAttribute != null)
                 {
-                    ParsePropertiesByRowPK(engine, propertiesByPK, tablePid, primaryKeyAttribute, row);
+                    ParsePropertiesByRowPK(propertiesByPK, tablePid, primaryKeyAttribute, row);
                 }
 
                 if (foreignKeyAttribute != null)
@@ -768,12 +780,12 @@
                         propertiesByFK.Add(fk, new Dictionary<string, List<string>>());
                     }
 
-                    ParsePropertiesByRowFK(engine, propertiesByFK[fk], row, tablePid);
+                    ParsePropertiesByRowFK(propertiesByFK[fk], row, tablePid);
                 }
             }
         }
 
-        private void ParsePropertiesByRowPK(IEngine engine, Dictionary<string, List<Property>> propertiesByPK, int tablePid, ClassAttribute primaryKeyAttribute, object[] row)
+        private void ParsePropertiesByRowPK(Dictionary<string, List<Property>> propertiesByPK, int tablePid, ClassAttribute primaryKeyAttribute, object[] row)
         {
             var pk = Convert.ToString(row[primaryKeyAttribute.ColumnIdx]);
 
@@ -792,7 +804,7 @@
             }
         }
 
-        private void ParsePropertiesByRowFK(IEngine engine, Dictionary<string, List<string>> propertiesValuesByName, object[] row, int tablePid)
+        private void ParsePropertiesByRowFK(Dictionary<string, List<string>> propertiesValuesByName, object[] row, int tablePid)
         {
             foreach (var classAttribute in AttributesByTableID[tablePid])
             {
@@ -806,132 +818,6 @@
                 {
                     propertiesValuesByName.Add(classAttribute.Name, new List<string> { Convert.ToString(row[classAttribute.ColumnIdx]) });
                 }
-            }
-        }
-
-        public static void FillTableParameterValues(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<ParameterDetails> pushParameters, List<uint> parameterIndices, Dictionary<string, object[]> rowsByPK)
-        {
-            foreach (var rowKvp in rowsByPK)
-            {
-                if (!parameterValuesByPK.ContainsKey(rowKvp.Key))
-                {
-                    parameterValuesByPK.Add(rowKvp.Key, new List<ParameterDetails>());
-                }
-
-                foreach (var parameter in pushParameters)
-                {
-                    var searchedParameter = parameterValuesByPK[rowKvp.Key].FirstOrDefault(p => p.AttributeName.Equals(parameter.AttributeName));
-
-                    if (searchedParameter == null)
-                    {
-                        searchedParameter = new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.ParameterIdxByPid);
-
-                        parameterValuesByPK[rowKvp.Key].Add(searchedParameter);
-                    }
-
-                    if (parameter.ParameterIdxByPid.Value == -1) continue;
-
-                    int rowIdx = parameterIndices.FindIndex(x => x == (uint)parameter.ParameterIdxByPid.Value);
-
-                    if (rowIdx == -1) continue;
-
-                    searchedParameter.CurrentValue = Convert.ToString(rowKvp.Value[rowIdx]);
-                }
-            }
-        }
-
-        public static void RemoveDeprecatedParameterValueKeys(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<string> currentPKs)
-        {
-            var deprecatedPKs = parameterValuesByPK.Keys.Where(pk => !currentPKs.Contains(pk)).ToList();
-
-            foreach (var deprecatedPK in deprecatedPKs)
-            {
-                parameterValuesByPK.Remove(deprecatedPK);
-            }
-        }
-
-        public static void RemoveDeprecatedAttributes(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<ParameterDetails> pushParameters)
-        {
-            var pushParameterNames = pushParameters.Select(p => p.AttributeName).ToList();
-
-            foreach (var parameterValuesKvp in parameterValuesByPK)
-            {
-                parameterValuesKvp.Value.RemoveAll(p => !pushParameterNames.Contains(p.AttributeName));
-            }
-        }
-
-        public static bool TryGetParameterUpdatesToSend(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, out Dictionary<string, List<ParameterDetails>> parameterUpdates)
-        {
-            parameterUpdates = new Dictionary<string, List<ParameterDetails>>();
-
-            foreach (var parameterDetailsKvp in parameterValuesByPK)
-            {
-                foreach (var parameter in parameterDetailsKvp.Value)
-                {
-                    if (!parameter.CurrentValue.Equals(parameter.PreviousValue))
-                    {
-                        if (parameterUpdates.ContainsKey(parameterDetailsKvp.Key))
-                        {
-                            parameterUpdates[parameterDetailsKvp.Key]
-                                .Add(new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue));
-                        }
-                        else
-                        {
-                            parameterUpdates.Add(parameterDetailsKvp.Key, new List<ParameterDetails>
-                            {
-                                new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue),
-                            });
-                        }
-                    }
-
-                    //Clear parameter values for next polling cycle
-                    parameter.PreviousValue = parameter.CurrentValue;
-                    parameter.CurrentValue = String.Empty;
-                }
-            }
-
-            return parameterUpdates.Count > 0;
-        }
-
-        public string GetInstanceUniqueID(IEngine engine, string parentElementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
-        {
-            switch (classNamingFormat)
-            {
-                case NamingFormat.Name:
-                    {
-                        return parentElementName + "_" + pk;
-                    }
-
-                case NamingFormat.Name_Label:
-                    {
-                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
-
-                        return labelAttribute != null ? parentElementName + "_" + pk + "_" + labelAttribute.CurrentValue : String.Empty;
-                    }
-
-                case NamingFormat.Label:
-                    {
-                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
-
-                        return labelAttribute != null ? parentElementName + "_" + labelAttribute.CurrentValue : String.Empty;
-                    }
-
-                case NamingFormat.Label_Name:
-                    {
-                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
-
-                        return labelAttribute != null ? parentElementName + "_" + labelAttribute.CurrentValue + "_" + pk : String.Empty;
-                    }
-
-                case NamingFormat.Custom:
-                    {
-                        var properties = parameterDetails.Select(p => new Property(p.AttributeName, p.CurrentValue)).ToList();
-
-                        return parentElementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
-                    }
-
-                default:
-                    return String.Empty;
             }
         }
 
@@ -975,6 +861,171 @@
             }
         }
 
+        /// <summary>
+        /// Method used to retrieve supported connector table values that should be sent into the update solution push request.
+        /// </summary>
+        /// <param name="parameterValuesByPK"></param>
+        /// <param name="pushParameters"></param>
+        /// <param name="parameterIndices"></param>
+        /// <param name="rowsByPK"></param>
+        public static void FillTableParameterValues(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<ParameterDetails> pushParameters, List<uint> parameterIndices, Dictionary<string, object[]> rowsByPK)
+        {
+            foreach (var rowKvp in rowsByPK)
+            {
+                if (!parameterValuesByPK.ContainsKey(rowKvp.Key))
+                {
+                    parameterValuesByPK.Add(rowKvp.Key, new List<ParameterDetails>());
+                }
+
+                foreach (var parameter in pushParameters)
+                {
+                    var searchedParameter = parameterValuesByPK[rowKvp.Key].FirstOrDefault(p => p.AttributeName.Equals(parameter.AttributeName));
+
+                    if (searchedParameter == null)
+                    {
+                        searchedParameter = new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.ParameterIdxByPid);
+
+                        parameterValuesByPK[rowKvp.Key].Add(searchedParameter);
+                    }
+
+                    if (parameter.ParameterIdxByPid.Value == -1) continue;
+
+                    int rowIdx = parameterIndices.FindIndex(x => x == (uint)parameter.ParameterIdxByPid.Value);
+
+                    if (rowIdx == -1) continue;
+
+                    searchedParameter.CurrentValue = Convert.ToString(rowKvp.Value[rowIdx]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Method used to remove parameter values related to deprecated PKs.
+        /// </summary>
+        /// <param name="parameterValuesByPK"></param>
+        /// <param name="currentPKs"></param>
+        public static void RemoveDeprecatedParameterValueKeys(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<string> currentPKs)
+        {
+            var deprecatedPKs = parameterValuesByPK.Keys.Where(pk => !currentPKs.Contains(pk)).ToList();
+
+            foreach (var deprecatedPK in deprecatedPKs)
+            {
+                parameterValuesByPK.Remove(deprecatedPK);
+            }
+        }
+
+        /// <summary>
+        /// Method used to remove parameter values related to deprecated attributes.
+        /// </summary>
+        /// <param name="parameterValuesByPK"></param>
+        /// <param name="pushParameters"></param>
+        public static void RemoveDeprecatedAttributes(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, List<ParameterDetails> pushParameters)
+        {
+            var pushParameterNames = pushParameters.Select(p => p.AttributeName).ToList();
+
+            foreach (var parameterValuesKvp in parameterValuesByPK)
+            {
+                parameterValuesKvp.Value.RemoveAll(p => !pushParameterNames.Contains(p.AttributeName));
+            }
+        }
+
+        /// <summary>
+        /// Method used to retrieve monitored parameter updates to send via push request.
+        /// </summary>
+        /// <param name="parameterValuesByPK"></param>
+        /// <param name="parameterUpdates"></param>
+        /// <returns>Boolean indicating if there are parameter updates to send.</returns>
+        public static bool TryGetParameterUpdatesToSend(Dictionary<string, List<ParameterDetails>> parameterValuesByPK, out Dictionary<string, List<ParameterDetails>> parameterUpdates)
+        {
+            parameterUpdates = new Dictionary<string, List<ParameterDetails>>();
+
+            foreach (var parameterDetailsKvp in parameterValuesByPK)
+            {
+                foreach (var parameter in parameterDetailsKvp.Value)
+                {
+                    if (!parameter.CurrentValue.Equals(parameter.PreviousValue))
+                    {
+                        if (parameterUpdates.ContainsKey(parameterDetailsKvp.Key))
+                        {
+                            parameterUpdates[parameterDetailsKvp.Key]
+                                .Add(new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue));
+                        }
+                        else
+                        {
+                            parameterUpdates.Add(parameterDetailsKvp.Key, new List<ParameterDetails>
+                            {
+                                new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue),
+                            });
+                        }
+                    }
+
+                    //Clear parameter values for next polling cycle
+                    parameter.PreviousValue = parameter.CurrentValue;
+                    parameter.CurrentValue = String.Empty;
+                }
+            }
+
+            return parameterUpdates.Count > 0;
+        }
+
+        /// <summary>
+        /// Method used to retrieve the unique ID of a given instance.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="parentElementName"></param>
+        /// <param name="pk"></param>
+        /// <param name="classNamingFormat"></param>
+        /// <param name="parameterDetails"></param>
+        /// <returns>Instance unique ID.</returns>
+        public string GetInstanceUniqueID(IEngine engine, string parentElementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
+        {
+            switch (classNamingFormat)
+            {
+                case NamingFormat.Name:
+                    {
+                        return parentElementName + "_" + pk;
+                    }
+
+                case NamingFormat.Name_Label:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? parentElementName + "_" + pk + "_" + labelAttribute.CurrentValue : String.Empty;
+                    }
+
+                case NamingFormat.Label:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? parentElementName + "_" + labelAttribute.CurrentValue : String.Empty;
+                    }
+
+                case NamingFormat.Label_Name:
+                    {
+                        var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
+
+                        return labelAttribute != null ? parentElementName + "_" + labelAttribute.CurrentValue + "_" + pk : String.Empty;
+                    }
+
+                case NamingFormat.Custom:
+                    {
+                        var properties = parameterDetails.Select(p => new Property(p.AttributeName, p.CurrentValue)).ToList();
+
+                        return parentElementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
+                    }
+
+                default:
+                    return String.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Method used to retrieve the unique ID of a given Evolution Remote instance.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="properties"></param>
+        /// <param name="pk"></param>
+        /// <returns>Remote instance unique ID.</returns>
         public static string GetEvolutionRemoteUniqueID(Engine engine, List<Property> properties, string pk)
         {
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
@@ -984,6 +1035,13 @@
             return labelProperty != null && customerIdProperty != null ? customerIdProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
         }
 
+        /// <summary>
+        /// Method used to retrieve the unique ID of a given Evolution Chassis instance.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="properties"></param>
+        /// <param name="pk"></param>
+        /// <returns>Remote instance unique ID.</returns>
         public static string GetEvolutionChassisUniqueID(Engine engine, List<Property> properties, string pk)
         {
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
@@ -993,6 +1051,13 @@
             return labelProperty != null && serialNumberProperty != null ? serialNumberProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
         }
 
+        /// <summary>
+        /// Method used to retrieve the unique ID of a given Evolution Protocol Processor instance.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="properties"></param>
+        /// <param name="pk"></param>
+        /// <returns>Remote instance unique ID.</returns>
         public static string GetEvolutionProtocolProcessorUniqueID(Engine engine, List<Property> properties, string pk)
         {
             //TODO: Change the method to use the configured PP Name
