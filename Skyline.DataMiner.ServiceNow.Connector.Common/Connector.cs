@@ -6,6 +6,7 @@
     using global::Skyline.DataMiner.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Common;
+    using SLDataGateway.API.Tasks.Upsert;
     using static Skyline.DataMiner.ServiceNow.Connector.Common.Connector;
 
     public class Connector
@@ -318,16 +319,16 @@
                             new List<Relationship>
                             {
                                 // TODO: Add class relationships here
-                                new Relationship("Evolution Remote", "Evolution NMS", "u_nms_name", "Managed by::Manages", false),
-                                new Relationship("Evolution Linecard", "Evolution NMS", "u_nms_name", "Managed by::Manages", false),
-                                new Relationship("Evolution Network", "Evolution NMS", "u_nms_name", "Managed by::Manages", false),
-                                new Relationship("Evolution Inroute Group", "Evolution Remote", "u_inroute_group", "Connected by::Connects", true),
-                                new Relationship("Evolution Network", "Evolution Remote", "u_network_name", "Receives data from::Sends data to", true),
-                                new Relationship("Evolution Network", "Evolution Linecard", "u_network_id", "Depends on::Used by", true),
-                                new Relationship("Evolution Linecard", "Evolution Chassis", "u_chassis_id", "Located in::Houses", false),
-                                new Relationship("Evolution Network", "Evolution Protocol Processor", "u_protocol_processor", "Depends on::Used by", false),
+                                new Relationship("Evolution Remote", "Evolution NMS", "u_nms_name", String.Empty, String.Empty, "Managed by::Manages", false),
+                                new Relationship("Evolution Linecard", "Evolution NMS", "u_nms_name", String.Empty, String.Empty, "Managed by::Manages", false),
+                                new Relationship("Evolution Network", "Evolution NMS", "u_nms_name", String.Empty, String.Empty, "Managed by::Manages", false),
+                                new Relationship("Evolution Inroute Group", "Evolution Remote", "u_inroute_group", String.Empty, String.Empty, "Connected by::Connects", true),
+                                new Relationship("Evolution Network", "Evolution Remote", "u_network_name", String.Empty, String.Empty, "Receives data from::Sends data to", true),
+                                new Relationship("Evolution Network", "Evolution Linecard", "u_network_id", String.Empty, String.Empty, "Depends on::Used by", true),
+                                new Relationship("Evolution Linecard", "Evolution Chassis", "u_chassis_id", String.Empty, String.Empty, "Located in::Houses", false),
+                                new Relationship("Evolution Network", "Evolution Protocol Processor", "u_protocol_processor", String.Empty, String.Empty, "Depends on::Used by", false),
                                 //TODO: Change relationship mapping as following mapping requires data from different CI Class 
-                                new Relationship("Evolution Linecard", "Evolution Linecard", "u_redundancy_linecard", "DR provided by::Provides DR for", false),
+                                new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_redundancy_linecard", "Evolution Chassis", "DR provided by::Provides DR for", false),
                             })
                     },
                     {
@@ -489,9 +490,9 @@
                             new List<Relationship>
                             {
                                 // TODO: Add class relationships here
-                                new Relationship("Dialog Remote", "Dialog NMS", "u_nms_name", "Managed by::Manages", false),
-                                new Relationship("Dialog Satellite Network", "Dialog NMS", "u_nms_name", "Managed by::Manages", false),
-                                new Relationship("Dialog Satellite Network", "Dialog Remote", "u_active_beam", "Receives data from::Sends data to", true),
+                                new Relationship("Dialog Remote", "Dialog NMS", "u_nms_name", String.Empty, String.Empty, "Managed by::Manages", false),
+                                new Relationship("Dialog Satellite Network", "Dialog NMS", "u_nms_name", String.Empty, String.Empty, "Managed by::Manages", false),
+                                new Relationship("Dialog Satellite Network", "Dialog Remote", "u_active_beam", String.Empty, String.Empty, "Receives data from::Sends data to", true),
                             })
                     },
                 };
@@ -1029,11 +1030,21 @@
 
         public string Name { get; set; }
 
+        public string Class { get; set; }
+
         public string Value { get; set; }
 
         public Property(string name, string value)
         {
             Name = name;
+            Class = String.Empty;
+            Value = GetPropertyValueByName(value);
+        }
+
+        public Property(string name, string className, string value)
+        {
+            Name = name;
+            Class = className;
             Value = GetPropertyValueByName(value);
         }
 
@@ -1125,20 +1136,33 @@
 
         public string ChildClass { get; set; }
 
-        public string LinkedProperty { get; set; }
+        public PropertyLink PropertyLink { get; set; }
 
         public string Type { get; set; }
 
         public bool IsMappedFromParent { get; set; }
 
-        public Relationship(string childClass, string parentClass, string relationshipProperty, string type, bool isMappedFromParent)
+        public Relationship(string childClass, string parentClass, string linkProperty, string externalProperty, string externalClass, string type, bool isMappedFromParent)
         {
             Name = childClass + "/" + type + "/" + parentClass;
             ParentClass = parentClass;
             ChildClass = childClass;
-            LinkedProperty = relationshipProperty;
+            PropertyLink = new PropertyLink(linkProperty, externalProperty, externalClass);
             Type = type;
             IsMappedFromParent = isMappedFromParent;
+        }
+    }
+
+    public class PropertyLink
+    {
+        public string Name { get; set; }
+
+        public Property ExternalProperty { get; set; }
+
+        public PropertyLink(string name, string externalProperty, string externalClass)
+        {
+            Name = name;
+            ExternalProperty = new Property(externalProperty, externalClass, String.Empty);
         }
     }
 }
