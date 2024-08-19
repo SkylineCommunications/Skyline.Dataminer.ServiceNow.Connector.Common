@@ -602,6 +602,11 @@
 
         public List<Relationship> Relationships { get; set; }
 
+        /// <summary>
+        /// Connector mapping class contructor.
+        /// </summary>
+        /// <param name="classMappings"></param>
+        /// <param name="relationships"></param>
         public ConnectorMapping(List<ClassMapping> classMappings, List<Relationship> relationships)
         {
             ClassMappings = classMappings;
@@ -1183,6 +1188,12 @@
 
         public string PreviousValue { get; set; }
 
+        /// <summary>
+        /// ParameterDetails class constructor.
+        /// </summary>
+        /// <param name="attributeName"></param>
+        /// <param name="className"></param>
+        /// <param name="paramIdxByPid"></param>
         public ParameterDetails(string attributeName, string className, KeyValuePair<int, int> paramIdxByPid)
         {
             AttributeName = attributeName;
@@ -1192,6 +1203,12 @@
             PreviousValue = String.Empty;
         }
 
+        /// <summary>
+        /// ParameterDetails class constructor.
+        /// </summary>
+        /// <param name="attributeName"></param>
+        /// <param name="className"></param>
+        /// <param name="currentValue"></param>
         public ParameterDetails(string attributeName, string className, string currentValue)
         {
             AttributeName = attributeName;
@@ -1216,6 +1233,16 @@
 
         public bool IsMappedFromParent { get; set; }
 
+        /// <summary>
+        /// Relationship class constructor.
+        /// </summary>
+        /// <param name="childClass"></param>
+        /// <param name="parentClass"></param>
+        /// <param name="linkProperty"></param>
+        /// <param name="externalProperty"></param>
+        /// <param name="externalClass"></param>
+        /// <param name="type"></param>
+        /// <param name="isMappedFromParent"></param>
         public Relationship(string childClass, string parentClass, string linkProperty, string externalProperty, string externalClass, string type, bool isMappedFromParent)
         {
             Name = childClass + "/" + type + "/" + parentClass;
@@ -1233,6 +1260,12 @@
 
         public Property ExternalProperty { get; set; }
 
+        /// <summary>
+        /// PropertyLink class constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="externalProperty"></param>
+        /// <param name="externalClass"></param>
         public PropertyLink(string name, string externalProperty, string externalClass)
         {
             Name = name;
