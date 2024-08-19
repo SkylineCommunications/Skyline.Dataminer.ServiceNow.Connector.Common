@@ -684,13 +684,22 @@
                 propertiesByUniqueID.Add(uniqueID, propertyList);
             }
 
-            // TODO: Include logic to parse properties with multiple values (one to many)
-            //
-            //foreach (var item in propertiesByFK)
-            //{
-            //    var uniqueID = item.Key;
-            //    var propertyValuesByName = item.Value;
-            //}
+            // TODO: Validate logic to parse properties with multiple values (one to many)
+
+            foreach (var item in propertiesByFK)
+            {
+                var uniqueID = item.Key;
+                var propertyValuesByName = item.Value;
+
+                if (!propertiesByUniqueID.ContainsKey(uniqueID))
+                {
+                    propertiesByUniqueID.Add(uniqueID, new List<Property>());
+                }
+
+                var propertyList = propertyValuesByName.Select(kvp => new Property(kvp.Key, String.Join(";", kvp.Value))).ToList();
+
+                propertiesByUniqueID[uniqueID].AddRange(propertyList);
+            }
 
             return propertiesByUniqueID;
         }
@@ -759,7 +768,7 @@
                         propertiesByFK.Add(fk, new Dictionary<string, List<string>>());
                     }
 
-                    ParsePropertiesByRowFK(propertiesByFK[fk], row, tablePid);
+                    ParsePropertiesByRowFK(engine, propertiesByFK[fk], row, tablePid);
                 }
             }
         }
@@ -783,7 +792,7 @@
             }
         }
 
-        private void ParsePropertiesByRowFK(Dictionary<string, List<string>> propertiesValuesByName, object[] row, int tablePid)
+        private void ParsePropertiesByRowFK(IEngine engine, Dictionary<string, List<string>> propertiesValuesByName, object[] row, int tablePid)
         {
             foreach (var classAttribute in AttributesByTableID[tablePid])
             {
