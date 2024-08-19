@@ -693,15 +693,15 @@
 
                 if (propertiesByUniqueID.ContainsKey(uniqueID)) continue;
 
-                propertyList.Add(new Property("name", uniqueID));
-                propertyList.Add(new Property("operational_status", "Operational"));
+                propertyList.Add(new Property("name", Class, uniqueID));
+                propertyList.Add(new Property("operational_status", Class, "Operational"));
 
                 propertiesByUniqueID.Add(uniqueID, propertyList);
             }
 
             // TODO: Validate logic to parse properties with multiple values (one to many)
 
-            engine.GenerateInformation("GetPropertiesByCiUniqueID| Element " + element.ElementName + " | Properties By FK:\n\n" + JsonConvert.SerializeObject(propertiesByFK) + "\n\n");
+            engine.GenerateInformation("GetPropertiesByCiUniqueID| Properties By FK:\n\n" + JsonConvert.SerializeObject(propertiesByFK) + "\n\n");
 
             foreach (var item in propertiesByFK)
             {
@@ -713,7 +713,7 @@
                     propertiesByUniqueID.Add(uniqueID, new List<Property>());
                 }
 
-                var propertyList = propertyValuesByName.Select(kvp => new Property(kvp.Key, String.Join(";", kvp.Value))).ToList();
+                var propertyList = propertyValuesByName.Select(kvp => new Property(kvp.Key, Class, String.Join(";", kvp.Value))).ToList();
 
                 engine.GenerateInformation("GetPropertiesByCiUniqueID| Property List:\n\n" + JsonConvert.SerializeObject(propertyList) + "\n\n");
 
@@ -814,7 +814,7 @@
             {
                 if (classAttribute.Name.Equals("pk")) continue;
 
-                propertiesByPK[pk].Add(new Property(classAttribute.Name, Convert.ToString(row[classAttribute.ColumnIdx])));
+                propertiesByPK[pk].Add(new Property(classAttribute.Name, Class, Convert.ToString(row[classAttribute.ColumnIdx])));
             }
         }
 
@@ -1023,7 +1023,7 @@
 
                 case NamingFormat.Custom:
                     {
-                        var properties = parameterDetails.Select(p => new Property(p.AttributeName, p.CurrentValue)).ToList();
+                        var properties = parameterDetails.Select(p => new Property(p.AttributeName, Class, p.CurrentValue)).ToList();
 
                         return parentElementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
                     }
@@ -1127,18 +1127,6 @@
         public string Class { get; set; }
 
         public string Value { get; set; }
-
-        /// <summary>
-        /// Property class constructor.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        public Property(string name, string value)
-        {
-            Name = name;
-            Class = String.Empty;
-            Value = GetPropertyValueByName(value);
-        }
 
         /// <summary>
         /// Property class constructor.
