@@ -6,6 +6,7 @@
     using global::Skyline.DataMiner.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Common;
+    using Newtonsoft.Json;
     using static Skyline.DataMiner.ServiceNow.Connector.Common.Connector;
 
     public class Connector
@@ -699,6 +700,8 @@
             }
 
             // TODO: Validate logic to parse properties with multiple values (one to many)
+
+            engine.GenerateInformation("GetPropertiesByCiUniqueID| Element " + element.ElementName + " | Properties By FK:\n\n" + JsonConvert.SerializeObject(propertiesByFK) + "\n\n");
 
             foreach (var item in propertiesByFK)
             {
