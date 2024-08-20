@@ -697,21 +697,14 @@
                 propertyList.Add(new Property("operational_status", Class, "Operational"));
 
                 propertiesByUniqueID.Add(uniqueID, propertyList);
-            }
 
-            // TODO: Validate logic to parse properties with multiple values (one to many)
+                if (!propertiesByFK.ContainsKey(item.Key)) continue;
 
-            engine.GenerateInformation("GetPropertiesByCiUniqueID| Properties By FK:\n\n" + JsonConvert.SerializeObject(propertiesByFK) + "\n\n");
+                var propertiesValuesByAttributeName = propertiesByFK[item.Key];
 
-            foreach (var item in propertiesByFK)
-            {
-                var propertyValuesByName = item.Value;
-
-                var propertyList = propertyValuesByName.Select(kvp => new Property(kvp.Key, Class, String.Join(";", kvp.Value))).ToList();
+                propertyList = propertiesValuesByAttributeName.Select(kvp => new Property(kvp.Key, Class, String.Join(";", kvp.Value))).ToList();
 
                 engine.GenerateInformation("GetPropertiesByCiUniqueID| Property List:\n\n" + JsonConvert.SerializeObject(propertyList) + "\n\n");
-
-                var uniqueID = GetCiRowUniqueID(engine, item.Key, propertyList, elementDmsID);
 
                 if (!propertiesByUniqueID.ContainsKey(uniqueID))
                 {
@@ -819,19 +812,19 @@
             }
         }
 
-        private void ParsePropertiesByRowFK(Dictionary<string, List<string>> propertiesValuesByName, object[] row, int tablePid)
+        private void ParsePropertiesByRowFK(Dictionary<string, List<string>> propertiesValuesByAttributeName, object[] row, int tablePid)
         {
             foreach (var classAttribute in AttributesByTableID[tablePid])
             {
                 if (classAttribute.Name.Equals("fk")) continue;
 
-                if (propertiesValuesByName.ContainsKey(classAttribute.Name))
+                if (propertiesValuesByAttributeName.ContainsKey(classAttribute.Name))
                 {
-                    propertiesValuesByName[classAttribute.Name].Add(Convert.ToString(row[classAttribute.ColumnIdx]));
+                    propertiesValuesByAttributeName[classAttribute.Name].Add(Convert.ToString(row[classAttribute.ColumnIdx]));
                 }
                 else
                 {
-                    propertiesValuesByName.Add(classAttribute.Name, new List<string> { Convert.ToString(row[classAttribute.ColumnIdx]) });
+                    propertiesValuesByAttributeName.Add(classAttribute.Name, new List<string> { Convert.ToString(row[classAttribute.ColumnIdx]) });
                 }
             }
         }
