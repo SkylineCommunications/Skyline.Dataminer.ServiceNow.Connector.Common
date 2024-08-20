@@ -705,17 +705,18 @@
 
             foreach (var item in propertiesByFK)
             {
-                var uniqueID = item.Key;
                 var propertyValuesByName = item.Value;
+
+                var propertyList = propertyValuesByName.Select(kvp => new Property(kvp.Key, Class, String.Join(";", kvp.Value))).ToList();
+
+                engine.GenerateInformation("GetPropertiesByCiUniqueID| Property List:\n\n" + JsonConvert.SerializeObject(propertyList) + "\n\n");
+
+                var uniqueID = GetCiRowUniqueID(engine, item.Key, propertyList, elementDmsID);
 
                 if (!propertiesByUniqueID.ContainsKey(uniqueID))
                 {
                     propertiesByUniqueID.Add(uniqueID, new List<Property>());
                 }
-
-                var propertyList = propertyValuesByName.Select(kvp => new Property(kvp.Key, Class, String.Join(";", kvp.Value))).ToList();
-
-                engine.GenerateInformation("GetPropertiesByCiUniqueID| Property List:\n\n" + JsonConvert.SerializeObject(propertyList) + "\n\n");
 
                 propertiesByUniqueID[uniqueID].AddRange(propertyList);
             }
