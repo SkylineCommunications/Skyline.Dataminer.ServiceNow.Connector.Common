@@ -328,7 +328,7 @@
                                 new Relationship("Evolution Linecard", "Evolution Chassis", "u_chassis_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Located in::Houses", false),
                                 new Relationship("Evolution Network", "Evolution Protocol Processor", "u_protocol_processor", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", false),
                                 //TODO: Change relationship mapping as following mapping requires data from different CI Class 
-                                new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_redundancy_linecard", "u_linecard", "Evolution Chassis", String.Empty, "DR provided by::Provides DR for", false),
+                                new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
                             })
                     },
                     {
