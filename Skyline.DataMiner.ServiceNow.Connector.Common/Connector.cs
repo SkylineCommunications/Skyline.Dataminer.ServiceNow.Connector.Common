@@ -44,7 +44,7 @@
                                     Class = "Evolution NMS",
                                     TargetTable = "u_cmdb_ci_appl_nms_evolution",
                                     IsParent = true,
-                                    NamingFormat = NamingFormat.Name,
+                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -56,7 +56,7 @@
                                     Class = "Evolution Remote",
                                     TargetTable = "u_cmdb_ci_modem_evolution_remote",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Custom,
+                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "customer_id" }),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -86,7 +86,7 @@
                                     Class = "Evolution Linecard",
                                     TargetTable = "u_cmdb_ci_modem_evolution_linecard",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Name,
+                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -116,7 +116,7 @@
                                     Class = "Evolution Network",
                                     TargetTable = "u_cmdb_ci_group_evolution_network",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Name_Label,
+                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -146,9 +146,9 @@
                                 new ClassMapping
                                 {
                                     Class = "Evolution Chassis",
-                                    TargetTable = "u_cmdb_ci_evolution_chassis",
+                                    TargetTable = "cmdb_ci_chassis",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Custom,
+                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_serial_number" }),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -180,7 +180,7 @@
                                     Class = "Evolution Inroute Group",
                                     TargetTable = "u_cmdb_ci_evolution_inroute_group",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Name_Label,
+                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -200,7 +200,9 @@
                                     Class = "Evolution Protocol Processor",
                                     TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Custom,
+                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>()),
+                                    //TODO: Add suport for naming based on External CIs
+                                    //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_network_pp_name" }),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -220,7 +222,7 @@
                                     Class = "Evolution Protocol Processor Blade",
                                     TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Name_Label,
+                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -340,7 +342,7 @@
                                     Class = "Dialog NMS",
                                     TargetTable = "u_cmdb_ci_appl_nms_dialog",
                                     IsParent = true,
-                                    NamingFormat = NamingFormat.Name,
+                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -351,7 +353,7 @@
                                     Class = "Dialog Remote",
                                     TargetTable = "u_cmdb_ci_modem_dialog_remote",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Label,
+                                    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -392,7 +394,7 @@
                                     Class = "Dialog Satellite Network",
                                     TargetTable = "u_cmdb_ci_dialog_satellite_network",
                                     IsParent = false,
-                                    NamingFormat = NamingFormat.Name_Label,
+                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -549,7 +551,7 @@
 
                         if (pushAttributes.Count == 0) continue;
 
-                        var namingAttributes = GetNamingAttributes(classMapping.NamingFormat);
+                        var namingAttributes = GetNamingAttributes(classMapping.NamingDetails.Format);
 
                         foreach (var namingAttribute in namingAttributes)
                         {
@@ -650,7 +652,7 @@
 
         public bool IsParent { get; set; }
 
-        public NamingFormat NamingFormat { get; set; }
+        public NamingDetails NamingDetails { get; set; }
 
         public Dictionary<int, List<ClassAttribute>> AttributesByTableID { get; set; }
 
@@ -831,7 +833,7 @@
 
         private string GetCiRowUniqueID(IEngine engine, string pk, List<Property> properties, string parentElementName)
         {
-            switch (NamingFormat)
+            switch (NamingDetails.Format)
             {
                 case NamingFormat.Name:
                     {
@@ -1303,6 +1305,24 @@
             ParameterIdxByPid = new KeyValuePair<int, int>();
             CurrentValue = currentValue;
             PreviousValue = String.Empty;
+        }
+    }
+
+    public class NamingDetails
+    {
+        public NamingFormat Format { get; set; }
+
+        public List<string> RequiredProperties { get; set; }
+
+        /// <summary>
+        /// NamingDetails class constructor.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="requiredProperties"></param>
+        public NamingDetails(NamingFormat format, List<string> requiredProperties)
+        {
+            Format = format;
+            RequiredProperties = requiredProperties;
         }
     }
 }
