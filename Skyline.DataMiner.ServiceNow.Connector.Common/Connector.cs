@@ -1184,49 +1184,6 @@
         }
     }
 
-    public class ParameterDetails
-    {
-        public string AttributeName { get; set; }
-
-        public string Class { get; set; }
-
-        public KeyValuePair<int, int> ParameterIdxByPid { get; set; }
-
-        public string CurrentValue { get; set; }
-
-        public string PreviousValue { get; set; }
-
-        /// <summary>
-        /// ParameterDetails class constructor.
-        /// </summary>
-        /// <param name="attributeName"></param>
-        /// <param name="className"></param>
-        /// <param name="paramIdxByPid"></param>
-        public ParameterDetails(string attributeName, string className, KeyValuePair<int, int> paramIdxByPid)
-        {
-            AttributeName = attributeName;
-            Class = className;
-            ParameterIdxByPid = paramIdxByPid;
-            CurrentValue = String.Empty;
-            PreviousValue = String.Empty;
-        }
-
-        /// <summary>
-        /// ParameterDetails class constructor.
-        /// </summary>
-        /// <param name="attributeName"></param>
-        /// <param name="className"></param>
-        /// <param name="currentValue"></param>
-        public ParameterDetails(string attributeName, string className, string currentValue)
-        {
-            AttributeName = attributeName;
-            Class = className;
-            ParameterIdxByPid = new KeyValuePair<int, int>();
-            CurrentValue = currentValue;
-            PreviousValue = String.Empty;
-        }
-    }
-
     public class Relationship
     {
         public string Name { get; set; }
@@ -1285,6 +1242,67 @@
             Name = name;
             ChildExternalProperty = new Property(childExternalProperty, childExternalClass, String.Empty);
             ParentExternalProperty = new Property(parentExternalProperty, parentExternalClass, String.Empty);
+        }
+    }
+
+    public class ParameterDetails
+    {
+        public string AttributeName { get; set; }
+
+        public string Class { get; set; }
+
+        public KeyValuePair<int, int> ParameterIdxByPid { get; set; }
+
+        public string CurrentValue { get; set; }
+
+        public string PreviousValue { get; set; }
+
+        /// <summary>
+        /// ParameterDetails class constructor.
+        /// </summary>
+        /// <param name="attributeName"></param>
+        /// <param name="className"></param>
+        /// <param name="paramIdxByPid"></param>
+        /// <param name="currentValue"></param>
+        /// <param name="previousValue"></param>
+        [JsonConstructor]
+        public ParameterDetails(string attributeName, string className, KeyValuePair<int, int> paramIdxByPid, string currentValue, string previousValue)
+        {
+            AttributeName = attributeName;
+            Class = className;
+            ParameterIdxByPid = paramIdxByPid;
+            CurrentValue = currentValue;
+            PreviousValue = previousValue;
+        }
+
+        /// <summary>
+        /// ParameterDetails class constructor.
+        /// </summary>
+        /// <param name="attributeName"></param>
+        /// <param name="className"></param>
+        /// <param name="paramIdxByPid"></param>
+        public ParameterDetails(string attributeName, string className, KeyValuePair<int, int> paramIdxByPid)
+        {
+            AttributeName = attributeName;
+            Class = className;
+            ParameterIdxByPid = paramIdxByPid;
+            CurrentValue = String.Empty;
+            PreviousValue = String.Empty;
+        }
+
+        /// <summary>
+        /// ParameterDetails class constructor.
+        /// </summary>
+        /// <param name="attributeName"></param>
+        /// <param name="className"></param>
+        /// <param name="currentValue"></param>
+        public ParameterDetails(string attributeName, string className, string currentValue)
+        {
+            AttributeName = attributeName;
+            Class = className;
+            ParameterIdxByPid = new KeyValuePair<int, int>();
+            CurrentValue = currentValue;
+            PreviousValue = String.Empty;
         }
     }
 }
