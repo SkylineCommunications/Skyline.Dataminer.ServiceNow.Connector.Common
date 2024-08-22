@@ -9,10 +9,17 @@
     using Newtonsoft.Json;
     using static Skyline.DataMiner.ServiceNow.Connector.Common.Connector;
 
+    /// <summary>
+    /// Data structure used to perform mappings between ServiceNow CIs and its properties and the respective Dataminer counterparts.
+    /// </summary>
     public class Connector
     {
+        /// <summary>
+        /// Describes the different options that can be used to build a CI unique ID.
+        /// </summary>
         public enum NamingFormat
         {
+            // TODO: Check which prefix better serves the purpose of protecting ID uniqueness (Element DMA ID might cause trouble if swarming is used in the future)
             // Naming format always includes parent element name to avoid duplicating unique IDs (for instance in case there are duplicate elements)
             Name,
             Name_Label,
@@ -547,13 +554,11 @@
 
                     foreach (var attributeKvp in classAttributesByTablePID)
                     {
-                        var pushAttributes = attributeKvp.Value.Where(x => x.HasPushEvent).ToList();
+                        var pushAttributes = attributeKvp.Value.Where(attribute => attribute.HasPushEvent).ToList();
 
                         if (pushAttributes.Count == 0) continue;
 
-                        var namingAttributes = GetNamingAttributes(classMapping.NamingDetails.Format);
-
-                        foreach (var namingAttribute in namingAttributes)
+                        foreach (var namingAttribute in classMapping.NamingDetails.RequiredProperties)
                         {
                             var attributeToAdd = pushAttributes.FirstOrDefault(x => x.Name.Equals(namingAttribute));
 
@@ -578,35 +583,21 @@
                 throw new ArgumentException($"Protocol name '{protocolName}' could not be found in connector mappings.");
             }
         }
-
-        /// <summary>
-        /// Method used to retrieve attributes necessary to build unique IDs.
-        /// </summary>
-        /// <param name="classNamingFormat"></param>
-        /// <returns>List containg attributes used to build a given CI unique id.</returns>
-        public static List<string> GetNamingAttributes(NamingFormat classNamingFormat)
-        {
-            switch (classNamingFormat)
-            {
-                case NamingFormat.Name_Label:
-                case NamingFormat.Label:
-                case NamingFormat.Label_Name:
-                    {
-                        return new List<string> { "u_label" };
-                    }
-
-                //case NamingFormat.Custom:
-
-                default:
-                    return new List<string>();
-            }
-        }
     }
 
+    /// <summary>
+    /// Data structure that details the mappings that can be performed from any supported connector.
+    /// </summary>
     public class ConnectorMapping
     {
+        /// <summary>
+        /// Class mappings retrieved from the supported connector.
+        /// </summary>
         public List<ClassMapping> ClassMappings { get; set; }
 
+        /// <summary>
+        /// Relationship details to build from the supported connector.
+        /// </summary>
         public List<Relationship> Relationships { get; set; }
 
         /// <summary>
@@ -621,6 +612,9 @@
         }
     }
 
+    /// <summary>
+    /// Data structure that details for each class mapping.
+    /// </summary>
     public class ClassMapping
     {
         private Dictionary<string, Func<Engine, List<Property>, string, string>> ciUniqueIdFunctionMapper;
@@ -646,14 +640,29 @@
             }
         }
 
+        /// <summary>
+        /// Class name.
+        /// </summary>
         public string Class { get; set; }
 
+        /// <summary>
+        /// ServiceNow target table for the class.
+        /// </summary>
         public string TargetTable { get; set; }
 
+        /// <summary>
+        /// Indicates if the class has a parent relationship to other connector classes.
+        /// </summary>
         public bool IsParent { get; set; }
 
+        /// <summary>
+        /// Contains the details necessary to build unique IDs for CIs of a given class.
+        /// </summary>
         public NamingDetails NamingDetails { get; set; }
 
+        /// <summary>
+        /// Specifies the details necessary to retrieve the mapped class attributes from the corresponding Dataminer elements.
+        /// </summary>
         public Dictionary<int, List<ClassAttribute>> AttributesByTableID { get; set; }
 
         /// <summary>
@@ -1186,18 +1195,39 @@
         }
     }
 
+    /// <summary>
+    /// Contains the relationship details.
+    /// </summary>
     public class Relationship
     {
+        /// <summary>
+        /// Relationship name.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Class of the relationship parent CI.
+        /// </summary>
         public string ParentClass { get; set; }
 
+        /// <summary>
+        /// Class of the relationship child CI.
+        /// </summary>
         public string ChildClass { get; set; }
 
+        /// <summary>
+        /// Describes the property requirements necessary to build a given relationship.
+        /// </summary>
         public PropertyLink PropertyLink { get; set; }
 
+        /// <summary>
+        /// Relationship type/description.
+        /// </summary>
         public string Type { get; set; }
 
+        /// <summary>
+        /// Indicates if the relationship mapping should be performed from property values contained in the parent CI.
+        /// </summary>
         public bool IsMappedFromParent { get; set; }
 
         /// <summary>
@@ -1223,12 +1253,24 @@
         }
     }
 
+    /// <summary>
+    /// Describes how a given property is used to link CIs that have a certain relationship.
+    /// </summary>
     public class PropertyLink
     {
+        /// <summary>
+        /// Property name.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Contains the details of a property that belongs to an external child CI, but needs to be used to build a given relationship.
+        /// </summary>
         public Property ChildExternalProperty { get; set; }
 
+        /// <summary>
+        /// Contains the details of a property that belongs to an external parent CI, but needs to be used to build a given relationship.
+        /// </summary>
         public Property ParentExternalProperty { get; set; }
 
         /// <summary>
@@ -1247,6 +1289,9 @@
         }
     }
 
+    /// <summary>
+    /// Contains the details of a monitored parameter.
+    /// </summary>
     public class ParameterDetails
     {
         /// <summary>
@@ -1323,6 +1368,9 @@
         }
     }
 
+    /// <summary>
+    /// Contains the details necessary to build a CI unique ID.
+    /// </summary>
     public class NamingDetails
     {
         /// <summary>
