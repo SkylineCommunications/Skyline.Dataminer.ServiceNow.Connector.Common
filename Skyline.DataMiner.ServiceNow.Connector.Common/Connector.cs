@@ -1249,14 +1249,29 @@
 
     public class ParameterDetails
     {
+        /// <summary>
+        /// Name of the attribute.
+        /// </summary>
         public string AttributeName { get; set; }
 
+        /// <summary>
+        /// Class of the attribute
+        /// </summary>
         public string Class { get; set; }
 
+        /// <summary>
+        /// KeyValuePair containing info on how to retrieve a given parameter from a supported connector.
+        /// </summary>
         public KeyValuePair<int, int> ParameterIdxByPid { get; set; }
 
+        /// <summary>
+        /// Current value of the monitored parameter.
+        /// </summary>
         public string CurrentValue { get; set; }
 
+        /// <summary>
+        /// Previous value of the monitored parameter.
+        /// </summary>
         public string PreviousValue { get; set; }
 
         /// <summary>
@@ -1310,8 +1325,14 @@
 
     public class NamingDetails
     {
+        /// <summary>
+        /// Unique ID naming format.
+        /// </summary>
         public NamingFormat Format { get; set; }
 
+        /// <summary>
+        /// List of properties that are required to build the unique ID of a given CI.
+        /// </summary>
         public List<string> RequiredProperties { get; set; }
 
         /// <summary>
