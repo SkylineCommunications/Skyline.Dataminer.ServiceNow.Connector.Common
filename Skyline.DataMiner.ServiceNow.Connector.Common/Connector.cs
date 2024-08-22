@@ -137,7 +137,6 @@
                                                 new ClassAttribute("u_teleport_id", 6, false),
                                                 new ClassAttribute("u_protocol_processor", 7, false),
                                                 new ClassAttribute("u_nms_name", 8, false),
-                                                //TODO: Include Network PP Name ???
                                             }
                                         },
                                         {
