@@ -63,7 +63,7 @@
                                     Class = "Evolution Remote",
                                     TargetTable = "u_cmdb_ci_modem_evolution_remote",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "customer_id" }),
+                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_customer_id" }),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
