@@ -981,6 +981,12 @@
                     parameter.PreviousValue = parameter.CurrentValue;
                     parameter.CurrentValue = String.Empty;
                 }
+
+                if (parameterUpdates.ContainsKey(parameterDetailsKvp.Key) && !parameterUpdates[parameterDetailsKvp.Key].Exists(u => u.IsMonitored))
+                {
+                    // If there are only parameter details used for naming remove
+                    parameterUpdates.Remove(parameterDetailsKvp.Key);
+                }
             }
 
             return parameterUpdates.Count > 0;
