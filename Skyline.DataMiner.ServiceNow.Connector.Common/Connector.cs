@@ -559,7 +559,7 @@
 
                         foreach (var namingAttribute in classMapping.NamingDetails.RequiredProperties)
                         {
-                            var attributeToAdd = pushAttributes.FirstOrDefault(x => x.Name.Equals(namingAttribute));
+                            var attributeToAdd = attributeKvp.Value.FirstOrDefault(x => x.Name.Equals(namingAttribute));
 
                             if (attributeToAdd != null)
                             {
