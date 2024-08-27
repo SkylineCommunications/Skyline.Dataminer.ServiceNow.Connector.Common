@@ -116,6 +116,14 @@
                                                 new ClassAttribute("u_nms_name", 17, false),
                                             }
                                         },
+                                        {
+                                            1700,
+                                            new List<ClassAttribute>
+                                            {
+                                                new ClassAttribute("fk", 6, false),
+                                                new ClassAttribute("u_redundancy_linecard", 8, true),
+                                            }
+                                        },
                                     },
                                 },
                                 new ClassMapping
@@ -170,15 +178,15 @@
                                                 new ClassAttribute("u_nms_name", 5, false),
                                             }
                                         },
-                                        {
-                                            1700,
-                                            new List<ClassAttribute>
-                                            {
-                                                new ClassAttribute("fk", 1, false),
-                                                new ClassAttribute("u_linecard", 4, false),
-                                                new ClassAttribute("u_redundancy_linecard", 8, false),
-                                            }
-                                        },
+                                        //{
+                                        //    1700,
+                                        //    new List<ClassAttribute>
+                                        //    {
+                                        //        new ClassAttribute("fk", 1, false),
+                                        //        new ClassAttribute("u_linecard", 4, false),
+                                        //        new ClassAttribute("u_redundancy_linecard", 8, false),
+                                        //    }
+                                        //},
                                     },
                                 },
                                 new ClassMapping
@@ -207,7 +215,7 @@
                                     TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>()),
-                                    //TODO: Add suport for naming based on External CIs
+                                    //TODO: Add support for naming based on External CIs
                                     //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_network_pp_name" }),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
@@ -600,7 +608,7 @@
         public List<Relationship> Relationships { get; set; }
 
         /// <summary>
-        /// ConnectorMapping class contructor.
+        /// ConnectorMapping class constructor.
         /// </summary>
         /// <param name="classMappings"></param>
         /// <param name="relationships"></param>
@@ -669,7 +677,7 @@
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="element"></param>
-        /// <returns>Dictionary containg a list of properties objects by unique id.</returns>
+        /// <returns>Dictionary containing a list of properties objects by unique id.</returns>
         public Dictionary<string, List<Property>> GetPropertiesByCiUniqueID(IEngine engine, Element element)
         {
             var propertiesByPK = new Dictionary<string, List<Property>>();
@@ -728,12 +736,12 @@
         }
 
         /// <summary>
-        /// Method used to retrieve a list of rows containg data related to CIs of a given Class.
+        /// Method used to retrieve a list of rows containing data related to CIs of a given Class.
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="element"></param>
         /// <param name="tablePid"></param>
-        /// <returns>Dictionary containg a list of properties objects by unique id.</returns>
+        /// <returns>Dictionary containing a list of properties objects by unique id.</returns>
         private static List<object[]> GetClassCiRows(IEngine engine, Element element, int tablePid)
         {
             try
@@ -1099,12 +1107,24 @@
         }
     }
 
+    /// <summary>
+    /// Class attribute details.
+    /// </summary>
     public class ClassAttribute
     {
+        /// <summary>
+        /// Class attribute name.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Column index where the attribute value can be found..
+        /// </summary>
         public int ColumnIdx { get; set; }
 
+        /// <summary>
+        /// Indicates if the attribute is monitored and the updated value sent by Push event.
+        /// </summary>
         public bool HasPushEvent { get; set; }
 
         /// <summary>
@@ -1121,8 +1141,14 @@
         }
     }
 
+    /// <summary>
+    /// Property details
+    /// </summary>
     public class Property
     {
+        /// <summary>
+        /// Possible values for the state property.
+        /// </summary>
         public enum State
         {
             Unknown = -99,
@@ -1132,10 +1158,19 @@
             Decomissioned,
         }
 
+        /// <summary>
+        /// Property name.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Class of the CI to which the property belongs.
+        /// </summary>
         public string Class { get; set; }
 
+        /// <summary>
+        /// Property value.
+        /// </summary>
         public string Value { get; set; }
 
         /// <summary>
@@ -1163,6 +1198,11 @@
             }
         }
 
+        /// <summary>
+        /// Method used to retrieve the status value depending on the value type provided.
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns>Proper status value.</returns>
         public static string GetInstanceStatus(string status)
         {
             if (String.IsNullOrWhiteSpace(status) || status.Equals("True"))
