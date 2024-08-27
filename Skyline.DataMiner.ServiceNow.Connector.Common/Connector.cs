@@ -694,11 +694,9 @@
 
             var propertiesByUniqueID = new Dictionary<string, List<Property>>();
 
-            string elementDmsID = element.DmaId + "/" + element.ElementId;
-
             foreach (var item in propertiesByPK)
             {
-                var uniqueID = GetCiRowUniqueID(engine, item.Key, item.Value, elementDmsID);
+                var uniqueID = GetCiRowUniqueID(engine, item.Key, item.Value, element.ElementName);
 
                 if (String.IsNullOrWhiteSpace(uniqueID))
                 {
