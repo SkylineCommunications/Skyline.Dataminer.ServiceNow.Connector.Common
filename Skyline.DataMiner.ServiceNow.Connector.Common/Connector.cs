@@ -1020,21 +1020,21 @@
                     {
                         var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
 
-                        return labelAttribute != null ? parentElementName + "_" + pk + "_" + labelAttribute.CurrentValue : String.Empty;
+                        return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "_" + pk + "_" + labelAttribute.CurrentValue : String.Empty;
                     }
 
                 case NamingFormat.Label:
                     {
                         var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
 
-                        return labelAttribute != null ? parentElementName + "_" + labelAttribute.CurrentValue : String.Empty;
+                        return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "_" + labelAttribute.CurrentValue : String.Empty;
                     }
 
                 case NamingFormat.Label_Name:
                     {
                         var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
 
-                        return labelAttribute != null ? parentElementName + "_" + labelAttribute.CurrentValue + "_" + pk : String.Empty;
+                        return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "_" + labelAttribute.CurrentValue + "_" + pk : String.Empty;
                     }
 
                 case NamingFormat.Custom:
@@ -1062,7 +1062,8 @@
 
             var customerIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_customer_id"));
 
-            return labelProperty != null && customerIdProperty != null ? customerIdProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
+            return labelProperty != null && customerIdProperty != null && !String.IsNullOrWhiteSpace(customerIdProperty.Value) && !String.IsNullOrWhiteSpace(labelProperty.Value)
+                ? customerIdProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
         }
 
         /// <summary>
@@ -1078,7 +1079,8 @@
 
             var serialNumberProperty = properties.FirstOrDefault(x => x.Name.Equals("u_serial_number"));
 
-            return labelProperty != null && serialNumberProperty != null ? serialNumberProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
+            return labelProperty != null && serialNumberProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(serialNumberProperty.Value)
+                ? serialNumberProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
         }
 
         /// <summary>
@@ -1094,12 +1096,12 @@
 
             string uniqueID = "ppstack " + pk.Split('_').First();
 
-            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+            //var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-            if (labelProperty != null)
-            {
-                labelProperty.Value = uniqueID;
-            }
+            //if (labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value))
+            //{
+            //    labelProperty.Value = uniqueID;
+            //}
 
             return uniqueID;
         }
