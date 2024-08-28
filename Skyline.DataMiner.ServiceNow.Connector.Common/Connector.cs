@@ -94,7 +94,7 @@
                                     Class = "Evolution Linecard",
                                     TargetTable = "u_cmdb_ci_modem_evolution_linecard",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -343,15 +343,15 @@
                             new List<Relationship>
                             {
                                 // TODO: Add class relationships here
-                                new Relationship("Evolution Remote", "Evolution NMS", "u_nms_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Evolution Linecard", "Evolution NMS", "u_nms_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Evolution Network", "Evolution NMS", "u_nms_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Evolution Inroute Group", "Evolution Remote", "u_inroute_group", String.Empty, String.Empty, String.Empty,  String.Empty, "Connected by::Connects", true),
-                                new Relationship("Evolution Network", "Evolution Remote", "u_network_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Receives data from::Sends data to", true),
-                                new Relationship("Evolution Network", "Evolution Linecard", "u_network_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
-                                new Relationship("Evolution Linecard", "Evolution Chassis", "u_chassis_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Located in::Houses", false),
-                                new Relationship("Evolution Network", "Evolution Protocol Processor", "u_network_pp_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
-                                new Relationship("Evolution Linecard", "Evolution Linecard", "u_redundancy_linecard", String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", false),
+                                new Relationship("Evolution Remote", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
+                                new Relationship("Evolution Linecard", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
+                                new Relationship("Evolution Network", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
+                                new Relationship("Evolution Inroute Group", "Evolution Remote", new List<string> { "u_inroute_group" }, String.Empty, String.Empty, String.Empty,  String.Empty, "Connected by::Connects", true),
+                                new Relationship("Evolution Network", "Evolution Remote", new List<string> { "u_network_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Receives data from::Sends data to", true),
+                                new Relationship("Evolution Network", "Evolution Linecard", new List<string> { "u_network_id" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
+                                new Relationship("Evolution Linecard", "Evolution Chassis", new List<string> { "u_chassis_id", "u_chassis_slot_number" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Located in::Houses", false),
+                                new Relationship("Evolution Network", "Evolution Protocol Processor", new List<string> { "u_network_pp_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
+                                new Relationship("Evolution Linecard", "Evolution Linecard", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", false),
                                 // TODO: External CI Relationship Example:
                                 //new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
                             })
@@ -515,9 +515,9 @@
                             new List<Relationship>
                             {
                                 // TODO: Add class relationships here
-                                new Relationship("Dialog Remote", "Dialog NMS", "u_nms_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Dialog Satellite Network", "Dialog NMS", "u_nms_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Dialog Satellite Network", "Dialog Remote", "u_active_beam", String.Empty, String.Empty, String.Empty, String.Empty,  "Receives data from::Sends data to", true),
+                                new Relationship("Dialog Remote", "Dialog NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
+                                new Relationship("Dialog Satellite Network", "Dialog NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
+                                new Relationship("Dialog Satellite Network", "Dialog Remote", new List<string> { "u_active_beam" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Receives data from::Sends data to", true),
                             })
                     },
                 };
@@ -1267,9 +1267,9 @@
         public string ChildClass { get; set; }
 
         /// <summary>
-        /// Name of the internal property used to build the relationship.
+        /// Name of the internal properties used to build the relationship.
         /// </summary>
-        public string InternalProperty { get; set; }
+        public List<string> InternalProperties { get; set; }
 
         /// <summary>
         /// Describes the external property requirements necessary to build a given relationship.
@@ -1291,19 +1291,19 @@
         /// </summary>
         /// <param name="childClass"></param>
         /// <param name="parentClass"></param>
-        /// <param name="internalProperty"></param>
+        /// <param name="internalProperties"></param>
         /// <param name="childExternalProperty"></param>
         /// <param name="parentExternalProperty"></param>
         /// <param name="childExternalClass"></param>
         /// <param name="parentExternalClass"></param>
         /// <param name="type"></param>
         /// <param name="isMappedFromParent"></param>
-        public Relationship(string childClass, string parentClass, string internalProperty, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass, string type, bool isMappedFromParent)
+        public Relationship(string childClass, string parentClass, List<string> internalProperties, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass, string type, bool isMappedFromParent)
         {
             Name = childClass + "/" + type + "/" + parentClass;
             ParentClass = parentClass;
             ChildClass = childClass;
-            InternalProperty = internalProperty;
+            InternalProperties = internalProperties;
             ExternalPropertyLink = new ExternalPropertyLink(childExternalProperty, parentExternalProperty, childExternalClass, parentExternalClass);
             Type = type;
             IsMappedFromParent = isMappedFromParent;
