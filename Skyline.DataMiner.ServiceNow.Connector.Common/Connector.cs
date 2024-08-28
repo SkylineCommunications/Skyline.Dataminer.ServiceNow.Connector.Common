@@ -21,6 +21,7 @@
         {
             // TODO: Check which prefix better serves the purpose of protecting ID uniqueness (Element DMA ID might cause trouble if swarming is used in the future)
             // Naming format always includes parent element name to avoid duplicating unique IDs (for instance in case there are duplicate elements)
+            Unknown,
             Name,
             Name_Label,
             Label,
@@ -51,7 +52,7 @@
                                     Class = "Evolution NMS",
                                     TargetTable = "u_cmdb_ci_appl_nms_evolution",
                                     IsParent = true,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -63,7 +64,7 @@
                                     Class = "Evolution Remote",
                                     TargetTable = "u_cmdb_ci_modem_evolution_remote",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_customer_id" }),
+                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_customer_id" }, new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -81,7 +82,7 @@
                                                 new ClassAttribute("u_customer_id", 13, false),
                                                 new ClassAttribute("u_active_sw_version", 14, false),
                                                 new ClassAttribute("u_hw_type", 15, false),
-                                                new ClassAttribute("u_protocol_processor", 16, false),
+                                                new ClassAttribute("u_pp_id", 16, false),
                                                 new ClassAttribute("serial_number", 17, false),
                                                 new ClassAttribute("u_nms_name", 18, false),
                                             }
@@ -93,7 +94,7 @@
                                     Class = "Evolution Linecard",
                                     TargetTable = "u_cmdb_ci_modem_evolution_linecard",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -108,7 +109,7 @@
                                                 new ClassAttribute("u_customer_id", 9, false),
                                                 new ClassAttribute("u_active_sw_version", 10, false ),
                                                 new ClassAttribute("u_hw_type", 11, false),
-                                                new ClassAttribute("u_protocol_processor", 12, false),
+                                                new ClassAttribute("u_pp_id", 12, false),
                                                 new ClassAttribute("serial_number", 13, false),
                                                 new ClassAttribute("u_chassis_id", 14, false),
                                                 new ClassAttribute("u_chassis_slot_number", 15, false),
@@ -131,7 +132,7 @@
                                     Class = "Evolution Network",
                                     TargetTable = "u_cmdb_ci_group_evolution_network",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -143,7 +144,7 @@
                                                 new ClassAttribute("u_label", 1, false),
                                                 new ClassAttribute("u_status", 3, true),
                                                 new ClassAttribute("u_teleport_id", 6, false),
-                                                new ClassAttribute("u_protocol_processor", 7, false),
+                                                new ClassAttribute("u_pp_id", 7, false),
                                                 new ClassAttribute("u_nms_name", 8, false),
                                             }
                                         },
@@ -162,7 +163,7 @@
                                     Class = "Evolution Chassis",
                                     TargetTable = "cmdb_ci_chassis",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "serial_number" }),
+                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "serial_number" }, new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -194,7 +195,7 @@
                                     Class = "Evolution Inroute Group",
                                     TargetTable = "u_cmdb_ci_evolution_inroute_group",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -214,9 +215,7 @@
                                     Class = "Evolution Protocol Processor",
                                     TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>()),
-                                    //TODO: Add support for naming based on External CIs
-                                    //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_network_pp_name" }),
+                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label" }, new ExternalPropertyLink("u_network_pp_name", "u_ppb_network_id", "Evolution Protocol Processor", "u_pp_id", "Evolution Network")),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -226,7 +225,7 @@
                                             {
                                                 new ClassAttribute("pk", 0, false),
                                                 new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_network_id", 2, false),
+                                                new ClassAttribute("u_ppb_network_id", 2, false),
                                             }
                                         },
                                     },
@@ -236,7 +235,7 @@
                                     Class = "Evolution Protocol Processor Blade",
                                     TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -246,7 +245,7 @@
                                             {
                                                 new ClassAttribute("pk", 0, false),
                                                 new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_network_id", 2, false),
+                                                new ClassAttribute("u_ppb_network_id", 2, false),
                                                 new ClassAttribute("u_tunnel_address", 3, false),
                                                 new ClassAttribute("u_tunnel_subnet", 4, false),
                                                 new ClassAttribute("u_upstream_address", 5, false),
@@ -260,7 +259,7 @@
                                 //    Class = "Evolution Teleport",
                                 //    TargetTable = "u_cmdb_ci_group_evolution_teleport",
                                 //    IsParent = false,
-                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                 //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                 //    {
                                 //        //  TODO: Add attributes here
@@ -279,7 +278,7 @@
                                 //    Class = "Evolution Application",
                                 //    TargetTable = "u_cmdb_ci_appl_evolution",
                                 //    IsParent = false,
-                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                 //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                 //    {
                                 //        //  TODO: Add attributes here
@@ -298,7 +297,7 @@
                                 //    Class = "Evolution Encapsulator",
                                 //    TargetTable = "u_cmdb_ci_appl_evolution_encapsulator",
                                 //    IsParent = false,
-                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                 //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                 //    {
                                 //        //  TODO: Add attributes here
@@ -317,7 +316,7 @@
                                 //    Class = "Evolution Processing Node",
                                 //    TargetTable = "u_cmdb_ci_appl_evolution_processing_node",
                                 //    IsParent = false,
-                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                 //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                 //    {
                                 //        //  TODO: Add attributes here
@@ -342,9 +341,10 @@
                                 new Relationship("Evolution Network", "Evolution Remote", "u_network_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Receives data from::Sends data to", true),
                                 new Relationship("Evolution Network", "Evolution Linecard", "u_network_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
                                 new Relationship("Evolution Linecard", "Evolution Chassis", "u_chassis_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Located in::Houses", false),
-                                new Relationship("Evolution Network", "Evolution Protocol Processor", "u_protocol_processor", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", false),
-                                //TODO: Change relationship mapping as following mapping requires data from different CI Class 
+                                new Relationship("Evolution Network", "Evolution Protocol Processor", "u_pp_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", false),
                                 new Relationship("Evolution Linecard", "Evolution Linecard", "u_redundancy_linecard", String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", false),
+                                //TODO: External CI Relationship Example:
+                                //new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
                             })
                     },
                     {
@@ -356,7 +356,7 @@
                                     Class = "Dialog NMS",
                                     TargetTable = "u_cmdb_ci_appl_nms_dialog",
                                     IsParent = true,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -367,7 +367,7 @@
                                     Class = "Dialog Remote",
                                     TargetTable = "u_cmdb_ci_modem_dialog_remote",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -408,7 +408,7 @@
                                     Class = "Dialog Satellite Network",
                                     TargetTable = "u_cmdb_ci_dialog_satellite_network",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -431,7 +431,7 @@
                                 //    Class = "Dialog Application",
                                 //    TargetTable = "u_cmdb_ci_dialog_application",
                                 //    IsParent = false,
-                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                 //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                 //    {
                                 //        //  TODO: Add attributes here
@@ -450,7 +450,7 @@
                                 //    Class = "Dialog Hub",
                                 //    TargetTable = "u_cmdb_ci_dialog_hub",
                                 //    IsParent = false,
-                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                 //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                 //    {
                                 //        //  TODO: Add attributes here
@@ -469,7 +469,7 @@
                                 //    Class = "Dialog Modulator",
                                 //    TargetTable = "u_cmdb_ci_dialog_modulator",
                                 //    IsParent = false,
-                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                 //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                 //    {
                                 //        //  TODO: Add attributes here
@@ -488,7 +488,7 @@
                                 //    Class = "Dialog Demodulator",
                                 //    TargetTable = "u_cmdb_ci_dialog_demodulator",
                                 //    IsParent = false,
-                                //    NamingFormat = NamingFormat.Name_Label,
+                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
                                 //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                 //    {
                                 //        //  TODO: Add attributes here
@@ -1261,9 +1261,9 @@
         public string ChildClass { get; set; }
 
         /// <summary>
-        /// Describes the property requirements necessary to build a given relationship.
+        /// Describes the external property requirements necessary to build a given relationship.
         /// </summary>
-        public PropertyLink PropertyLink { get; set; }
+        public ExternalPropertyLink ExternalPropertyLink { get; set; }
 
         /// <summary>
         /// Relationship type/description.
@@ -1292,16 +1292,16 @@
             Name = childClass + "/" + type + "/" + parentClass;
             ParentClass = parentClass;
             ChildClass = childClass;
-            PropertyLink = new PropertyLink(linkProperty, childExternalProperty, parentExternalProperty, childExternalClass, parentExternalClass);
+            ExternalPropertyLink = new ExternalPropertyLink(linkProperty, childExternalProperty, parentExternalProperty, childExternalClass, parentExternalClass);
             Type = type;
             IsMappedFromParent = isMappedFromParent;
         }
     }
 
     /// <summary>
-    /// Describes how a given property is used to link CIs that have a certain relationship.
+    /// Describes how a given property is used to link property values between CIs.
     /// </summary>
-    public class PropertyLink
+    public class ExternalPropertyLink
     {
         /// <summary>
         /// Property name.
@@ -1309,28 +1309,38 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Contains the details of a property that belongs to an external child CI, but needs to be used to build a given relationship.
+        /// Contains the details of a property that belongs to an external child CI, but is needed to make a certain data connection.
         /// </summary>
-        public Property ChildExternalProperty { get; set; }
+        public Property ChildProperty { get; set; }
 
         /// <summary>
-        /// Contains the details of a property that belongs to an external parent CI, but needs to be used to build a given relationship.
+        /// Contains the details of a property that belongs to an external parent CI, but is needed to make a certain data connection.
         /// </summary>
-        public Property ParentExternalProperty { get; set; }
+        public Property ParentProperty { get; set; }
 
         /// <summary>
-        /// PropertyLink class constructor.
+        /// ExternalPropertyLink default class constructor.
+        /// </summary>
+        public ExternalPropertyLink()
+        {
+            Name = String.Empty;
+            ChildProperty = new Property(String.Empty, String.Empty, String.Empty);
+            ParentProperty = new Property(String.Empty, String.Empty, String.Empty);
+        }
+
+        /// <summary>
+        /// ExternalPropertyLink class constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="childExternalProperty"></param>
         /// <param name="parentExternalProperty"></param>
         /// <param name="childExternalClass"></param>
         /// <param name="parentExternalClass"></param>
-        public PropertyLink(string name, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass)
+        public ExternalPropertyLink(string name, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass)
         {
             Name = name;
-            ChildExternalProperty = new Property(childExternalProperty, childExternalClass, String.Empty);
-            ParentExternalProperty = new Property(parentExternalProperty, parentExternalClass, String.Empty);
+            ChildProperty = new Property(childExternalProperty, childExternalClass, String.Empty);
+            ParentProperty = new Property(parentExternalProperty, parentExternalClass, String.Empty);
         }
     }
 
@@ -1440,14 +1450,31 @@
         public List<string> RequiredProperties { get; set; }
 
         /// <summary>
+        /// Describes the external property requirements necessary to build a certain unique ID.
+        /// </summary>
+        public ExternalPropertyLink ExternalPropertyLink { get; set; }
+
+        /// <summary>
+        /// NamingDetails default class constructor.
+        /// </summary>
+        public NamingDetails()
+        {
+            Format = NamingFormat.Unknown;
+            RequiredProperties = new List<string>();
+            ExternalPropertyLink = new ExternalPropertyLink();
+        }
+
+        /// <summary>
         /// NamingDetails class constructor.
         /// </summary>
         /// <param name="format"></param>
         /// <param name="requiredProperties"></param>
-        public NamingDetails(NamingFormat format, List<string> requiredProperties)
+        /// <param name="externalPropertyLink"></param>
+        public NamingDetails(NamingFormat format, List<string> requiredProperties, ExternalPropertyLink externalPropertyLink)
         {
             Format = format;
             RequiredProperties = requiredProperties;
+            ExternalPropertyLink = externalPropertyLink;
         }
     }
 }
