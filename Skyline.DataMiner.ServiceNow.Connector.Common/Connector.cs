@@ -215,7 +215,7 @@
                                     Class = "Evolution Protocol Processor",
                                     TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label" }, new ExternalPropertyLink("u_network_pp_name", "u_ppb_network_id", "Evolution Protocol Processor", "u_pp_id", "Evolution Network")),
+                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_ppb_network_id" }, new ExternalPropertyLink("u_network_pp_name", "Evolution Network", "u_pp_id", "Evolution Network")),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -1261,6 +1261,11 @@
         public string ChildClass { get; set; }
 
         /// <summary>
+        /// Name of the internal property used to build the relationship.
+        /// </summary>
+        public string InternalProperty { get; set; }
+
+        /// <summary>
         /// Describes the external property requirements necessary to build a given relationship.
         /// </summary>
         public ExternalPropertyLink ExternalPropertyLink { get; set; }
@@ -1280,19 +1285,20 @@
         /// </summary>
         /// <param name="childClass"></param>
         /// <param name="parentClass"></param>
-        /// <param name="linkProperty"></param>
+        /// <param name="internalProperty"></param>
         /// <param name="childExternalProperty"></param>
         /// <param name="parentExternalProperty"></param>
         /// <param name="childExternalClass"></param>
         /// <param name="parentExternalClass"></param>
         /// <param name="type"></param>
         /// <param name="isMappedFromParent"></param>
-        public Relationship(string childClass, string parentClass, string linkProperty, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass, string type, bool isMappedFromParent)
+        public Relationship(string childClass, string parentClass, string internalProperty, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass, string type, bool isMappedFromParent)
         {
             Name = childClass + "/" + type + "/" + parentClass;
             ParentClass = parentClass;
             ChildClass = childClass;
-            ExternalPropertyLink = new ExternalPropertyLink(linkProperty, childExternalProperty, parentExternalProperty, childExternalClass, parentExternalClass);
+            InternalProperty = internalProperty;
+            ExternalPropertyLink = new ExternalPropertyLink(childExternalProperty, parentExternalProperty, childExternalClass, parentExternalClass);
             Type = type;
             IsMappedFromParent = isMappedFromParent;
         }
@@ -1303,11 +1309,6 @@
     /// </summary>
     public class ExternalPropertyLink
     {
-        /// <summary>
-        /// Property name.
-        /// </summary>
-        public string Name { get; set; }
-
         /// <summary>
         /// Contains the details of a property that belongs to an external child CI, but is needed to make a certain data connection.
         /// </summary>
@@ -1323,7 +1324,6 @@
         /// </summary>
         public ExternalPropertyLink()
         {
-            Name = String.Empty;
             ChildProperty = new Property(String.Empty, String.Empty, String.Empty);
             ParentProperty = new Property(String.Empty, String.Empty, String.Empty);
         }
@@ -1331,14 +1331,12 @@
         /// <summary>
         /// ExternalPropertyLink class constructor.
         /// </summary>
-        /// <param name="name"></param>
         /// <param name="childExternalProperty"></param>
         /// <param name="parentExternalProperty"></param>
         /// <param name="childExternalClass"></param>
         /// <param name="parentExternalClass"></param>
-        public ExternalPropertyLink(string name, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass)
+        public ExternalPropertyLink(string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass)
         {
-            Name = name;
             ChildProperty = new Property(childExternalProperty, childExternalClass, String.Empty);
             ParentProperty = new Property(parentExternalProperty, parentExternalClass, String.Empty);
         }
