@@ -350,7 +350,7 @@
                                 new Relationship("Evolution Network", "Evolution Remote", "u_network_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Receives data from::Sends data to", true),
                                 new Relationship("Evolution Network", "Evolution Linecard", "u_network_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
                                 new Relationship("Evolution Linecard", "Evolution Chassis", "u_chassis_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Located in::Houses", false),
-                                new Relationship("Evolution Network", "Evolution Protocol Processor", "u_pp_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", false),
+                                new Relationship("Evolution Network", "Evolution Protocol Processor", "u_network_pp_name", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
                                 new Relationship("Evolution Linecard", "Evolution Linecard", "u_redundancy_linecard", String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", false),
                                 //TODO: External CI Relationship Example:
                                 //new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
