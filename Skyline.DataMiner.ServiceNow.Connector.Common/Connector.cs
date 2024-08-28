@@ -215,19 +215,28 @@
                                     Class = "Evolution Protocol Processor",
                                     TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_ppb_network_id" }, new ExternalPropertyLink("u_network_pp_name", "Evolution Network", "u_pp_id", "Evolution Network")),
+                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
+                                    //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_ppb_network_id" }, new ExternalPropertyLink("u_network_pp_name", "Evolution Network", "u_pp_id", "Evolution Network")),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
                                         {
-                                            6300,
+                                            6000,
                                             new List<ClassAttribute>
                                             {
                                                 new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_ppb_network_id", 2, false),
+                                                new ClassAttribute("u_label", 30, false),
                                             }
                                         },
+                                        //{
+                                        //    6300,
+                                        //    new List<ClassAttribute>
+                                        //    {
+                                        //        new ClassAttribute("pk", 0, false),
+                                        //        new ClassAttribute("u_label", 1, false),
+                                        //        new ClassAttribute("u_ppb_network_id", 2, false),
+                                        //    }
+                                        //},
                                     },
                                 },
                                 new ClassMapping
@@ -624,6 +633,8 @@
     /// </summary>
     public class ClassMapping
     {
+        // TODO: Add support for CI discovery using External CI property values
+
         private Dictionary<string, Func<Engine, List<Property>, string, string>> ciUniqueIdFunctionMapper;
 
         public Dictionary<string, Func<Engine, List<Property>, string, string>> CiUniqueIdFunctionMapper
@@ -640,7 +651,6 @@
                     //  TODO: Add methods used to build CIs using custom methods
                     { "Evolution Remote", GetEvolutionRemoteUniqueID },
                     { "Evolution Chassis", GetEvolutionChassisUniqueID },
-                    { "Evolution Protocol Processor", GetEvolutionProtocolProcessorUniqueID },
                 };
 
                 return ciUniqueIdFunctionMapper;
@@ -696,6 +706,8 @@
 
             foreach (var item in propertiesByPK)
             {
+                // TODO: Add support for CI discovery using External CI property values
+
                 var uniqueID = GetCiRowUniqueID(engine, item.Key, item.Value, element.ElementName);
 
                 if (String.IsNullOrWhiteSpace(uniqueID))
@@ -1083,28 +1095,22 @@
                 ? serialNumberProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
         }
 
-        /// <summary>
-        /// Method used to retrieve the unique ID of a given Evolution Protocol Processor instance.
-        /// </summary>
-        /// <param name="engine"></param>
-        /// <param name="properties"></param>
-        /// <param name="pk"></param>
-        /// <returns>Remote instance unique ID.</returns>
-        public static string GetEvolutionProtocolProcessorUniqueID(Engine engine, List<Property> properties, string pk)
-        {
-            //TODO: Change the method to use the configured PP Name
+        ///// <summary>
+        ///// Method used to retrieve the unique ID of a given Evolution Protocol Processor instance.
+        ///// </summary>
+        ///// <param name="engine"></param>
+        ///// <param name="properties"></param>
+        ///// <param name="pk"></param>
+        ///// <returns>Remote instance unique ID.</returns>
+        //public static string GetEvolutionProtocolProcessorUniqueID(Engine engine, List<Property> properties, string pk)
+        //{
+        //    var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-            string uniqueID = "ppstack " + pk.Split('_').First();
+        //    var networkProtocolProcessorProperty = properties.FirstOrDefault(x => x.Name.Equals("u_network_pp_name"));
 
-            //var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-            //if (labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value))
-            //{
-            //    labelProperty.Value = uniqueID;
-            //}
-
-            return uniqueID;
-        }
+        //    return labelProperty != null && networkProtocolProcessorProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(networkProtocolProcessorProperty.Value)
+        //        ? networkProtocolProcessorProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
+        //}
     }
 
     /// <summary>
