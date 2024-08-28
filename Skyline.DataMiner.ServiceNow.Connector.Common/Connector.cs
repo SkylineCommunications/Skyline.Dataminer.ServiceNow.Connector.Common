@@ -162,7 +162,7 @@
                                     Class = "Evolution Chassis",
                                     TargetTable = "cmdb_ci_chassis",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_serial_number" }),
+                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "serial_number" }),
                                     AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
                                     {
                                         //  TODO: Add attributes here
@@ -172,7 +172,7 @@
                                             {
                                                 new ClassAttribute("pk", 0, false),
                                                 new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_serial_number", 2, false),
+                                                new ClassAttribute("serial_number", 2, false),
                                                 new ClassAttribute("u_status", 3, true),
                                                 new ClassAttribute("u_nms_ip", 4, false),
                                                 new ClassAttribute("u_nms_name", 5, false),
@@ -344,7 +344,7 @@
                                 new Relationship("Evolution Linecard", "Evolution Chassis", "u_chassis_id", String.Empty, String.Empty, String.Empty, String.Empty,  "Located in::Houses", false),
                                 new Relationship("Evolution Network", "Evolution Protocol Processor", "u_protocol_processor", String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", false),
                                 //TODO: Change relationship mapping as following mapping requires data from different CI Class 
-                                new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
+                                new Relationship("Evolution Linecard", "Evolution Linecard", "u_redundancy_linecard", String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", false),
                             })
                     },
                     {
@@ -1077,7 +1077,7 @@
         {
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-            var serialNumberProperty = properties.FirstOrDefault(x => x.Name.Equals("u_serial_number"));
+            var serialNumberProperty = properties.FirstOrDefault(x => x.Name.Equals("serial_number"));
 
             return labelProperty != null && serialNumberProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(serialNumberProperty.Value)
                 ? serialNumberProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
