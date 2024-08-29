@@ -850,40 +850,47 @@
 
         private string GetCiRowUniqueID(IEngine engine, string pk, List<Property> properties, string parentElementName)
         {
+            if (String.IsNullOrWhiteSpace(parentElementName))
+            {
+                engine.GenerateInformation("GetCiRowUniqueID| Empty parent element name.");
+                return String.Empty;
+            }
+
             switch (NamingDetails.Format)
             {
                 case NamingFormat.Name:
                     {
-                        return parentElementName + "_" + pk;
+                        return !String.IsNullOrWhiteSpace(pk) ? parentElementName + "." + pk : String.Empty;
                     }
 
                 case NamingFormat.Name_Label:
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-                        return labelProperty != null ? parentElementName + "_" + pk + "_" + labelProperty.Value : String.Empty;
+                        return labelProperty != null ? parentElementName + "." + pk + "." + labelProperty.Value : String.Empty;
                     }
 
                 case NamingFormat.Label:
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-                        return labelProperty != null ? parentElementName + "_" + labelProperty.Value : String.Empty;
+                        return labelProperty != null ? parentElementName + "." + labelProperty.Value : String.Empty;
                     }
 
                 case NamingFormat.Label_Name:
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-                        return labelProperty != null ? parentElementName + "_" + labelProperty.Value + "_" + pk : String.Empty;
+                        return labelProperty != null ? parentElementName + "." + labelProperty.Value + "." + pk : String.Empty;
                     }
 
                 case NamingFormat.Custom:
                     {
-                        return parentElementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
+                        return parentElementName + "." + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
                     }
 
                 default:
+                    engine.GenerateInformation("GetCiRowUniqueID| Unsupported naming format.");
                     return String.Empty;
             }
         }
@@ -1012,32 +1019,38 @@
         /// <returns>Instance unique ID.</returns>
         public string GetInstanceUniqueID(IEngine engine, string parentElementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
         {
+            if (String.IsNullOrWhiteSpace(parentElementName))
+            {
+                engine.GenerateInformation("GetInstanceUniqueID| Empty parent element name.");
+                return String.Empty;
+            }
+
             switch (classNamingFormat)
             {
                 case NamingFormat.Name:
                     {
-                        return parentElementName + "_" + pk;
+                        return !String.IsNullOrWhiteSpace(pk) ? parentElementName + "." + pk : String.Empty;
                     }
 
                 case NamingFormat.Name_Label:
                     {
                         var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
 
-                        return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "_" + pk + "_" + labelAttribute.CurrentValue : String.Empty;
+                        return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "." + pk + "." + labelAttribute.CurrentValue : String.Empty;
                     }
 
                 case NamingFormat.Label:
                     {
                         var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
 
-                        return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "_" + labelAttribute.CurrentValue : String.Empty;
+                        return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "." + labelAttribute.CurrentValue : String.Empty;
                     }
 
                 case NamingFormat.Label_Name:
                     {
                         var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
 
-                        return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "_" + labelAttribute.CurrentValue + "_" + pk : String.Empty;
+                        return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "." + labelAttribute.CurrentValue + "." + pk : String.Empty;
                     }
 
                 case NamingFormat.Custom:
@@ -1048,6 +1061,7 @@
                     }
 
                 default:
+                    engine.GenerateInformation("GetInstanceUniqueID| Unsupported naming format.");
                     return String.Empty;
             }
         }
@@ -1066,7 +1080,7 @@
             var customerIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_customer_id"));
 
             return labelProperty != null && customerIdProperty != null && !String.IsNullOrWhiteSpace(customerIdProperty.Value) && !String.IsNullOrWhiteSpace(labelProperty.Value)
-                ? customerIdProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
+                ? customerIdProperty.Value + "." + pk + "." + labelProperty.Value : String.Empty;
         }
 
         /// <summary>
@@ -1083,7 +1097,7 @@
             var serialNumberProperty = properties.FirstOrDefault(x => x.Name.Equals("serial_number"));
 
             return labelProperty != null && serialNumberProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(serialNumberProperty.Value)
-                ? serialNumberProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
+                ? serialNumberProperty.Value + "." + pk + "." + labelProperty.Value : String.Empty;
         }
 
         ///// <summary>
@@ -1100,7 +1114,7 @@
         //    var networkProtocolProcessorProperty = properties.FirstOrDefault(x => x.Name.Equals("u_network_pp_name"));
 
         //    return labelProperty != null && networkProtocolProcessorProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(networkProtocolProcessorProperty.Value)
-        //        ? networkProtocolProcessorProperty.Value + "_" + pk + "_" + labelProperty.Value : String.Empty;
+        //        ? networkProtocolProcessorProperty.Value + "." + pk + "." + labelProperty.Value : String.Empty;
         //}
     }
 
