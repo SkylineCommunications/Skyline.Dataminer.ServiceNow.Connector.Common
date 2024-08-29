@@ -22,10 +22,10 @@
             // TODO: Check which prefix better serves the purpose of protecting ID uniqueness (Element DMA ID might cause trouble if swarming is used in the future)
             // Naming format always includes parent element name to avoid duplicating unique IDs (for instance in case there are duplicate elements)
             Unknown,
-            Name,
-            Name_Label,
+            PrimaryKey,
+            PrimaryKey_Label,
             Label,
-            Label_Name,
+            Label_PrimaryKey,
             Custom,
         }
 
@@ -52,7 +52,7 @@
                                     Class = "Evolution NMS",
                                     TargetTable = "u_cmdb_ci_appl_nms_evolution",
                                     IsParent = true,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
@@ -64,7 +64,7 @@
                                     Class = "Evolution Remote",
                                     TargetTable = "u_cmdb_ci_modem_evolution_remote",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_customer_id" }, new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { }, new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
@@ -132,7 +132,7 @@
                                     Class = "Evolution Network",
                                     TargetTable = "u_cmdb_ci_group_evolution_network",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
@@ -186,7 +186,7 @@
                                     Class = "Evolution Inroute Group",
                                     TargetTable = "u_cmdb_ci_evolution_inroute_group",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
@@ -206,7 +206,7 @@
                                     Class = "Evolution Protocol Processor",
                                     TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
                                     //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_ppb_network_id" }, new ExternalPropertyLink("u_network_pp_name", "Evolution Network", "u_pp_id", "Evolution Network")),
                                     AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
@@ -235,7 +235,7 @@
                                     Class = "Evolution Protocol Processor Blade",
                                     TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
@@ -356,7 +356,7 @@
                                     Class = "Dialog NMS",
                                     TargetTable = "u_cmdb_ci_appl_nms_dialog",
                                     IsParent = true,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
@@ -408,7 +408,7 @@
                                     Class = "Dialog Satellite Network",
                                     TargetTable = "u_cmdb_ci_dialog_satellite_network",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
@@ -640,7 +640,6 @@
                 ciUniqueIdFunctionMapper = new Dictionary<string, Func<Engine, List<Property>, string, string>>
                 {
                     //  TODO: Add methods used to build CIs using custom methods
-                    { "Evolution Remote", GetEvolutionRemoteUniqueID },
                     { "Evolution Chassis", GetEvolutionChassisUniqueID },
                 };
 
@@ -858,12 +857,12 @@
 
             switch (NamingDetails.Format)
             {
-                case NamingFormat.Name:
+                case NamingFormat.PrimaryKey:
                     {
                         return !String.IsNullOrWhiteSpace(pk) ? parentElementName + "." + pk : String.Empty;
                     }
 
-                case NamingFormat.Name_Label:
+                case NamingFormat.PrimaryKey_Label:
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
@@ -877,7 +876,7 @@
                         return labelProperty != null ? parentElementName + "." + labelProperty.Value : String.Empty;
                     }
 
-                case NamingFormat.Label_Name:
+                case NamingFormat.Label_PrimaryKey:
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
@@ -1027,12 +1026,12 @@
 
             switch (classNamingFormat)
             {
-                case NamingFormat.Name:
+                case NamingFormat.PrimaryKey:
                     {
                         return !String.IsNullOrWhiteSpace(pk) ? parentElementName + "." + pk : String.Empty;
                     }
 
-                case NamingFormat.Name_Label:
+                case NamingFormat.PrimaryKey_Label:
                     {
                         var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
 
@@ -1046,7 +1045,7 @@
                         return labelAttribute != null && !String.IsNullOrWhiteSpace(labelAttribute.CurrentValue) ? parentElementName + "." + labelAttribute.CurrentValue : String.Empty;
                     }
 
-                case NamingFormat.Label_Name:
+                case NamingFormat.Label_PrimaryKey:
                     {
                         var labelAttribute = parameterDetails.FirstOrDefault(x => x.AttributeName.Equals("u_label"));
 
@@ -1067,23 +1066,6 @@
         }
 
         /// <summary>
-        /// Method used to retrieve the unique ID of a given Evolution Remote instance.
-        /// </summary>
-        /// <param name="engine"></param>
-        /// <param name="properties"></param>
-        /// <param name="pk"></param>
-        /// <returns>Remote instance unique ID.</returns>
-        public static string GetEvolutionRemoteUniqueID(Engine engine, List<Property> properties, string pk)
-        {
-            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-            var customerIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_customer_id"));
-
-            return labelProperty != null && customerIdProperty != null && !String.IsNullOrWhiteSpace(customerIdProperty.Value) && !String.IsNullOrWhiteSpace(labelProperty.Value)
-                ? customerIdProperty.Value + "." + pk + "." + labelProperty.Value : String.Empty;
-        }
-
-        /// <summary>
         /// Method used to retrieve the unique ID of a given Evolution Chassis instance.
         /// </summary>
         /// <param name="engine"></param>
@@ -1097,7 +1079,7 @@
             var serialNumberProperty = properties.FirstOrDefault(x => x.Name.Equals("serial_number"));
 
             return labelProperty != null && serialNumberProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(serialNumberProperty.Value)
-                ? serialNumberProperty.Value + "." + pk + "." + labelProperty.Value : String.Empty;
+                ? serialNumberProperty.Value + "." + labelProperty.Value : String.Empty;
         }
 
         ///// <summary>
