@@ -577,7 +577,7 @@
                         }
 
                         var parameterDetails = pushAttributes
-                            .Select(attribute => new ParameterDetails(attribute.Name, classMapping.Class, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx), attribute.HasPushEvent));
+                            .Select(attribute => new ParameterDetails(attribute.Name, classMapping.Class, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx), attribute.HasPushEvent, attribute.IsClassAttribute));
 
                         parameterUpdates.AddRange(parameterDetails);
                     }
@@ -917,7 +917,7 @@
 
                     if (searchedParameter == null)
                     {
-                        searchedParameter = new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.ParameterIdxByPid, parameter.IsMonitored);
+                        searchedParameter = new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.ParameterIdxByPid, parameter.IsMonitored, parameter.IsClassAttribute);
 
                         parameterValuesByPK[rowKvp.Key].Add(searchedParameter);
                     }
@@ -982,13 +982,13 @@
                         if (parameterUpdates.ContainsKey(parameterDetailsKvp.Key))
                         {
                             parameterUpdates[parameterDetailsKvp.Key]
-                                .Add(new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue, parameter.IsMonitored));
+                                .Add(new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue, parameter.IsMonitored, parameter.IsClassAttribute));
                         }
                         else
                         {
                             parameterUpdates.Add(parameterDetailsKvp.Key, new List<ParameterDetails>
                             {
-                                new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue, parameter.IsMonitored),
+                                new ParameterDetails(parameter.AttributeName, parameter.Class, parameter.CurrentValue, parameter.IsMonitored, parameter.IsClassAttribute),
                             });
                         }
                     }
@@ -1396,6 +1396,11 @@
         public bool IsMonitored { get; set; }
 
         /// <summary>
+        /// Indicates if a certain attribute is ServiceNow class attribute.
+        /// </summary>
+        public bool IsClassAttribute { get; set; }
+
+        /// <summary>
         /// ParameterDetails class constructor.
         /// </summary>
         /// <param name="attributeName"></param>
@@ -1404,8 +1409,9 @@
         /// <param name="currentValue"></param>
         /// <param name="previousValue"></param>
         /// <param name="isMonitored"></param>
+        /// <param name="isClassAttribute"></param>
         [JsonConstructor]
-        public ParameterDetails(string attributeName, string className, KeyValuePair<int, int> paramIdxByPid, string currentValue, string previousValue, bool isMonitored)
+        public ParameterDetails(string attributeName, string className, KeyValuePair<int, int> paramIdxByPid, string currentValue, string previousValue, bool isMonitored, bool isClassAttribute)
         {
             AttributeName = attributeName;
             Class = className;
@@ -1413,6 +1419,7 @@
             CurrentValue = currentValue;
             PreviousValue = previousValue;
             IsMonitored = isMonitored;
+            IsClassAttribute = isClassAttribute;
         }
 
         /// <summary>
@@ -1422,7 +1429,8 @@
         /// <param name="className"></param>
         /// <param name="paramIdxByPid"></param>
         /// <param name="isMonitored"></param>
-        public ParameterDetails(string attributeName, string className, KeyValuePair<int, int> paramIdxByPid, bool isMonitored)
+        /// <param name="isClassAttribute"></param>
+        public ParameterDetails(string attributeName, string className, KeyValuePair<int, int> paramIdxByPid, bool isMonitored, bool isClassAttribute)
         {
             AttributeName = attributeName;
             Class = className;
@@ -1430,6 +1438,7 @@
             CurrentValue = String.Empty;
             PreviousValue = String.Empty;
             IsMonitored = isMonitored;
+            IsClassAttribute = isClassAttribute;
         }
 
         /// <summary>
@@ -1439,7 +1448,8 @@
         /// <param name="className"></param>
         /// <param name="currentValue"></param>
         /// <param name="isMonitored"></param>
-        public ParameterDetails(string attributeName, string className, string currentValue, bool isMonitored)
+        /// <param name="isClassAttribute"></param>
+        public ParameterDetails(string attributeName, string className, string currentValue, bool isMonitored, bool isClassAttribute)
         {
             AttributeName = attributeName;
             Class = className;
@@ -1447,6 +1457,7 @@
             CurrentValue = currentValue;
             PreviousValue = String.Empty;
             IsMonitored = isMonitored;
+            IsClassAttribute = isClassAttribute;
         }
     }
 
