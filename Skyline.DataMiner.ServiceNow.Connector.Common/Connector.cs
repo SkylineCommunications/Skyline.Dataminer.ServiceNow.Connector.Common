@@ -53,7 +53,7 @@
                                     TargetTable = "u_cmdb_ci_appl_nms_evolution",
                                     IsParent = true,
                                     NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         //  ...
@@ -65,26 +65,26 @@
                                     TargetTable = "u_cmdb_ci_modem_evolution_remote",
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_customer_id" }, new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         {
                                             300,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_status", 6, true),
-                                                new ClassAttribute("u_network_id", 9, false),
-                                                new ClassAttribute("u_network_name", 10, true),
-                                                new ClassAttribute("u_inroute_group_id", 11, false),
-                                                new ClassAttribute("u_inroute_group", 12, false),
-                                                new ClassAttribute("u_customer_id", 13, false),
-                                                new ClassAttribute("u_active_sw_version", 14, false),
-                                                new ClassAttribute("u_hw_type", 15, false),
-                                                new ClassAttribute("u_pp_id", 16, false),
-                                                new ClassAttribute("serial_number", 17, false),
-                                                new ClassAttribute("u_nms_name", 18, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 1, false, false),
+                                                new ClassProperty("u_status", 6, true, false),
+                                                new ClassProperty("u_network_id", 9, false, false),
+                                                new ClassProperty("u_network_name", 10, true, false),
+                                                new ClassProperty("u_inroute_group_id", 11, false, false),
+                                                new ClassProperty("u_inroute_group", 12, false, false),
+                                                new ClassProperty("u_customer_id", 13, false, false),
+                                                new ClassProperty("u_active_sw_version", 14, false, false),
+                                                new ClassProperty("u_hw_type", 15, false, false),
+                                                new ClassProperty("u_pp_id", 16, false, false),
+                                                new ClassProperty("serial_number", 17, false, true),
+                                                new ClassProperty("u_nms_name", 18, false, false),
                                             }
                                         },
                                     },
@@ -95,34 +95,34 @@
                                     TargetTable = "u_cmdb_ci_modem_evolution_linecard",
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         {
                                             400,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_status", 4, true),
-                                                new ClassAttribute("u_inroute_group", 8, false),
-                                                new ClassAttribute("u_customer_id", 9, false),
-                                                new ClassAttribute("u_active_sw_version", 10, false ),
-                                                new ClassAttribute("u_hw_type", 11, false),
-                                                new ClassAttribute("u_pp_id", 12, false),
-                                                new ClassAttribute("serial_number", 13, false),
-                                                new ClassAttribute("u_chassis_id", 14, false),
-                                                new ClassAttribute("u_chassis_slot_number", 15, false),
-                                                new ClassAttribute("u_network_id", 16, false),
-                                                new ClassAttribute("u_nms_name", 17, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 1, false, false),
+                                                new ClassProperty("u_status", 4, true, false),
+                                                new ClassProperty("u_inroute_group", 8, false, false),
+                                                new ClassProperty("u_customer_id", 9, false, false),
+                                                new ClassProperty("u_active_sw_version", 10, false , false),
+                                                new ClassProperty("u_hw_type", 11, false, false),
+                                                new ClassProperty("u_pp_id", 12, false, false),
+                                                new ClassProperty("serial_number", 13, false, true),
+                                                new ClassProperty("u_chassis_id", 14, false, false),
+                                                new ClassProperty("u_chassis_slot_number", 15, false, false),
+                                                new ClassProperty("u_network_id", 16, false, false),
+                                                new ClassProperty("u_nms_name", 17, false, false),
                                             }
                                         },
                                         {
                                             1700,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("fk", 6, false),
-                                                new ClassAttribute("u_redundancy_linecard", 8, true),
+                                                new ClassProperty("fk", 6, false, false),
+                                                new ClassProperty("u_redundancy_linecard", 8, true, false),
                                             }
                                         },
                                     },
@@ -133,27 +133,27 @@
                                     TargetTable = "u_cmdb_ci_group_evolution_network",
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         {
                                             600,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_status", 3, true),
-                                                new ClassAttribute("u_teleport_id", 6, false),
-                                                new ClassAttribute("u_pp_id", 7, false),
-                                                new ClassAttribute("u_nms_name", 8, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 1, false, false),
+                                                new ClassProperty("u_status", 3, true, false),
+                                                new ClassProperty("u_teleport_id", 6, false, false),
+                                                new ClassProperty("u_pp_id", 7, false, false),
+                                                new ClassProperty("u_nms_name", 8, false, false),
                                             }
                                         },
                                         {
                                             6000,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_network_pp_name", 30, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_network_pp_name", 30, false, false),
                                             }
                                         },
                                     },
@@ -164,30 +164,21 @@
                                     TargetTable = "cmdb_ci_chassis",
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "serial_number" }, new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         {
                                             1500,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("serial_number", 2, false),
-                                                new ClassAttribute("u_status", 3, true),
-                                                new ClassAttribute("u_nms_ip", 4, false),
-                                                new ClassAttribute("u_nms_name", 5, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 1, false, false),
+                                                new ClassProperty("serial_number", 2, false, true),
+                                                new ClassProperty("u_status", 3, true, false),
+                                                new ClassProperty("u_nms_ip", 4, false, false),
+                                                new ClassProperty("u_nms_name", 5, false, false),
                                             }
                                         },
-                                        //{
-                                        //    1700,
-                                        //    new List<ClassAttribute>
-                                        //    {
-                                        //        new ClassAttribute("fk", 1, false),
-                                        //        new ClassAttribute("u_linecard", 4, false),
-                                        //        new ClassAttribute("u_redundancy_linecard", 8, false),
-                                        //    }
-                                        //},
                                     },
                                 },
                                 new ClassMapping
@@ -196,16 +187,16 @@
                                     TargetTable = "u_cmdb_ci_evolution_inroute_group",
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         {
                                             7400,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_network_id", 2, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 1, false, false),
+                                                new ClassProperty("u_network_id", 2, false, false),
                                             }
                                         },
                                     },
@@ -217,15 +208,15 @@
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
                                     //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_ppb_network_id" }, new ExternalPropertyLink("u_network_pp_name", "Evolution Network", "u_pp_id", "Evolution Network")),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         {
                                             6000,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 30, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 30, false, false),
                                             }
                                         },
                                         //{
@@ -245,20 +236,20 @@
                                     TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         {
                                             6300,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_ppb_network_id", 2, false),
-                                                new ClassAttribute("u_tunnel_address", 3, false),
-                                                new ClassAttribute("u_tunnel_subnet", 4, false),
-                                                new ClassAttribute("u_upstream_address", 5, false),
-                                                new ClassAttribute("u_upstream_subnet", 6, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 1, false, false),
+                                                new ClassProperty("u_ppb_network_id", 2, false, false),
+                                                new ClassProperty("u_tunnel_address", 3, false, false),
+                                                new ClassProperty("u_tunnel_subnet", 4, false, false),
+                                                new ClassProperty("u_upstream_address", 5, false, false),
+                                                new ClassProperty("u_upstream_subnet", 6, false, false),
                                             }
                                         },
                                     },
@@ -366,7 +357,7 @@
                                     TargetTable = "u_cmdb_ci_appl_nms_dialog",
                                     IsParent = true,
                                     NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                     },
@@ -377,37 +368,37 @@
                                     TargetTable = "u_cmdb_ci_modem_dialog_remote",
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         {
                                             12000,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 7, false),
-                                                new ClassAttribute("u_modem_name", 1, false),
-                                                new ClassAttribute("u_modem_type", 2, false),
-                                                new ClassAttribute("u_return_technology", 3, false),
-                                                new ClassAttribute("u_mac_address", 4, false),
-                                                new ClassAttribute("u_monitoring_type", 5, false),
-                                                new ClassAttribute("u_network_name", 6, false),
-                                                new ClassAttribute("u_network_config", 8, false),
-                                                new ClassAttribute("u_sw_version", 9, false),
-                                                new ClassAttribute("u_last_network_config", 10, false),
-                                                new ClassAttribute("u_status", 149, true),
-                                                new ClassAttribute("u_nms_name", -1, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 7, false, false),
+                                                new ClassProperty("u_modem_name", 1, false, false),
+                                                new ClassProperty("u_modem_type", 2, false, false),
+                                                new ClassProperty("u_return_technology", 3, false, false),
+                                                new ClassProperty("u_mac_address", 4, false, false),
+                                                new ClassProperty("u_monitoring_type", 5, false, false),
+                                                new ClassProperty("u_network_name", 6, false, false),
+                                                new ClassProperty("u_network_config", 8, false, false),
+                                                new ClassProperty("u_sw_version", 9, false, false),
+                                                new ClassProperty("u_last_network_config", 10, false, false),
+                                                new ClassProperty("u_status", 149, true, false),
+                                                new ClassProperty("u_nms_name", -1, false, false),
                                             }
                                         },
                                         {
                                             21000,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_beam_state", 2, true),
-                                                new ClassAttribute("u_active_beam", 3, true),
-                                                new ClassAttribute("u_switching_beam", 4, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 1, false, false),
+                                                new ClassProperty("u_beam_state", 2, true, false),
+                                                new ClassProperty("u_active_beam", 3, true, false),
+                                                new ClassProperty("u_switching_beam", 4, false, false),
                                             }
                                         },
                                     },
@@ -418,19 +409,19 @@
                                     TargetTable = "u_cmdb_ci_dialog_satellite_network",
                                     IsParent = false,
                                     NamingDetails = new NamingDetails(NamingFormat.Name_Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
                                         {
                                             15000,
-                                            new List<ClassAttribute>
+                                            new List<ClassProperty>
                                             {
-                                                new ClassAttribute("pk", 0, false),
-                                                new ClassAttribute("u_label", 1, false),
-                                                new ClassAttribute("u_beam_id", 2, false),
-                                                new ClassAttribute("u_beam_signaled_name", 3, false),
-                                                new ClassAttribute("u_beam_orbital_position", 4, false),
-                                                new ClassAttribute("u_beam_east_west_flag", 5, false),
+                                                new ClassProperty("pk", 0, false, false),
+                                                new ClassProperty("u_label", 1, false, false),
+                                                new ClassProperty("u_beam_id", 2, false, false),
+                                                new ClassProperty("u_beam_signaled_name", 3, false, false),
+                                                new ClassProperty("u_beam_orbital_position", 4, false, false),
+                                                new ClassProperty("u_beam_east_west_flag", 5, false, false),
                                             }
                                         },
                                     },
@@ -680,7 +671,7 @@
         /// <summary>
         /// Specifies the details necessary to retrieve the mapped class attributes from the corresponding Dataminer elements.
         /// </summary>
-        public Dictionary<int, List<ClassAttribute>> AttributesByTableID { get; set; }
+        public Dictionary<int, List<ClassProperty>> AttributesByTableID { get; set; }
 
         /// <summary>
         /// Method used to retrieve parsed property values organized by instance unique ID.
@@ -821,7 +812,7 @@
             }
         }
 
-        private void ParsePropertiesByRowPK(Dictionary<string, List<Property>> propertiesByPK, int tablePid, ClassAttribute primaryKeyAttribute, object[] row)
+        private void ParsePropertiesByRowPK(Dictionary<string, List<Property>> propertiesByPK, int tablePid, ClassProperty primaryKeyAttribute, object[] row)
         {
             var pk = Convert.ToString(row[primaryKeyAttribute.ColumnIdx]);
 
@@ -1116,7 +1107,7 @@
     /// <summary>
     /// Class attribute details.
     /// </summary>
-    public class ClassAttribute
+    public class ClassProperty
     {
         /// <summary>
         /// Class attribute name.
@@ -1134,16 +1125,23 @@
         public bool HasPushEvent { get; set; }
 
         /// <summary>
+        /// Indicates if a certain attribute is ServiceNow class attribute.
+        /// </summary>
+        public bool IsClassAttribute { get; set; }
+
+        /// <summary>
         /// ClassAttribute class constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="columnIdx"></param>
         /// <param name="hasPushEvent"></param>
-        public ClassAttribute(string name, int columnIdx, bool hasPushEvent)
+        /// <param name="isClassAttribute"></param>
+        public ClassProperty(string name, int columnIdx, bool hasPushEvent, bool isClassAttribute)
         {
             Name = name;
             ColumnIdx = columnIdx;
             HasPushEvent = hasPushEvent;
+            IsClassAttribute = isClassAttribute;
         }
     }
 
