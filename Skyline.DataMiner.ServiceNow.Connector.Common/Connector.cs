@@ -121,6 +121,7 @@
                                             1700,
                                             new List<ClassProperty>
                                             {
+                                                new ClassProperty("u_chassis_slot_id", 1, true, false),
                                                 new ClassProperty("fk", 6, false, false),
                                                 new ClassProperty("u_redundancy_linecard", 8, true, false),
                                             }
@@ -163,7 +164,7 @@
                                     Class = "Evolution Chassis",
                                     TargetTable = "cmdb_ci_chassis",
                                     IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "serial_number" }, new ExternalPropertyLink()),
+                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
                                     AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     {
                                         //  TODO: Add attributes here
@@ -340,8 +341,8 @@
                                 new Relationship("Evolution Inroute Group", "Evolution Remote", new List<string> { "u_inroute_group" }, String.Empty, String.Empty, String.Empty,  String.Empty, "Connected by::Connects", true),
                                 new Relationship("Evolution Network", "Evolution Remote", new List<string> { "u_network_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Receives data from::Sends data to", true),
                                 new Relationship("Evolution Network", "Evolution Linecard", new List<string> { "u_network_id" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
-                                new Relationship("Evolution Linecard", "Evolution Chassis", new List<string> { "u_chassis_id", "u_chassis_slot_number" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Located in::Houses", false),
-                                new Relationship("Evolution Network", "Evolution Protocol Processor", new List<string> { "u_network_pp_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
+                                new Relationship("Evolution Linecard", "Evolution Chassis", new List<string> { "u_chassis_slot_id" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Located in::Houses", false),
+                                new Relationship("Evolution Network", "Evolution Protocol Processor", new List<string> { "u_network_pp_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", false),
                                 new Relationship("Evolution Linecard", "Evolution Linecard", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", false),
                                 // TODO: External CI Relationship Example:
                                 //new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
@@ -640,7 +641,7 @@
                 ciUniqueIdFunctionMapper = new Dictionary<string, Func<Engine, List<Property>, string, string>>
                 {
                     //  TODO: Add methods used to build CIs using custom methods
-                    { "Evolution Chassis", GetEvolutionChassisUniqueID },
+                    //{ "Evolution Chassis", GetEvolutionChassisUniqueID },
                 };
 
                 return ciUniqueIdFunctionMapper;
@@ -1072,15 +1073,15 @@
         /// <param name="properties"></param>
         /// <param name="pk"></param>
         /// <returns>Remote instance unique ID.</returns>
-        public static string GetEvolutionChassisUniqueID(Engine engine, List<Property> properties, string pk)
-        {
-            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+        //public static string GetEvolutionChassisUniqueID(Engine engine, List<Property> properties, string pk)
+        //{
+        //    var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-            var serialNumberProperty = properties.FirstOrDefault(x => x.Name.Equals("serial_number"));
+        //    var serialNumberProperty = properties.FirstOrDefault(x => x.Name.Equals("serial_number"));
 
-            return labelProperty != null && serialNumberProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(serialNumberProperty.Value)
-                ? serialNumberProperty.Value + "." + labelProperty.Value : String.Empty;
-        }
+        //    return labelProperty != null && serialNumberProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(serialNumberProperty.Value)
+        //        ? serialNumberProperty.Value + "." + labelProperty.Value : String.Empty;
+        //}
 
         ///// <summary>
         ///// Method used to retrieve the unique ID of a given Evolution Protocol Processor instance.
