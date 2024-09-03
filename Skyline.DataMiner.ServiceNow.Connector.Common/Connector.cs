@@ -29,492 +29,532 @@
             Custom,
         }
 
-        private static Dictionary<string, ConnectorMapping> classMappingsByConnector;
+        private static Dictionary<string, List<ConnectorMapping>> connectorMappingsByMonitoringSystem;
 
-        public static Dictionary<string, ConnectorMapping> Mappings
+        /// <summary>
+        /// Data structure that details the connector mappings for the systems supported by the integrating solution.
+        /// </summary>
+        public static Dictionary<string, List<ConnectorMapping>> Mappings
         {
             get
             {
-                if (classMappingsByConnector != null)
+                if (connectorMappingsByMonitoringSystem != null)
                 {
-                    return classMappingsByConnector;
+                    return connectorMappingsByMonitoringSystem;
                 }
 
-                classMappingsByConnector = new Dictionary<string, ConnectorMapping>
+                connectorMappingsByMonitoringSystem = new Dictionary<string, List<ConnectorMapping>>
                 {
                     // TODO: Include all supported Connector/CI Types mappings here
                     {
-                        "iDirect Platform", new ConnectorMapping(
-                            new List<ClassMapping>
-                            {
-                                new ClassMapping
+                        "iDirect Evolution", new List<ConnectorMapping>
+                        {
+                            new ConnectorMapping(
+                                "iDirect Platform",
+                                new List<ClassMapping>
                                 {
-                                    Class = "Evolution NMS",
-                                    TargetTable = "u_cmdb_ci_appl_nms_evolution",
-                                    IsParent = true,
-                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                    new ClassMapping
                                     {
-                                        //  TODO: Add attributes here
-                                        //  ...
-                                    },
-                                },
-                                new ClassMapping
-                                {
-                                    Class = "Evolution Remote",
-                                    TargetTable = "u_cmdb_ci_modem_evolution_remote",
-                                    IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { }, new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
-                                    {
-                                        //  TODO: Add attributes here
+                                        Class = "Evolution NMS",
+                                        TargetTable = "u_cmdb_ci_appl_nms_evolution",
+                                        IsParent = true,
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                         {
-                                            300,
-                                            new List<ClassProperty>
-                                            {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 1, false, false),
-                                                new ClassProperty("u_status", 6, true, false),
-                                                new ClassProperty("u_network_id", 9, false, false),
-                                                new ClassProperty("u_network_name", 10, true, false),
-                                                new ClassProperty("u_inroute_group_id", 11, false, false),
-                                                new ClassProperty("u_inroute_group", 12, false, false),
-                                                new ClassProperty("u_customer_id", 13, false, false),
-                                                new ClassProperty("u_active_sw_version", 14, false, false),
-                                                new ClassProperty("u_hw_type", 15, false, false),
-                                                new ClassProperty("u_pp_id", 16, false, false),
-                                                new ClassProperty("serial_number", 17, false, true),
-                                                new ClassProperty("u_nms_name", 18, false, false),
-                                            }
+                                            //  TODO: Add attributes here
+                                            //  ...
                                         },
                                     },
-                                },
-                                new ClassMapping
-                                {
-                                    Class = "Evolution Linecard",
-                                    TargetTable = "u_cmdb_ci_modem_evolution_linecard",
-                                    IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                    new ClassMapping
                                     {
-                                        //  TODO: Add attributes here
+                                        Class = "Evolution Remote",
+                                        TargetTable = "u_cmdb_ci_modem_evolution_remote",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                         {
-                                            400,
-                                            new List<ClassProperty>
+                                            //  TODO: Add attributes here
                                             {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 1, false, false),
-                                                new ClassProperty("u_status", 4, true, false),
-                                                new ClassProperty("u_inroute_group", 8, false, false),
-                                                new ClassProperty("u_customer_id", 9, false, false),
-                                                new ClassProperty("u_active_sw_version", 10, false , false),
-                                                new ClassProperty("u_hw_type", 11, false, false),
-                                                new ClassProperty("u_pp_id", 12, false, false),
-                                                new ClassProperty("serial_number", 13, false, true),
-                                                new ClassProperty("u_chassis_id", 14, false, false),
-                                                new ClassProperty("u_chassis_slot_number", 15, false, false),
-                                                new ClassProperty("u_network_id", 16, false, false),
-                                                new ClassProperty("u_nms_name", 17, false, false),
-                                            }
-                                        },
-                                        {
-                                            1700,
-                                            new List<ClassProperty>
-                                            {
-                                                new ClassProperty("u_chassis_slot_id", 1, true, false),
-                                                new ClassProperty("fk", 6, false, false),
-                                                new ClassProperty("u_redundancy_linecard", 8, true, false),
-                                            }
+                                                300,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                    new ClassProperty("u_status", 6, true, false),
+                                                    new ClassProperty("u_network_id", 9, false, false),
+                                                    new ClassProperty("u_network_name", 10, true, false),
+                                                    new ClassProperty("u_inroute_group_id", 11, false, false),
+                                                    new ClassProperty("u_inroute_group", 12, false, false),
+                                                    new ClassProperty("u_customer_id", 13, false, false),
+                                                    new ClassProperty("u_active_sw_version", 14, false, false),
+                                                    new ClassProperty("u_hw_type", 15, false, false),
+                                                    new ClassProperty("u_pp_id", 16, false, false),
+                                                    new ClassProperty("serial_number", 17, false, true),
+                                                    new ClassProperty("u_nms_name", 18, false, false),
+                                                }
+                                            },
                                         },
                                     },
-                                },
-                                new ClassMapping
-                                {
-                                    Class = "Evolution Network",
-                                    TargetTable = "u_cmdb_ci_group_evolution_network",
-                                    IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                    new ClassMapping
                                     {
-                                        //  TODO: Add attributes here
+                                        Class = "Evolution Linecard",
+                                        TargetTable = "u_cmdb_ci_modem_evolution_linecard",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                         {
-                                            600,
-                                            new List<ClassProperty>
+                                            //  TODO: Add attributes here
                                             {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 1, false, false),
-                                                new ClassProperty("u_status", 3, true, false),
-                                                new ClassProperty("u_teleport_id", 6, false, false),
-                                                new ClassProperty("u_pp_id", 7, false, false),
-                                                new ClassProperty("u_nms_name", 8, false, false),
-                                            }
-                                        },
-                                        {
-                                            6000,
-                                            new List<ClassProperty>
+                                                400,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                    new ClassProperty("u_status", 4, true, false),
+                                                    new ClassProperty("u_inroute_group", 8, false, false),
+                                                    new ClassProperty("u_customer_id", 9, false, false),
+                                                    new ClassProperty("u_active_sw_version", 10, false , false),
+                                                    new ClassProperty("u_hw_type", 11, false, false),
+                                                    new ClassProperty("u_pp_id", 12, false, false),
+                                                    new ClassProperty("serial_number", 13, false, true),
+                                                    new ClassProperty("u_chassis_id", 14, false, false),
+                                                    new ClassProperty("u_chassis_slot_number", 15, false, false),
+                                                    new ClassProperty("u_network_id", 16, false, false),
+                                                    new ClassProperty("u_nms_name", 17, false, false),
+                                                }
+                                            },
                                             {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_network_pp_name", 30, false, false),
-                                            }
+                                                1700,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("u_chassis_slot_id", 1, true, false),
+                                                    new ClassProperty("fk", 6, false, false),
+                                                    new ClassProperty("u_redundancy_linecard", 8, true, false),
+                                                }
+                                            },
                                         },
                                     },
-                                },
-                                new ClassMapping
-                                {
-                                    Class = "Evolution Chassis",
-                                    TargetTable = "cmdb_ci_chassis",
-                                    IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                    new ClassMapping
                                     {
-                                        //  TODO: Add attributes here
+                                        Class = "Evolution Network",
+                                        TargetTable = "u_cmdb_ci_group_evolution_network",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                         {
-                                            1500,
-                                            new List<ClassProperty>
+                                            //  TODO: Add attributes here
                                             {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 1, false, false),
-                                                new ClassProperty("serial_number", 2, false, true),
-                                                new ClassProperty("u_status", 3, true, false),
-                                                new ClassProperty("u_nms_ip", 4, false, false),
-                                                new ClassProperty("u_nms_name", 5, false, false),
-                                            }
+                                                600,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                    new ClassProperty("u_status", 3, true, false),
+                                                    new ClassProperty("u_teleport_id", 6, false, false),
+                                                    new ClassProperty("u_pp_id", 7, false, false),
+                                                    new ClassProperty("u_nms_name", 8, false, false),
+                                                }
+                                            },
+                                            {
+                                                6000,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_network_pp_name", 30, false, false),
+                                                }
+                                            },
                                         },
                                     },
-                                },
-                                new ClassMapping
-                                {
-                                    Class = "Evolution Inroute Group",
-                                    TargetTable = "u_cmdb_ci_evolution_inroute_group",
-                                    IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                    new ClassMapping
                                     {
-                                        //  TODO: Add attributes here
+                                        Class = "Evolution Chassis",
+                                        TargetTable = "cmdb_ci_chassis",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                         {
-                                            7400,
-                                            new List<ClassProperty>
+                                            //  TODO: Add attributes here
                                             {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 1, false, false),
-                                                new ClassProperty("u_network_id", 2, false, false),
-                                            }
+                                                1500,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                    new ClassProperty("serial_number", 2, false, true),
+                                                    new ClassProperty("u_status", 3, true, false),
+                                                    new ClassProperty("u_nms_ip", 4, false, false),
+                                                    new ClassProperty("u_nms_name", 5, false, false),
+                                                }
+                                            },
                                         },
                                     },
-                                },
-                                new ClassMapping
-                                {
-                                    Class = "Evolution Protocol Processor",
-                                    TargetTable = "u_cmdb_ci_appl_evolution_pp",
-                                    IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
-                                    //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_ppb_network_id" }, new ExternalPropertyLink("u_network_pp_name", "Evolution Network", "u_pp_id", "Evolution Network")),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                    new ClassMapping
                                     {
-                                        //  TODO: Add attributes here
+                                        Class = "Evolution Inroute Group",
+                                        TargetTable = "u_cmdb_ci_evolution_inroute_group",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                         {
-                                            6000,
-                                            new List<ClassProperty>
+                                            //  TODO: Add attributes here
                                             {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 30, false, false),
-                                            }
-                                        },
-                                        //{
-                                        //    6300,
-                                        //    new List<ClassAttribute>
-                                        //    {
-                                        //        new ClassAttribute("pk", 0, false),
-                                        //        new ClassAttribute("u_label", 1, false),
-                                        //        new ClassAttribute("u_ppb_network_id", 2, false),
-                                        //    }
-                                        //},
-                                    },
-                                },
-                                new ClassMapping
-                                {
-                                    Class = "Evolution Protocol Processor Blade",
-                                    TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
-                                    IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
-                                    {
-                                        //  TODO: Add attributes here
-                                        {
-                                            6300,
-                                            new List<ClassProperty>
-                                            {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 1, false, false),
-                                                new ClassProperty("u_ppb_network_id", 2, false, false),
-                                                new ClassProperty("u_tunnel_address", 3, false, false),
-                                                new ClassProperty("u_tunnel_subnet", 4, false, false),
-                                                new ClassProperty("u_upstream_address", 5, false, false),
-                                                new ClassProperty("u_upstream_subnet", 6, false, false),
-                                            }
+                                                7400,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                    new ClassProperty("u_network_id", 2, false, false),
+                                                }
+                                            },
                                         },
                                     },
-                                },
-                                //new ClassMapping
-                                //{
-                                //    Class = "Evolution Teleport",
-                                //    TargetTable = "u_cmdb_ci_group_evolution_teleport",
-                                //    IsParent = false,
-                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                //    {
-                                //        //  TODO: Add attributes here
-                                //        {
-                                //            -1,
-                                //            new List<ClassAttribute>
-                                //            {
+                                    new ClassMapping
+                                    {
+                                        Class = "Evolution Protocol Processor",
+                                        TargetTable = "u_cmdb_ci_appl_evolution_pp",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_ppb_network_id" }, new ExternalPropertyLink("u_network_pp_name", "Evolution Network", "u_pp_id", "Evolution Network")),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                        {
+                                            //  TODO: Add attributes here
+                                            {
+                                                6000,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 30, false, false),
+                                                }
+                                            },
+                                            //{
+                                            //    6300,
+                                            //    new List<ClassAttribute>
+                                            //    {
+                                            //        new ClassAttribute("pk", 0, false),
+                                            //        new ClassAttribute("u_label", 1, false),
+                                            //        new ClassAttribute("u_ppb_network_id", 2, false),
+                                            //    }
+                                            //},
+                                        },
+                                    },
+                                    new ClassMapping
+                                    {
+                                        Class = "Evolution Protocol Processor Blade",
+                                        TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                        {
+                                            //  TODO: Add attributes here
+                                            {
+                                                6300,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                    new ClassProperty("u_ppb_network_id", 2, false, false),
+                                                    new ClassProperty("u_tunnel_address", 3, false, false),
+                                                    new ClassProperty("u_tunnel_subnet", 4, false, false),
+                                                    new ClassProperty("u_upstream_address", 5, false, false),
+                                                    new ClassProperty("u_upstream_subnet", 6, false, false),
+                                                }
+                                            },
+                                        },
+                                    },
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Evolution Teleport",
+                                    //    TargetTable = "u_cmdb_ci_group_evolution_teleport",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    {
+                                    //        //  TODO: Add attributes here
+                                    //        {
+                                    //            -1,
+                                    //            new List<ClassAttribute>
+                                    //            {
 
-                                //            }
-                                //        },
+                                    //            }
+                                    //        },
      
-                                //    },
-                                //},
-                                //new ClassMapping
-                                //{
-                                //    Class = "Evolution Application",
-                                //    TargetTable = "u_cmdb_ci_appl_evolution",
-                                //    IsParent = false,
-                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                //    {
-                                //        //  TODO: Add attributes here
-                                //        {
-                                //            -1,
-                                //            new List<ClassAttribute>
-                                //            {
+                                    //    },
+                                    //},
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Evolution Application",
+                                    //    TargetTable = "u_cmdb_ci_appl_evolution",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    {
+                                    //        //  TODO: Add attributes here
+                                    //        {
+                                    //            -1,
+                                    //            new List<ClassAttribute>
+                                    //            {
 
-                                //            }
-                                //        },
+                                    //            }
+                                    //        },
      
-                                //    },
-                                //},
-                                //new ClassMapping
-                                //{
-                                //    Class = "Evolution Encapsulator",
-                                //    TargetTable = "u_cmdb_ci_appl_evolution_encapsulator",
-                                //    IsParent = false,
-                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                //    {
-                                //        //  TODO: Add attributes here
-                                //        {
-                                //            -1,
-                                //            new List<ClassAttribute>
-                                //            {
+                                    //    },
+                                    //},
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Evolution Encapsulator",
+                                    //    TargetTable = "u_cmdb_ci_appl_evolution_encapsulator",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    {
+                                    //        //  TODO: Add attributes here
+                                    //        {
+                                    //            -1,
+                                    //            new List<ClassAttribute>
+                                    //            {
 
-                                //            }
-                                //        },
+                                    //            }
+                                    //        },
      
-                                //    },
-                                //},
-                                //new ClassMapping
-                                //{
-                                //    Class = "Evolution Processing Node",
-                                //    TargetTable = "u_cmdb_ci_appl_evolution_processing_node",
-                                //    IsParent = false,
-                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                //    {
-                                //        //  TODO: Add attributes here
-                                //        {
-                                //            -1,
-                                //            new List<ClassAttribute>
-                                //            {
+                                    //    },
+                                    //},
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Evolution Processing Node",
+                                    //    TargetTable = "u_cmdb_ci_appl_evolution_processing_node",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    {
+                                    //        //  TODO: Add attributes here
+                                    //        {
+                                    //            -1,
+                                    //            new List<ClassAttribute>
+                                    //            {
 
-                                //            }
-                                //        },
+                                    //            }
+                                    //        },
      
-                                //    },
-                                //},
-                            },
-                            new List<Relationship>
-                            {
-                                // TODO: Add class relationships here
-                                new Relationship("Evolution Remote", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Evolution Linecard", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Evolution Network", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Evolution Inroute Group", "Evolution Remote", new List<string> { "u_inroute_group" }, String.Empty, String.Empty, String.Empty,  String.Empty, "Connected by::Connects", true),
-                                new Relationship("Evolution Network", "Evolution Remote", new List<string> { "u_network_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Receives data from::Sends data to", true),
-                                new Relationship("Evolution Network", "Evolution Linecard", new List<string> { "u_network_id" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", true),
-                                new Relationship("Evolution Linecard", "Evolution Chassis", new List<string> { "u_chassis_slot_id" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Located in::Houses", false),
-                                new Relationship("Evolution Network", "Evolution Protocol Processor", new List<string> { "u_network_pp_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Depends on::Used by", false),
-                                new Relationship("Evolution Linecard", "Evolution Linecard", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", false),
-                                // TODO: External CI Relationship Example:
-                                //new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
-                            })
+                                    //    },
+                                    //},
+                                },
+                                new List<Relationship>
+                                {
+                                    // TODO: Add class relationships here
+                                    new Relationship("Evolution Remote", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
+                                    new Relationship("Evolution Linecard", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
+                                    new Relationship("Evolution Network", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
+                                    new Relationship("Evolution Inroute Group", "Evolution Remote", new List<string> { "u_inroute_group" }, String.Empty, String.Empty, String.Empty, String.Empty, "Connected by::Connects", true),
+                                    new Relationship("Evolution Network", "Evolution Remote", new List<string> { "u_network_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", true),
+                                    new Relationship("Evolution Network", "Evolution Linecard", new List<string> { "u_network_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Evolution Linecard", "Evolution Chassis", new List<string> { "u_chassis_slot_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "Located in::Houses", false),
+                                    new Relationship("Evolution Network", "Evolution Protocol Processor", new List<string> { "u_network_pp_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", false),
+                                    new Relationship("Evolution Linecard", "Evolution Linecard", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", false),
+                                    // TODO: External CI Relationship Example:
+                                    //new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
+                                })
+                            }
                     },
                     {
-                        "Newtec Dialog Time Series Database", new ConnectorMapping(
-                            new List<ClassMapping>
-                            {
-                                new ClassMapping
+                        "Newtec Dialog", new List<ConnectorMapping>
+                        {
+                            new ConnectorMapping(
+                                "Newtec Dialog Time Series Database",
+                                new List<ClassMapping>
                                 {
-                                    Class = "Dialog NMS",
-                                    TargetTable = "u_cmdb_ci_appl_nms_dialog",
-                                    IsParent = true,
-                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                    new ClassMapping
                                     {
-                                        //  TODO: Add attributes here
-                                    },
-                                },
-                                new ClassMapping
-                                {
-                                    Class = "Dialog Remote",
-                                    TargetTable = "u_cmdb_ci_modem_dialog_remote",
-                                    IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
-                                    {
-                                        //  TODO: Add attributes here
+                                        Class = "Dialog Remote",
+                                        TargetTable = "u_cmdb_ci_modem_dialog_remote",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                         {
-                                            12000,
-                                            new List<ClassProperty>
+                                            //  TODO: Add attributes here
                                             {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 7, false, false),
-                                                new ClassProperty("u_modem_name", 1, false, false),
-                                                new ClassProperty("u_modem_type", 2, false, false),
-                                                new ClassProperty("u_return_technology", 3, false, false),
-                                                new ClassProperty("u_mac_address", 4, false, false),
-                                                new ClassProperty("u_monitoring_type", 5, false, false),
-                                                new ClassProperty("u_network_name", 6, false, false),
-                                                new ClassProperty("u_network_config", 8, false, false),
-                                                new ClassProperty("u_sw_version", 9, false, false),
-                                                new ClassProperty("u_last_network_config", 10, false, false),
-                                                new ClassProperty("u_status", 149, true, false),
-                                                new ClassProperty("u_nms_name", -1, false, false),
-                                            }
-                                        },
-                                        {
-                                            21000,
-                                            new List<ClassProperty>
+                                                12000,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 7, false, false),
+                                                    new ClassProperty("u_modem_name", 1, false, false),
+                                                    new ClassProperty("u_modem_type", 2, false, false),
+                                                    new ClassProperty("u_return_technology", 3, false, false),
+                                                    new ClassProperty("u_mac_address", 4, false, false),
+                                                    new ClassProperty("u_monitoring_type", 5, false, false),
+                                                    new ClassProperty("u_network_name", 6, false, false),
+                                                    new ClassProperty("u_network_config", 8, false, false),
+                                                    new ClassProperty("u_sw_version", 9, false, false),
+                                                    new ClassProperty("u_last_network_config", 10, false, false),
+                                                    new ClassProperty("u_status", 149, true, false),
+                                                    new ClassProperty("u_nms_name", -1, false, false),
+                                                }
+                                            },
                                             {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 1, false, false),
-                                                new ClassProperty("u_beam_state", 2, true, false),
-                                                new ClassProperty("u_active_beam", 3, true, false),
-                                                new ClassProperty("u_switching_beam", 4, false, false),
-                                            }
+                                                21000,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                    new ClassProperty("u_beam_state", 2, true, false),
+                                                    new ClassProperty("u_active_beam", 3, true, false),
+                                                    new ClassProperty("u_switching_beam", 4, false, false),
+                                                }
+                                            },
                                         },
                                     },
-                                },
-                                new ClassMapping
-                                {
-                                    Class = "Dialog Satellite Network",
-                                    TargetTable = "u_cmdb_ci_dialog_satellite_network",
-                                    IsParent = false,
-                                    NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string>(), new ExternalPropertyLink()),
-                                    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                    new ClassMapping
                                     {
-                                        //  TODO: Add attributes here
+                                        Class = "Dialog Satellite Network",
+                                        TargetTable = "u_cmdb_ci_dialog_satellite_network",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                         {
-                                            15000,
-                                            new List<ClassProperty>
+                                            //  TODO: Add attributes here
                                             {
-                                                new ClassProperty("pk", 0, false, false),
-                                                new ClassProperty("u_label", 1, false, false),
-                                                new ClassProperty("u_beam_id", 2, false, false),
-                                                new ClassProperty("u_beam_signaled_name", 3, false, false),
-                                                new ClassProperty("u_beam_orbital_position", 4, false, false),
-                                                new ClassProperty("u_beam_east_west_flag", 5, false, false),
-                                            }
+                                                15000,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                    new ClassProperty("u_beam_id", 2, false, false),
+                                                    new ClassProperty("u_beam_signaled_name", 3, false, false),
+                                                    new ClassProperty("u_beam_orbital_position", 4, false, false),
+                                                    new ClassProperty("u_beam_east_west_flag", 5, false, false),
+                                                }
+                                            },
                                         },
                                     },
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Dialog Application",
+                                    //    TargetTable = "u_cmdb_ci_dialog_application",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    {
+                                    //        //  TODO: Add attributes here
+                                    //        {
+                                    //            -1,
+                                    //            new List<ClassAttribute>
+                                    //            {
+
+                                    //            }
+                                    //        },
+     
+                                    //    },
+                                    //},
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Dialog Hub",
+                                    //    TargetTable = "u_cmdb_ci_dialog_hub",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    {
+                                    //        //  TODO: Add attributes here
+                                    //        {
+                                    //            -1,
+                                    //            new List<ClassAttribute>
+                                    //            {
+
+                                    //            }
+                                    //        },
+     
+                                    //    },
+                                    //},
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Dialog Modulator",
+                                    //    TargetTable = "u_cmdb_ci_dialog_modulator",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    {
+                                    //        //  TODO: Add attributes here
+                                    //        {
+                                    //            -1,
+                                    //            new List<ClassAttribute>
+                                    //            {
+
+                                    //            }
+                                    //        },
+     
+                                    //    },
+                                    //},
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Dialog Demodulator",
+                                    //    TargetTable = "u_cmdb_ci_dialog_demodulator",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    {
+                                    //        //  TODO: Add attributes here
+                                    //        {
+                                    //            -1,
+                                    //            new List<ClassAttribute>
+                                    //            {
+
+                                    //            }
+                                    //        },
+     
+                                    //    },
+                                    //},
                                 },
-                                //new ClassMapping
-                                //{
-                                //    Class = "Dialog Application",
-                                //    TargetTable = "u_cmdb_ci_dialog_application",
-                                //    IsParent = false,
-                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                //    {
-                                //        //  TODO: Add attributes here
-                                //        {
-                                //            -1,
-                                //            new List<ClassAttribute>
-                                //            {
+                                new List<Relationship>
+                                {
+                                    // TODO: Add class relationships here
+                                    new Relationship("Dialog Remote", "Dialog NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
+                                    new Relationship("Dialog Satellite Network", "Dialog NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
+                                    new Relationship("Dialog Satellite Network", "Dialog Remote", new List<string> { "u_active_beam" }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", true),
+                                }),
+                            new ConnectorMapping(
+                                "Newtec Dialog Infrastructure",
+                                new List<ClassMapping>
+                                {
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog NMS",
+                                        TargetTable = "u_cmdb_ci_appl_nms_dialog",
+                                        IsParent = true,
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                        {
+                                            //  TODO: Add attributes here
+                                        },
+                                    },
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Dialog Application",
+                                    //    TargetTable = "u_cmdb_ci_dialog_application",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    {
+                                    //        //  TODO: Add attributes here
+                                    //        {
+                                    //            -1,
+                                    //            new List<ClassAttribute>
+                                    //            {
 
-                                //            }
-                                //        },
+                                    //            }
+                                    //        },
      
-                                //    },
-                                //},
-                                //new ClassMapping
-                                //{
-                                //    Class = "Dialog Hub",
-                                //    TargetTable = "u_cmdb_ci_dialog_hub",
-                                //    IsParent = false,
-                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                //    {
-                                //        //  TODO: Add attributes here
-                                //        {
-                                //            -1,
-                                //            new List<ClassAttribute>
-                                //            {
-
-                                //            }
-                                //        },
-     
-                                //    },
-                                //},
-                                //new ClassMapping
-                                //{
-                                //    Class = "Dialog Modulator",
-                                //    TargetTable = "u_cmdb_ci_dialog_modulator",
-                                //    IsParent = false,
-                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                //    {
-                                //        //  TODO: Add attributes here
-                                //        {
-                                //            -1,
-                                //            new List<ClassAttribute>
-                                //            {
-
-                                //            }
-                                //        },
-     
-                                //    },
-                                //},
-                                //new ClassMapping
-                                //{
-                                //    Class = "Dialog Demodulator",
-                                //    TargetTable = "u_cmdb_ci_dialog_demodulator",
-                                //    IsParent = false,
-                                //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                //    {
-                                //        //  TODO: Add attributes here
-                                //        {
-                                //            -1,
-                                //            new List<ClassAttribute>
-                                //            {
-
-                                //            }
-                                //        },
-     
-                                //    },
-                                //},
-                            },
-                            new List<Relationship>
-                            {
-                                // TODO: Add class relationships here
-                                new Relationship("Dialog Remote", "Dialog NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Dialog Satellite Network", "Dialog NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Managed by::Manages", false),
-                                new Relationship("Dialog Satellite Network", "Dialog Remote", new List<string> { "u_active_beam" }, String.Empty, String.Empty, String.Empty, String.Empty,  "Receives data from::Sends data to", true),
-                            })
+                                    //    },
+                                    //},
+                                },
+                                new List<Relationship>
+                                {
+                                    // TODO: Add class relationships here
+                                    new Relationship("Dialog Remote", "Dialog NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
+                                }),
+                        }
                     },
                 };
 
-                return classMappingsByConnector;
+                return connectorMappingsByMonitoringSystem;
             }
         }
 
@@ -554,9 +594,9 @@
             {
                 var parameterUpdates = new List<ParameterDetails>();
 
-                var connectorMapping = Mappings[protocolName];
+                var classMappings = Mappings[protocolName].SelectMany(x => x.ClassMappings).ToList();
 
-                foreach (var classMapping in connectorMapping.ClassMappings)
+                foreach (var classMapping in classMappings)
                 {
                     var classAttributesByTablePID = classMapping.AttributesByTableID;
 
@@ -599,6 +639,11 @@
     public class ConnectorMapping
     {
         /// <summary>
+        /// Connector protocol name.
+        /// </summary>
+        public string ProtocolName { get; set; }
+
+        /// <summary>
         /// Class mappings retrieved from the supported connector.
         /// </summary>
         public List<ClassMapping> ClassMappings { get; set; }
@@ -611,10 +656,12 @@
         /// <summary>
         /// ConnectorMapping class constructor.
         /// </summary>
+        /// <param name="protocolName"></param>
         /// <param name="classMappings"></param>
         /// <param name="relationships"></param>
-        public ConnectorMapping(List<ClassMapping> classMappings, List<Relationship> relationships)
+        public ConnectorMapping(string protocolName, List<ClassMapping> classMappings, List<Relationship> relationships)
         {
+            ProtocolName = protocolName;
             ClassMappings = classMappings;
             Relationships = relationships;
         }
