@@ -29,7 +29,7 @@
             Custom,
         }
 
-        private static Dictionary<string, List<ConnectorMapping>> connectorMappingsByMonitoringSystem;
+        private static Dictionary<string, List<ConnectorMapping>> connectorMappingsBySystem;
 
         /// <summary>
         /// Data structure that details the connector mappings for the systems supported by the integrating solution.
@@ -38,12 +38,12 @@
         {
             get
             {
-                if (connectorMappingsByMonitoringSystem != null)
+                if (connectorMappingsBySystem != null)
                 {
-                    return connectorMappingsByMonitoringSystem;
+                    return connectorMappingsBySystem;
                 }
 
-                connectorMappingsByMonitoringSystem = new Dictionary<string, List<ConnectorMapping>>
+                connectorMappingsBySystem = new Dictionary<string, List<ConnectorMapping>>
                 {
                     // TODO: Include all supported Connector/CI Types mappings here
                     {
@@ -228,11 +228,11 @@
                                             },
                                             //{
                                             //    6300,
-                                            //    new List<ClassAttribute>
+                                            //    new List<ClassProperty>
                                             //    {
-                                            //        new ClassAttribute("pk", 0, false),
-                                            //        new ClassAttribute("u_label", 1, false),
-                                            //        new ClassAttribute("u_ppb_network_id", 2, false),
+                                            //        new ClassProperty("pk", 0, false),
+                                            //        new ClassProperty("u_label", 1, false),
+                                            //        new ClassProperty("u_ppb_network_id", 2, false),
                                             //    }
                                             //},
                                         },
@@ -266,13 +266,13 @@
                                     //    Class = "Evolution Teleport",
                                     //    TargetTable = "u_cmdb_ci_group_evolution_teleport",
                                     //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     //    {
                                     //        //  TODO: Add attributes here
                                     //        {
                                     //            -1,
-                                    //            new List<ClassAttribute>
+                                    //            new List<ClassProperty>
                                     //            {
 
                                     //            }
@@ -285,13 +285,13 @@
                                     //    Class = "Evolution Application",
                                     //    TargetTable = "u_cmdb_ci_appl_evolution",
                                     //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     //    {
                                     //        //  TODO: Add attributes here
                                     //        {
                                     //            -1,
-                                    //            new List<ClassAttribute>
+                                    //            new List<ClassProperty>
                                     //            {
 
                                     //            }
@@ -304,13 +304,13 @@
                                     //    Class = "Evolution Encapsulator",
                                     //    TargetTable = "u_cmdb_ci_appl_evolution_encapsulator",
                                     //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     //    {
                                     //        //  TODO: Add attributes here
                                     //        {
                                     //            -1,
-                                    //            new List<ClassAttribute>
+                                    //            new List<ClassProperty>
                                     //            {
 
                                     //            }
@@ -323,13 +323,13 @@
                                     //    Class = "Evolution Processing Node",
                                     //    TargetTable = "u_cmdb_ci_appl_evolution_processing_node",
                                     //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     //    {
                                     //        //  TODO: Add attributes here
                                     //        {
                                     //            -1,
-                                    //            new List<ClassAttribute>
+                                    //            new List<ClassProperty>
                                     //            {
 
                                     //            }
@@ -362,6 +362,17 @@
                                 "Newtec Dialog Time Series Database",
                                 new List<ClassMapping>
                                 {
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog NMS",
+                                        TargetTable = "u_cmdb_ci_appl_nms_dialog",
+                                        IsParent = true,
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                        {
+                                            //  TODO: Add attributes here
+                                        },
+                                    },
                                     new ClassMapping
                                     {
                                         Class = "Dialog Remote",
@@ -426,82 +437,6 @@
                                             },
                                         },
                                     },
-                                    //new ClassMapping
-                                    //{
-                                    //    Class = "Dialog Application",
-                                    //    TargetTable = "u_cmdb_ci_dialog_application",
-                                    //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                    //    {
-                                    //        //  TODO: Add attributes here
-                                    //        {
-                                    //            -1,
-                                    //            new List<ClassAttribute>
-                                    //            {
-
-                                    //            }
-                                    //        },
-     
-                                    //    },
-                                    //},
-                                    //new ClassMapping
-                                    //{
-                                    //    Class = "Dialog Hub",
-                                    //    TargetTable = "u_cmdb_ci_dialog_hub",
-                                    //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                    //    {
-                                    //        //  TODO: Add attributes here
-                                    //        {
-                                    //            -1,
-                                    //            new List<ClassAttribute>
-                                    //            {
-
-                                    //            }
-                                    //        },
-     
-                                    //    },
-                                    //},
-                                    //new ClassMapping
-                                    //{
-                                    //    Class = "Dialog Modulator",
-                                    //    TargetTable = "u_cmdb_ci_dialog_modulator",
-                                    //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                    //    {
-                                    //        //  TODO: Add attributes here
-                                    //        {
-                                    //            -1,
-                                    //            new List<ClassAttribute>
-                                    //            {
-
-                                    //            }
-                                    //        },
-     
-                                    //    },
-                                    //},
-                                    //new ClassMapping
-                                    //{
-                                    //    Class = "Dialog Demodulator",
-                                    //    TargetTable = "u_cmdb_ci_dialog_demodulator",
-                                    //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
-                                    //    {
-                                    //        //  TODO: Add attributes here
-                                    //        {
-                                    //            -1,
-                                    //            new List<ClassAttribute>
-                                    //            {
-
-                                    //            }
-                                    //        },
-     
-                                    //    },
-                                    //},
                                 },
                                 new List<Relationship>
                                 {
@@ -516,13 +451,163 @@
                                 {
                                     new ClassMapping
                                     {
-                                        Class = "Dialog NMS",
-                                        TargetTable = "u_cmdb_ci_appl_nms_dialog",
+                                        Class = "Dialog Hub",
+                                        TargetTable = "u_cmdb_ci_dialog_hub",
                                         IsParent = true,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
                                         AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                         {
                                             //  TODO: Add attributes here
+                                            {
+                                                -1,
+                                                new List<ClassProperty>
+                                                {
+
+                                                }
+                                            },
+                                        },
+                                    },
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog Modulator",
+                                        TargetTable = "u_cmdb_ci_dialog_modulator",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                        {
+                                            //  TODO: Add attributes here
+                                            {
+                                                2300,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                }
+                                            },
+                                            {
+                                                4300,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 19, false, false),
+                                                }
+                                            },
+                                        },
+                                    },
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog Demodulator",
+                                        TargetTable = "u_cmdb_ci_dialog_demodulator",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                        {
+                                            //  TODO: Add attributes here
+                                            {
+                                                2000,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                }
+                                            },
+                                            {
+                                                2100,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                }
+                                            },
+                                            {
+                                                4500,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 19, false, false),
+                                                }
+                                            },
+                                            {
+                                                4600,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                }
+                                            },
+                                            {
+                                                4700,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                }
+                                            },
+                                        },
+                                    },
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog Switch",
+                                        TargetTable = "u_cmdb_ci_dialog_switch",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                        {
+                                            //  TODO: Add attributes here
+                                            {
+                                                5400,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                }
+                                            },
+                                            {
+                                                6450,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 2, false, false),
+                                                }
+                                            },
+                                        },
+                                    },
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog MS Server",
+                                        TargetTable = "u_cmdb_ci_dialog_microsoft_server",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                        {
+                                            //  TODO: Add attributes here
+                                            {
+                                                4000,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 1, false, false),
+                                                }
+                                            },
+                                        },
+                                    },
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog Linux Server",
+                                        TargetTable = "u_cmdb_ci_dialog_linux_server",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>
+                                        {
+                                            //  TODO: Add attributes here
+                                            {
+                                                4230,
+                                                new List<ClassProperty>
+                                                {
+                                                    new ClassProperty("pk", 0, false, false),
+                                                    new ClassProperty("u_label", 3, false, false),
+                                                }
+                                            },
                                         },
                                     },
                                     //new ClassMapping
@@ -530,13 +615,13 @@
                                     //    Class = "Dialog Application",
                                     //    TargetTable = "u_cmdb_ci_dialog_application",
                                     //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Name, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassAttribute>>
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = new Dictionary<int, List<ClassProperty>>
                                     //    {
                                     //        //  TODO: Add attributes here
                                     //        {
                                     //            -1,
-                                    //            new List<ClassAttribute>
+                                    //            new List<ClassProperty>
                                     //            {
 
                                     //            }
@@ -548,13 +633,13 @@
                                 new List<Relationship>
                                 {
                                     // TODO: Add class relationships here
-                                    new Relationship("Dialog Remote", "Dialog NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
+                                    //new Relationship("Dialog Remote", "Dialog NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
                                 }),
                         }
                     },
                 };
 
-                return connectorMappingsByMonitoringSystem;
+                return connectorMappingsBySystem;
             }
         }
 
@@ -1113,13 +1198,13 @@
             }
         }
 
-        /// <summary>
-        /// Method used to retrieve the unique ID of a given Evolution Chassis instance.
-        /// </summary>
-        /// <param name="engine"></param>
-        /// <param name="properties"></param>
-        /// <param name="pk"></param>
-        /// <returns>Remote instance unique ID.</returns>
+        ///// <summary>
+        ///// Method used to retrieve the unique ID of a given Evolution Chassis instance.
+        ///// </summary>
+        ///// <param name="engine"></param>
+        ///// <param name="properties"></param>
+        ///// <param name="pk"></param>
+        ///// <returns>Remote instance unique ID.</returns>
         //public static string GetEvolutionChassisUniqueID(Engine engine, List<Property> properties, string pk)
         //{
         //    var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
