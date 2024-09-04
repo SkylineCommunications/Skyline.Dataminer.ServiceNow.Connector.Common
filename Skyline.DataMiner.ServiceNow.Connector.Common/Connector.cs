@@ -341,15 +341,15 @@
                                 new List<Relationship>
                                 {
                                     // TODO: Add class relationships here
-                                    new Relationship("Evolution Remote", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
-                                    new Relationship("Evolution Linecard", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
-                                    new Relationship("Evolution Network", "Evolution NMS", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
-                                    new Relationship("Evolution Inroute Group", "Evolution Remote", new List<string> { "u_inroute_group" }, String.Empty, String.Empty, String.Empty, String.Empty, "Connected by::Connects", true),
-                                    new Relationship("Evolution Network", "Evolution Remote", new List<string> { "u_network_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", true),
-                                    new Relationship("Evolution Network", "Evolution Linecard", new List<string> { "u_network_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
-                                    new Relationship("Evolution Linecard", "Evolution Chassis", new List<string> { "u_chassis_slot_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "Located in::Houses", false),
-                                    new Relationship("Evolution Network", "Evolution Protocol Processor", new List<string> { "u_network_pp_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", false),
-                                    new Relationship("Evolution Linecard", "Evolution Linecard", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", false),
+                                    new Relationship("Evolution NMS", "Evolution Remote", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Evolution NMS", "Evolution Linecard", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Evolution NMS", "Evolution Network", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Evolution Remote", "Evolution Inroute Group", new List<string> { "u_inroute_group" }, String.Empty, String.Empty, String.Empty, String.Empty, "Connected by::Connects", false),
+                                    new Relationship("Evolution Remote", "Evolution Network", new List<string> { "u_network_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", false),
+                                    new Relationship("Evolution Linecard", "Evolution Network", new List<string> { "u_network_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", false),
+                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<string> { "u_chassis_slot_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "Located in::Houses", true),
+                                    new Relationship("Evolution Protocol Processor", "Evolution Network", new List<string> { "u_network_pp_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Evolution Linecard", "Evolution Linecard", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
                                     // TODO: External CI Relationship Example:
                                     //new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
                                 })
