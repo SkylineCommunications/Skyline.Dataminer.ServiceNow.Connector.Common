@@ -7,7 +7,6 @@
     using global::Skyline.DataMiner.Core.DataMinerSystem.Automation;
     using global::Skyline.DataMiner.Core.DataMinerSystem.Common;
     using Newtonsoft.Json;
-    using Skyline.DataMiner.Net.History.ReservationInstances;
     using static Skyline.DataMiner.ServiceNow.Connector.Common.Connector;
 
     /// <summary>
