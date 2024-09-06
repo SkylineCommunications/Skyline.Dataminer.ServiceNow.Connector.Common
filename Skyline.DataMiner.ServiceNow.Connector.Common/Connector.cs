@@ -681,11 +681,11 @@
         {
             var elements = new List<Element>();
 
-            var supportedConnectors = Mappings.Keys.ToList();
+            var supportedConnectors = Mappings.SelectMany(x => x.Value).ToList();
 
             foreach (var connector in supportedConnectors)
             {
-                var foundElements = engine.FindElementsByProtocol(connector);
+                var foundElements = engine.FindElementsByProtocol(connector.ProtocolName);
 
                 if (foundElements.Length > 0)
                 {
@@ -704,13 +704,15 @@
         /// <exception cref="ArgumentException"></exception>
         public static List<ParameterDetails> GetPushParameterDetailsByConnector(string protocolName)
         {
-            if (Mappings.ContainsKey(protocolName))
+            var conenctorMappings = Mappings.SelectMany(x => x.Value).ToList();
+
+            var connectorClassMappings = conenctorMappings.FirstOrDefault(m => m.ProtocolName.Equals(protocolName));
+
+            if (connectorClassMappings != null)
             {
                 var parameterUpdates = new List<ParameterDetails>();
 
-                var classMappings = Mappings[protocolName].SelectMany(x => x.ClassMappings).ToList();
-
-                foreach (var classMapping in classMappings)
+                foreach (var classMapping in connectorClassMappings.ClassMappings)
                 {
                     var classAttributesByTablePID = classMapping.AttributesByTableID;
 
