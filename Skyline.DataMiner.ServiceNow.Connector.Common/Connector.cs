@@ -1030,21 +1030,21 @@
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-                        return labelProperty != null ? parentElementName + "." + pk + "." + labelProperty.Value : String.Empty;
+                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + pk + "." + labelProperty.Value : String.Empty;
                     }
 
                 case NamingFormat.Label:
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-                        return labelProperty != null ? parentElementName + "." + labelProperty.Value : String.Empty;
+                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value : String.Empty;
                     }
 
                 case NamingFormat.Label_PrimaryKey:
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-                        return labelProperty != null ? parentElementName + "." + labelProperty.Value + "." + pk : String.Empty;
+                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value + "." + pk : String.Empty;
                     }
 
                 case NamingFormat.Custom:
