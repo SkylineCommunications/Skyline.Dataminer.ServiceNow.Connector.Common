@@ -206,6 +206,12 @@
                                     new Relationship("Dialog NMS", "Dialog Remote", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
                                     new Relationship("Dialog NMS", "Dialog Satellite Network", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
                                     new Relationship("Dialog Remote", "Dialog Satellite Network", new List<string> { "u_active_beam" }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", false),
+                                    // TODO: External CI Relationships:
+                                    //new Relationship("Dialog Remote", "Dialog Application", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
+                                    //new Relationship("Dialog Satellite Network", "Dialog Application", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
+                                    //new Relationship("Dialog Satellite Network", "Dialog Linux Server", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
+                                    //new Relationship("Dialog Satellite Network", "Dialog Modulator", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
+                                    //new Relationship("Dialog Satellite Network", "Dialog Demodulator", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
                                 }),
                             new ConnectorMapping(
                                 "Newtec Dialog Infrastructure",
@@ -271,7 +277,16 @@
                                 new List<Relationship>
                                 {
                                     // TODO: Add class relationships here
-                                    //new Relationship("Dialog NMS", "Dialog Remote", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", false),
+                                    new Relationship("Dialog Hub", "Dialog Modulator", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Demodulator", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Switch", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Microsoft Server", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Linux Server", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Switch", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
+                                    // TODO: External CI Relationships:
+                                    //new Relationship("Dialog Hub", "Dialog Satellite Network", new List<string> { "u_nms_name" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
+                                    //new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
                                 }),
                         }
                     },
@@ -477,10 +492,6 @@
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
                         new ClassProperty("u_ppb_network_id", 2, false, false),
-                        new ClassProperty("u_tunnel_address", 3, false, false),
-                        new ClassProperty("u_tunnel_subnet", 4, false, false),
-                        new ClassProperty("u_upstream_address", 5, false, false),
-                        new ClassProperty("u_upstream_subnet", 6, false, false),
                     }
                 },
             };
@@ -515,10 +526,8 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_beam_state", 2, true, false),
-                        new ClassProperty("u_active_beam", 3, true, false),
-                        new ClassProperty("u_switching_beam", 4, false, false),
+                        new ClassProperty("u_beam_state", 2, false, false),
+                        new ClassProperty("u_active_beam", 5, true, false),
                     }
                 },
             };
@@ -534,11 +543,8 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_beam_id", 2, false, false),
-                        new ClassProperty("u_beam_signaled_name", 3, false, false),
-                        new ClassProperty("u_beam_orbital_position", 4, false, false),
-                        new ClassProperty("u_beam_east_west_flag", 5, false, false),
+                        new ClassProperty("u_label", 14, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -555,16 +561,17 @@
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
-                {
-                    4300,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 19, false, false),
-                    }
-                },
+                //{
+                //    4300,
+                //    new List<ClassProperty>
+                //    {
+                //        new ClassProperty("pk", 0, false, false),
+                //        new ClassProperty("u_label", 19, false, false),
+                //    }
+                //},
             };
         }
 
@@ -579,40 +586,41 @@
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
-                {
-                    2100,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                    }
-                },
-                {
-                    4500,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 19, false, false),
-                    }
-                },
-                {
-                    4600,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                    }
-                },
-                {
-                    4700,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                    }
-                },
+                //{
+                //    2100,
+                //    new List<ClassProperty>
+                //    {
+                //        new ClassProperty("pk", 0, false, false),
+                //        new ClassProperty("u_label", 1, false, false),
+                //    }
+                //},
+                //{
+                //    4500,
+                //    new List<ClassProperty>
+                //    {
+                //        new ClassProperty("pk", 0, false, false),
+                //        new ClassProperty("u_label", 19, false, false),
+                //    }
+                //},
+                //{
+                //    4600,
+                //    new List<ClassProperty>
+                //    {
+                //        new ClassProperty("pk", 0, false, false),
+                //        new ClassProperty("u_label", 1, false, false),
+                //    }
+                //},
+                //{
+                //    4700,
+                //    new List<ClassProperty>
+                //    {
+                //        new ClassProperty("pk", 0, false, false),
+                //        new ClassProperty("u_label", 1, false, false),
+                //    }
+                //},
             };
         }
 
@@ -627,16 +635,17 @@
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
-                {
-                    6450,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 2, false, false),
-                    }
-                },
+                //{
+                //    6450,
+                //    new List<ClassProperty>
+                //    {
+                //        new ClassProperty("pk", 0, false, false),
+                //        new ClassProperty("u_label", 2, false, false),
+                //    }
+                //},
             };
         }
 
@@ -651,6 +660,7 @@
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -667,6 +677,7 @@
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 3, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -990,7 +1001,9 @@
             {
                 if (classAttribute.Name.Equals("pk")) continue;
 
-                propertiesByPK[pk].Add(new Property(classAttribute.Name, Class, Convert.ToString(row[classAttribute.ColumnIdx])));
+                string value = classAttribute.ColumnIdx >= 0 ? Convert.ToString(row[classAttribute.ColumnIdx]) : String.Empty;
+
+                propertiesByPK[pk].Add(new Property(classAttribute.Name, Class, value));
             }
         }
 
