@@ -560,18 +560,19 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
+                        new ClassProperty("u_label", -1, false, false),
+                        new ClassProperty("u_label_mcm7500", 1, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
-                //{
-                //    4300,
-                //    new List<ClassProperty>
-                //    {
-                //        new ClassProperty("pk", 0, false, false),
-                //        new ClassProperty("u_label", 19, false, false),
-                //    }
-                //},
+                {
+                    4300,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label_m6100", 19, false, false),
+                    }
+                },
             };
         }
 
@@ -585,42 +586,43 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
+                        new ClassProperty("u_label", -1, false, false),
+                        new ClassProperty("u_label_mcdmrc", 1, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
-                //{
-                //    2100,
-                //    new List<ClassProperty>
-                //    {
-                //        new ClassProperty("pk", 0, false, false),
-                //        new ClassProperty("u_label", 1, false, false),
-                //    }
-                //},
-                //{
-                //    4500,
-                //    new List<ClassProperty>
-                //    {
-                //        new ClassProperty("pk", 0, false, false),
-                //        new ClassProperty("u_label", 19, false, false),
-                //    }
-                //},
-                //{
-                //    4600,
-                //    new List<ClassProperty>
-                //    {
-                //        new ClassProperty("pk", 0, false, false),
-                //        new ClassProperty("u_label", 1, false, false),
-                //    }
-                //},
-                //{
-                //    4700,
-                //    new List<ClassProperty>
-                //    {
-                //        new ClassProperty("pk", 0, false, false),
-                //        new ClassProperty("u_label", 1, false, false),
-                //    }
-                //},
+                {
+                    2100,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label_mcd4cpm", 1, false, false),
+                    }
+                },
+                {
+                    4500,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label_mcd6000", 19, false, false),
+                    }
+                },
+                {
+                    4600,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label_mcdhrc", 1, false, false),
+                    }
+                },
+                {
+                    4700,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label_mcd7000", 1, false, false),
+                    }
+                },
             };
         }
 
@@ -634,18 +636,19 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
+                        new ClassProperty("u_label", -1, false, false),
+                        new ClassProperty("u_label_gen", 1, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
-                //{
-                //    6450,
-                //    new List<ClassProperty>
-                //    {
-                //        new ClassProperty("pk", 0, false, false),
-                //        new ClassProperty("u_label", 2, false, false),
-                //    }
-                //},
+                {
+                    6450,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label_rf", 2, false, false),
+                    }
+                },
             };
         }
 
@@ -681,6 +684,65 @@
                     }
                 },
             };
+        }
+
+        private static Dictionary<string, Action<List<Property>>> classLabelMapper;
+
+        /// <summary>
+        /// Data structure that provides the methods used to retrieve the label property value for given supported CI Classes
+        /// </summary>
+        public static Dictionary<string, Action<List<Property>>> ClassLabelMapper
+        {
+            get
+            {
+                if (classLabelMapper != null)
+                {
+                    return classLabelMapper;
+                }
+
+                classLabelMapper = new Dictionary<string, Action<List<Property>>>
+                {
+                    // TODO: Add class label mapping methods here
+                    // Dialog Infrastructure
+                    { "Dialog Modulator", GetDialogModulatorLabel },
+                    { "Dialog Demodulator", GetDialogDemodulatorLabel },
+                    { "Dialog Switch", GetDialogSwitchLabel },
+                };
+
+                return classLabelMapper;
+            }
+        }
+
+        private static void GetDialogModulatorLabel(List<Property> properties)
+        {
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            if (labelProperty == null) return;
+
+            var m6100LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_m6100"));
+
+            if (m6100LabelProperty != null && !String.IsNullOrWhiteSpace(m6100LabelProperty.Value))
+            {
+                labelProperty.Value = m6100LabelProperty.Value;
+                return;
+            }
+
+            var mcm7500LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcm7500"));
+
+            if (mcm7500LabelProperty != null && !String.IsNullOrWhiteSpace(mcm7500LabelProperty.Value))
+            {
+                labelProperty.Value = mcm7500LabelProperty.Value;
+            }
+        }
+
+        private static void GetDialogDemodulatorLabel(List<Property> properties)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void GetDialogSwitchLabel(List<Property> properties)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
