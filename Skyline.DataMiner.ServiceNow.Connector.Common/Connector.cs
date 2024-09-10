@@ -535,9 +535,9 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                     21000,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_beam_state", 2, false, false),
                         new ClassProperty("u_active_beam", 5, true, false),
+                        new ClassProperty("fk", 7, false, false),
                     }
                 },
             };
