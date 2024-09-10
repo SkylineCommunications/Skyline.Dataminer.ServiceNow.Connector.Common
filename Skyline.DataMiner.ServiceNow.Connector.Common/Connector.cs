@@ -1,4 +1,6 @@
-﻿namespace Skyline.DataMiner.ServiceNow.Connector.Common
+﻿using System.Collections.Generic;
+
+namespace Skyline.DataMiner.ServiceNow.Connector.Common
 {
     using System;
     using System.Collections.Generic;
@@ -637,7 +639,7 @@
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", -1, false, false),
-                        new ClassProperty("u_label_gen", 1, false, false),
+                        new ClassProperty("u_label_access", 1, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
@@ -737,12 +739,68 @@
 
         private static void GetDialogDemodulatorLabel(List<Property> properties)
         {
-            throw new NotImplementedException();
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            if (labelProperty == null) return;
+
+            var mcdMrcLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcdmrc"));
+
+            if (mcdMrcLabelProperty != null && !String.IsNullOrWhiteSpace(mcdMrcLabelProperty.Value))
+            {
+                labelProperty.Value = mcdMrcLabelProperty.Value;
+                return;
+            }
+
+            var mcm4CpmLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcd4cpm"));
+
+            if (mcm4CpmLabelProperty != null && !String.IsNullOrWhiteSpace(mcm4CpmLabelProperty.Value))
+            {
+                labelProperty.Value = mcm4CpmLabelProperty.Value;
+            }
+
+            var mcd6000LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcd6000"));
+
+            if (mcd6000LabelProperty != null && !String.IsNullOrWhiteSpace(mcd6000LabelProperty.Value))
+            {
+                labelProperty.Value = mcd6000LabelProperty.Value;
+                return;
+            }
+
+            var mcdHrcLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcdhrc"));
+
+            if (mcdHrcLabelProperty != null && !String.IsNullOrWhiteSpace(mcdHrcLabelProperty.Value))
+            {
+                labelProperty.Value = mcdHrcLabelProperty.Value;
+            }
+
+            var mcd7000LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcd7000"));
+
+            if (mcd7000LabelProperty != null && !String.IsNullOrWhiteSpace(mcd7000LabelProperty.Value))
+            {
+                labelProperty.Value = mcd7000LabelProperty.Value;
+            }
         }
 
         private static void GetDialogSwitchLabel(List<Property> properties)
         {
-            throw new NotImplementedException();
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            if (labelProperty == null) return;
+
+            var accessSwitchLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_access"));
+
+            if (accessSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(accessSwitchLabelProperty.Value))
+            {
+                labelProperty.Value = accessSwitchLabelProperty.Value;
+                return;
+            }
+
+            var rfSwitchLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_rf"));
+
+            if (rfSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(rfSwitchLabelProperty.Value))
+            {
+                labelProperty.Value = rfSwitchLabelProperty.Value;
+            }
         }
 
         /// <summary>
