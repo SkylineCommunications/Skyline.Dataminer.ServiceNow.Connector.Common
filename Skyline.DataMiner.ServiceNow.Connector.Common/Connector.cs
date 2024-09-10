@@ -198,7 +198,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Satellite Network",
                                         TargetTable = "u_cmdb_ci_dialog_satellite_network",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Satellite Network"].Invoke(),
                                     },
                                 },
@@ -505,24 +505,32 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             {
                 //  TODO: Add attributes here
                 {
-                    12000,
+                    12500,
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 7, false, false),
+                        new ClassProperty("u_label", 11, false, false),
                         new ClassProperty("u_modem_name", 1, false, false),
                         new ClassProperty("u_modem_type", 2, false, false),
                         new ClassProperty("u_return_technology", 3, false, false),
                         new ClassProperty("u_mac_address", 4, false, false),
                         new ClassProperty("u_monitoring_type", 5, false, false),
-                        new ClassProperty("u_network_name", 6, false, false),
-                        new ClassProperty("u_network_config", 8, false, false),
-                        new ClassProperty("u_sw_version", 9, false, false),
-                        new ClassProperty("u_last_network_config", 10, false, false),
-                        new ClassProperty("u_status", 149, true, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
+                //{
+                //    12700,
+                //    new List<ClassProperty>
+                //    {
+                //        new ClassProperty("pk", 0, false, false),
+                //        new ClassProperty("u_network_name", 6, false, false),
+                //        new ClassProperty("u_network_config", 8, false, false),
+                //        new ClassProperty("u_sw_version", 9, false, false),
+                //        new ClassProperty("u_last_network_config", 10, false, false),
+                //        new ClassProperty("u_status", 149, true, false),
+                //        new ClassProperty("u_nms_name", -1, false, false),
+                //    }
+                //},
                 {
                     21000,
                     new List<ClassProperty>
@@ -992,6 +1000,15 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             foreach (var item in propertiesByPK)
             {
                 // TODO: Add support for CI discovery using External CI property values
+                var propertyValues = item.Value;
+
+                var labelProperty = propertyValues.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+                if (labelProperty != null && String.IsNullOrWhiteSpace(labelProperty.Value) && ClassLabelMapper.ContainsKey(Class))
+                {
+                    // Get label property (required for classes supporting multiple device types)
+                    ClassLabelMapper[Class].Invoke(propertyValues);
+                }
 
                 var uniqueID = GetCiRowUniqueID(engine, item.Key, item.Value, element.ElementName);
 
@@ -1002,29 +1019,27 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                     continue;
                 }
 
-                var propertyList = item.Value;
-
                 if (propertiesByUniqueID.ContainsKey(uniqueID)) continue;
 
-                propertyList.Add(new Property("name", Class, uniqueID));
-                propertyList.Add(new Property("operational_status", Class, "Operational"));
+                propertyValues.Add(new Property("name", Class, uniqueID));
+                propertyValues.Add(new Property("operational_status", Class, "Operational"));
 
-                propertiesByUniqueID.Add(uniqueID, propertyList);
+                propertiesByUniqueID.Add(uniqueID, propertyValues);
 
                 if (!propertiesByFK.ContainsKey(item.Key)) continue;
 
                 var propertiesValuesByAttributeName = propertiesByFK[item.Key];
 
-                propertyList = propertiesValuesByAttributeName.Select(kvp => new Property(kvp.Key, Class, String.Join(";", kvp.Value))).ToList();
+                propertyValues = propertiesValuesByAttributeName.Select(kvp => new Property(kvp.Key, Class, String.Join(";", kvp.Value))).ToList();
 
-                engine.GenerateInformation("GetPropertiesByCiUniqueID| Property List:\n\n" + JsonConvert.SerializeObject(propertyList) + "\n\n");
+                engine.GenerateInformation("GetPropertiesByCiUniqueID| Property List:\n\n" + JsonConvert.SerializeObject(propertyValues) + "\n\n");
 
                 if (!propertiesByUniqueID.ContainsKey(uniqueID))
                 {
                     propertiesByUniqueID.Add(uniqueID, new List<Property>());
                 }
 
-                propertiesByUniqueID[uniqueID].AddRange(propertyList);
+                propertiesByUniqueID[uniqueID].AddRange(propertyValues);
             }
 
             return propertiesByUniqueID;
