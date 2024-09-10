@@ -545,7 +545,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 14, false, false),
+                        new ClassProperty("u_label", 18, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
