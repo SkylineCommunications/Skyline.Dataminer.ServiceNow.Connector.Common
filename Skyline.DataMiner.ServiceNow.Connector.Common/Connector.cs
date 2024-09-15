@@ -225,7 +225,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         TargetTable = "u_cmdb_ci_dialog_hub",
                                         IsParent = true,
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
-                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
+                                        AttributesByTableID = ClassPropertiesMapper["Dialog Hub"].Invoke(),
                                     },
                                     new ClassMapping
                                     {
@@ -240,7 +240,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Demodulator",
                                         TargetTable = "u_cmdb_ci_dialog_demodulator",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new ExternalPropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Demodulator"].Invoke(),
                                     },
                                     new ClassMapping
@@ -253,20 +253,20 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                     },
                                     new ClassMapping
                                     {
-                                        Class = "Dialog MS Server",
-                                        TargetTable = "u_cmdb_ci_dialog_microsoft_server",
-                                        IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
-                                        AttributesByTableID = ClassPropertiesMapper["Dialog MS Server"].Invoke(),
-                                    },
-                                    new ClassMapping
-                                    {
                                         Class = "Dialog Linux Server",
                                         TargetTable = "u_cmdb_ci_dialog_linux_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new ExternalPropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
                                     },
+                                    //new ClassMapping
+                                    //{
+                                    //    Class = "Dialog MS Server",
+                                    //    TargetTable = "u_cmdb_ci_dialog_microsoft_server",
+                                    //    IsParent = false,
+                                    //    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                    //    AttributesByTableID = ClassPropertiesMapper["Dialog MS Server"].Invoke(),
+                                    //},
                                     //new ClassMapping
                                     //{
                                     //    Class = "Dialog Application",
@@ -282,13 +282,12 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                     new Relationship("Dialog Hub", "Dialog Modulator", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Demodulator", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Switch", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Hub", "Dialog Microsoft Server", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Linux Server", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<string> { "u_label" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Demodulator", "Dialog Switch", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
                                     // TODO: External CI Relationships:
-                                    //new Relationship("Dialog Hub", "Dialog Satellite Network", new List<string> { "u_nms_name" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
-                                    //new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
+                                    new Relationship("Dialog Hub", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
                                 }),
                         }
                     },
@@ -327,6 +326,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                     { "Dialog Remote", GetDialogRemoteClassProperties },
                     { "Dialog Satellite Network", GetDialogSatelliteNetworkClassProperties },
                     // Dialog Infrastructure
+                    { "Dialog Hub", GetDialogHubClassProperties },
                     { "Dialog Modulator", GetDialogModulatorClassProperties },
                     { "Dialog Demodulator", GetDialogDemodulatorClassProperties },
                     { "Dialog Switch", GetDialogSwitchClassProperties },
@@ -494,6 +494,33 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
                         new ClassProperty("u_ppb_network_id", 2, false, false),
+                    }
+                },
+            };
+        }
+
+        private static Dictionary<int, List<ClassProperty>> GetDialogHubClassProperties()
+        {
+            return new Dictionary<int, List<ClassProperty>>
+            {
+                //  TODO: Add attributes here
+                {
+                    2800,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label", 2, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
+                    }
+                },
+                {
+                    3100,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("fk", 2, false, false),
+                        new ClassProperty("u_device_name", 4, false, false),
+                        new ClassProperty("u_hps", 6, false, false),
+                        new ClassProperty("u_role_id", 7, false, false),
                     }
                 },
             };
@@ -685,11 +712,11 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             {
                 //  TODO: Add attributes here
                 {
-                    4230,
+                    14400,
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 3, false, false),
+                        new ClassProperty("u_label", 4, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
@@ -943,7 +970,8 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                 ciUniqueIdFunctionMapper = new Dictionary<string, Func<Engine, List<Property>, string, string>>
                 {
                     //  TODO: Add methods used to build CIs using custom methods
-                    //{ "Evolution Chassis", GetEvolutionChassisUniqueID },
+                    { "Dialog Demodulator", GetDialogDemodulatorUniqueID },
+                    { "Dialog Linux Server", GetDialogLinuxServerUniqueID },
                 };
 
                 return ciUniqueIdFunctionMapper;
@@ -1375,6 +1403,46 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                     engine.GenerateInformation("GetInstanceUniqueID| Unsupported naming format.");
                     return String.Empty;
             }
+        }
+
+        ///// <summary>
+        ///// Method used to retrieve the unique ID of a given Dialog Demodulator instance.
+        ///// </summary>
+        ///// <param name="engine"></param>
+        ///// <param name="properties"></param>
+        ///// <param name="pk"></param>
+        ///// <returns>Remote instance unique ID.</returns>
+        private string GetDialogDemodulatorUniqueID(Engine engine, List<Property> properties, string pk)
+        {
+            engine.GenerateInformation("GetDialogDemodulatorUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            var roleIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_role_id"));
+
+            var hpsProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hps"));
+
+            return labelProperty != null && roleIdProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(roleIdProperty.Value)
+                ? roleIdProperty.Value + "." + labelProperty.Value : String.Empty;
+        }
+
+        ///// <summary>
+        ///// Method used to retrieve the unique ID of a given Dialog Demodulator instance.
+        ///// </summary>
+        ///// <param name="engine"></param>
+        ///// <param name="properties"></param>
+        ///// <param name="pk"></param>
+        ///// <returns>Remote instance unique ID.</returns>
+        private string GetDialogLinuxServerUniqueID(Engine engine, List<Property> properties, string pk)
+        {
+            engine.GenerateInformation("GetDialogLinuxServerUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            var deviceNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_device_name"));
+
+            return labelProperty != null && deviceNameProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(deviceNameProperty.Value)
+                ? deviceNameProperty.Value + "." + labelProperty.Value : String.Empty;
         }
 
         ///// <summary>
