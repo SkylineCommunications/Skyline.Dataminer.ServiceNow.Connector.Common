@@ -1414,7 +1414,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         ///// <returns>Remote instance unique ID.</returns>
         private string GetDialogDemodulatorUniqueID(Engine engine, List<Property> properties, string pk)
         {
-            engine.GenerateInformation("GetDialogDemodulatorUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+            engine.GenerateInformation("GetDialogDemodulatorUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
 
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
@@ -1435,7 +1435,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         ///// <returns>Remote instance unique ID.</returns>
         private string GetDialogLinuxServerUniqueID(Engine engine, List<Property> properties, string pk)
         {
-            engine.GenerateInformation("GetDialogLinuxServerUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+            engine.GenerateInformation("GetDialogLinuxServerUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
 
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
