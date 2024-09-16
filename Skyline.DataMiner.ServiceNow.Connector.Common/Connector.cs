@@ -955,7 +955,6 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
     public class ClassMapping
     {
         // TODO: Add support for CI discovery using External CI property values
-
         private Dictionary<string, Func<Engine, List<Property>, string, string>> ciUniqueIdFunctionMapper;
 
         public Dictionary<string, Func<Engine, List<Property>, string, string>> CiUniqueIdFunctionMapper
