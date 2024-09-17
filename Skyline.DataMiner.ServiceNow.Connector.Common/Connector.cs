@@ -6,8 +6,6 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
     using System.Collections.Generic;
     using System.Linq;
     using global::Skyline.DataMiner.Automation;
-    using global::Skyline.DataMiner.Core.DataMinerSystem.Automation;
-    using global::Skyline.DataMiner.Core.DataMinerSystem.Common;
     using Newtonsoft.Json;
     using static Skyline.DataMiner.ServiceNow.Connector.Common.Connector;
 
@@ -282,12 +280,14 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                     new Relationship("Dialog Hub", "Dialog Modulator", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Demodulator", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Switch", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Hub", "Dialog Linux Server", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<string> { "u_label" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
+                                    new Relationship("Dialog Hub", "Dialog Linux Server", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Dialog Satellite Network", "Dialog Hub", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<string> { "u_hps_id", "u_dp_id", "u_role_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Demodulator", "Dialog Switch", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
-                                    // TODO: External CI Relationships:
-                                    new Relationship("Dialog Hub", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog Modulator", new List<string> { "u_hps_id", "u_dp_id", "u_role_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
+                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
                                 }),
                         }
                     },
@@ -461,6 +461,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
                         new ClassProperty("u_network_id", 2, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -477,6 +478,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 30, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -494,6 +496,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
                         new ClassProperty("u_ppb_network_id", 2, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -511,16 +514,6 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 2, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
-                    }
-                },
-                {
-                    3100,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("fk", 2, false, false),
-                        new ClassProperty("u_device_name", 4, false, false),
-                        new ClassProperty("u_hps", 6, false, false),
-                        new ClassProperty("u_role_id", 7, false, false),
                     }
                 },
             };
@@ -599,8 +592,26 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", -1, false, false),
                         new ClassProperty("u_label_device", 4, false, false),
-                        new ClassProperty("u_hps", 7, false, false),
+                        new ClassProperty("u_hps_id", 7, false, false),
                         new ClassProperty("u_role_id", 8, false, false),
+                        new ClassProperty("u_dp_id", 9, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
+                    }
+                },
+                {
+                    2300,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label_mcm7500", 2, false, false),
+                    }
+                },
+                {
+                    4300,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label_m6100", 2, false, false),
                     }
                 },
             };
@@ -618,8 +629,9 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", -1, false, false),
                         new ClassProperty("u_label_device", 4, false, false),
-                        new ClassProperty("u_hps", 7, false, false),
+                        new ClassProperty("u_hps_id", 7, false, false),
                         new ClassProperty("u_role_id", 8, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -690,7 +702,6 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("fk", 3, false, false),
                         new ClassProperty("u_label", 4, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -735,10 +746,62 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             {
                 var labelParts = deviceLabelProperty.Value.Split('.');
 
-                if (labelParts.Length < 2 && (className.Equals("Dialog Modulator") && labelParts[2].Contains("MOD-") || className.Equals("Dialog Demodulator") && !labelParts[2].Contains("MOD-")))
+                if (labelParts.Length < 3 && (className.Equals("Dialog Modulator") && labelParts[2].Contains("MOD-") || className.Equals("Dialog Demodulator") && !labelParts[2].Contains("MOD-")))
                 {
                     labelProperty.Value = deviceLabelProperty.Value;
+                    return;
                 }
+            }
+
+            var modulatorLabel = String.Empty;
+
+            var mcm7500LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcm7500"));
+            var mcm6100LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_m6100"));
+
+            if (mcm7500LabelProperty != null && !String.IsNullOrWhiteSpace(mcm7500LabelProperty.Value))
+            {
+                modulatorLabel = mcm7500LabelProperty.Value;
+            }
+
+            if (mcm6100LabelProperty != null && !String.IsNullOrWhiteSpace(mcm6100LabelProperty.Value))
+            {
+                modulatorLabel = mcm6100LabelProperty.Value;
+            }
+
+            if (String.IsNullOrWhiteSpace(modulatorLabel)) return;
+
+            var modulatorLabelParts = modulatorLabel.Split('[');
+
+            if (modulatorLabelParts.Length < 2) return;
+
+            var roleIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_role_id"));
+
+            modulatorLabel = modulatorLabelParts[0].Trim();
+            labelProperty.Value = modulatorLabel;
+
+            if (roleIdProperty != null && !String.IsNullOrWhiteSpace(modulatorLabelParts[0]))
+            {
+                var redundancyStatus = modulatorLabelParts[1].Replace("]", String.Empty);
+
+                roleIdProperty.Value = redundancyStatus.Equals("Active") ? "1" : "2";
+            }
+
+            modulatorLabelParts = modulatorLabel.Split('.');
+
+            if (modulatorLabelParts.Length < 4) return;
+
+            var hpsIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hps_id"));
+
+            if (hpsIdProperty != null)
+            {
+                hpsIdProperty.Value = modulatorLabelParts[1].Replace("HPS-", String.Empty);
+            }
+
+            var poolIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_pool_id"));
+
+            if (poolIdProperty != null)
+            {
+                poolIdProperty.Value = modulatorLabelParts[2].Replace("DP-", String.Empty);
             }
         }
 
@@ -895,7 +958,6 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                 ciUniqueIdFunctionMapper = new Dictionary<string, Func<Engine, List<Property>, string, string>>
                 {
                     //  TODO: Add methods used to build CIs using custom methods
-                    //{ "Dialog Demodulator", GetDialogDemodulatorUniqueID },
                     { "Dialog Linux Server", GetDialogLinuxServerUniqueID },
                 };
 
