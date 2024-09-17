@@ -256,25 +256,25 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Linux Server",
                                         TargetTable = "u_cmdb_ci_dialog_linux_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new ExternalPropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_label" }, new ExternalPropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
                                     },
-                                    //new ClassMapping
-                                    //{
-                                    //    Class = "Dialog MS Server",
-                                    //    TargetTable = "u_cmdb_ci_dialog_microsoft_server",
-                                    //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = ClassPropertiesMapper["Dialog MS Server"].Invoke(),
-                                    //},
-                                    //new ClassMapping
-                                    //{
-                                    //    Class = "Dialog Application",
-                                    //    TargetTable = "u_cmdb_ci_dialog_application",
-                                    //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
-                                    //},
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog MS Server",
+                                        TargetTable = "u_cmdb_ci_dialog_microsoft_server",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        AttributesByTableID = ClassPropertiesMapper["Dialog MS Server"].Invoke(),
+                                    },
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog Application",
+                                        TargetTable = "u_cmdb_ci_dialog_application",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
+                                    },
                                 },
                                 new List<Relationship>
                                 {
@@ -593,21 +593,14 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             {
                 //  TODO: Add attributes here
                 {
-                    2300,
+                    3100,
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", -1, false, false),
-                        new ClassProperty("u_label_mcm7500", 1, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
-                    }
-                },
-                {
-                    4300,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label_m6100", 19, false, false),
+                        new ClassProperty("u_label_device", 4, false, false),
+                        new ClassProperty("u_hps", 7, false, false),
+                        new ClassProperty("u_role_id", 8, false, false),
                     }
                 },
             };
@@ -619,45 +612,14 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             {
                 //  TODO: Add attributes here
                 {
-                    2000,
+                    3100,
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", -1, false, false),
-                        new ClassProperty("u_label_mcdmrc", 1, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
-                    }
-                },
-                {
-                    2100,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label_mcd4cpm", 1, false, false),
-                    }
-                },
-                {
-                    4500,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label_mcd6000", 19, false, false),
-                    }
-                },
-                {
-                    4600,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label_mcdhrc", 1, false, false),
-                    }
-                },
-                {
-                    4700,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label_mcd7000", 1, false, false),
+                        new ClassProperty("u_label_device", 4, false, false),
+                        new ClassProperty("u_hps", 7, false, false),
+                        new ClassProperty("u_role_id", 8, false, false),
                     }
                 },
             };
@@ -712,10 +674,21 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             {
                 //  TODO: Add attributes here
                 {
+                    13000,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("fk", 3, false, false),
+                        new ClassProperty("u_label", 4, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
+                    }
+                },
+                {
                     14400,
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("fk", 3, false, false),
                         new ClassProperty("u_label", 4, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
@@ -723,12 +696,12 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             };
         }
 
-        private static Dictionary<string, Action<List<Property>>> classLabelMapper;
+        private static Dictionary<string, Action<string, List<Property>>> classLabelMapper;
 
         /// <summary>
         /// Data structure that provides the methods used to retrieve the label property value for given supported CI Classes
         /// </summary>
-        public static Dictionary<string, Action<List<Property>>> ClassLabelMapper
+        public static Dictionary<string, Action<string, List<Property>>> ClassLabelMapper
         {
             get
             {
@@ -737,12 +710,12 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                     return classLabelMapper;
                 }
 
-                classLabelMapper = new Dictionary<string, Action<List<Property>>>
+                classLabelMapper = new Dictionary<string, Action<string, List<Property>>>
                 {
                     // TODO: Add class label mapping methods here
                     // Dialog Infrastructure
-                    { "Dialog Modulator", GetDialogModulatorLabel },
-                    { "Dialog Demodulator", GetDialogDemodulatorLabel },
+                    { "Dialog Modulator", GetDialogModDemodLabel },
+                    { "Dialog Demodulator", GetDialogModDemodLabel },
                     { "Dialog Switch", GetDialogSwitchLabel },
                 };
 
@@ -750,73 +723,26 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             }
         }
 
-        private static void GetDialogModulatorLabel(List<Property> properties)
+        private static void GetDialogModDemodLabel(string className, List<Property> properties)
         {
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
             if (labelProperty == null) return;
 
-            var m6100LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_m6100"));
+            var deviceLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_device"));
 
-            if (m6100LabelProperty != null && !String.IsNullOrWhiteSpace(m6100LabelProperty.Value))
+            if (deviceLabelProperty != null && !String.IsNullOrWhiteSpace(deviceLabelProperty.Value))
             {
-                labelProperty.Value = m6100LabelProperty.Value;
-                return;
-            }
+                var labelParts = deviceLabelProperty.Value.Split('.');
 
-            var mcm7500LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcm7500"));
-
-            if (mcm7500LabelProperty != null && !String.IsNullOrWhiteSpace(mcm7500LabelProperty.Value))
-            {
-                labelProperty.Value = mcm7500LabelProperty.Value;
+                if (labelParts.Length < 2 && (className.Equals("Dialog Modulator") && labelParts[2].Contains("MOD-") || className.Equals("Dialog Demodulator") && !labelParts[2].Contains("MOD-")))
+                {
+                    labelProperty.Value = deviceLabelProperty.Value;
+                }
             }
         }
 
-        private static void GetDialogDemodulatorLabel(List<Property> properties)
-        {
-            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-            if (labelProperty == null) return;
-
-            var mcdMrcLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcdmrc"));
-
-            if (mcdMrcLabelProperty != null && !String.IsNullOrWhiteSpace(mcdMrcLabelProperty.Value))
-            {
-                labelProperty.Value = mcdMrcLabelProperty.Value;
-                return;
-            }
-
-            var mcm4CpmLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcd4cpm"));
-
-            if (mcm4CpmLabelProperty != null && !String.IsNullOrWhiteSpace(mcm4CpmLabelProperty.Value))
-            {
-                labelProperty.Value = mcm4CpmLabelProperty.Value;
-            }
-
-            var mcd6000LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcd6000"));
-
-            if (mcd6000LabelProperty != null && !String.IsNullOrWhiteSpace(mcd6000LabelProperty.Value))
-            {
-                labelProperty.Value = mcd6000LabelProperty.Value;
-                return;
-            }
-
-            var mcdHrcLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcdhrc"));
-
-            if (mcdHrcLabelProperty != null && !String.IsNullOrWhiteSpace(mcdHrcLabelProperty.Value))
-            {
-                labelProperty.Value = mcdHrcLabelProperty.Value;
-            }
-
-            var mcd7000LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcd7000"));
-
-            if (mcd7000LabelProperty != null && !String.IsNullOrWhiteSpace(mcd7000LabelProperty.Value))
-            {
-                labelProperty.Value = mcd7000LabelProperty.Value;
-            }
-        }
-
-        private static void GetDialogSwitchLabel(List<Property> properties)
+        private static void GetDialogSwitchLabel(string className, List<Property> properties)
         {
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
@@ -969,7 +895,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                 ciUniqueIdFunctionMapper = new Dictionary<string, Func<Engine, List<Property>, string, string>>
                 {
                     //  TODO: Add methods used to build CIs using custom methods
-                    { "Dialog Demodulator", GetDialogDemodulatorUniqueID },
+                    //{ "Dialog Demodulator", GetDialogDemodulatorUniqueID },
                     { "Dialog Linux Server", GetDialogLinuxServerUniqueID },
                 };
 
@@ -1001,237 +927,6 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         /// Specifies the details necessary to retrieve the mapped class attributes from the corresponding Dataminer elements.
         /// </summary>
         public Dictionary<int, List<ClassProperty>> AttributesByTableID { get; set; }
-
-        /// <summary>
-        /// Method used to retrieve parsed property values organized by instance unique ID.
-        /// </summary>
-        /// <param name="engine"></param>
-        /// <param name="element"></param>
-        /// <returns>Dictionary containing a list of properties objects by unique id.</returns>
-        public Dictionary<string, List<Property>> GetPropertiesByCiUniqueID(IEngine engine, Element element)
-        {
-            var propertiesByPK = new Dictionary<string, List<Property>>();
-            var propertiesByFK = new Dictionary<string, Dictionary<string, List<string>>>();
-
-            var rowsByTableID = AttributesByTableID.ToDictionary(x => x.Key, x => GetClassCiRows(engine, element, x.Key));
-
-            foreach (var rowByTableKvp in rowsByTableID)
-            {
-                if (rowsByTableID.Values.Count == 0) continue;
-
-                ParseRowProperties(propertiesByPK, propertiesByFK, rowByTableKvp);
-            }
-
-            var propertiesByUniqueID = new Dictionary<string, List<Property>>();
-
-            foreach (var item in propertiesByPK)
-            {
-                // TODO: Add support for CI discovery using External CI property values
-                var propertyValues = item.Value;
-
-                var labelProperty = propertyValues.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-                if (labelProperty != null && String.IsNullOrWhiteSpace(labelProperty.Value) && ClassLabelMapper.ContainsKey(Class))
-                {
-                    // Get label property (required for classes supporting multiple device types)
-                    ClassLabelMapper[Class].Invoke(propertyValues);
-                }
-
-                var uniqueID = GetCiRowUniqueID(engine, item.Key, item.Value, element.ElementName);
-
-                if (String.IsNullOrWhiteSpace(uniqueID))
-                {
-                    string message = "GetPropertiesByCiUniqueID| Could not retrieve unique ID for key " + item.Key + " and element '" + element.ElementName + "'.";
-                    engine.GenerateInformation(message);
-                    continue;
-                }
-
-                if (propertiesByUniqueID.ContainsKey(uniqueID)) continue;
-
-                propertyValues.Add(new Property("name", Class, uniqueID));
-                propertyValues.Add(new Property("operational_status", Class, "Operational"));
-
-                propertiesByUniqueID.Add(uniqueID, propertyValues);
-
-                if (!propertiesByFK.ContainsKey(item.Key)) continue;
-
-                var propertiesValuesByAttributeName = propertiesByFK[item.Key];
-
-                propertyValues = propertiesValuesByAttributeName.Select(kvp => new Property(kvp.Key, Class, String.Join(";", kvp.Value))).ToList();
-
-                engine.GenerateInformation("GetPropertiesByCiUniqueID| Property List:\n\n" + JsonConvert.SerializeObject(propertyValues) + "\n\n");
-
-                if (!propertiesByUniqueID.ContainsKey(uniqueID))
-                {
-                    propertiesByUniqueID.Add(uniqueID, new List<Property>());
-                }
-
-                propertiesByUniqueID[uniqueID].AddRange(propertyValues);
-            }
-
-            return propertiesByUniqueID;
-        }
-
-        /// <summary>
-        /// Method used to retrieve a list of rows containing data related to CIs of a given Class.
-        /// </summary>
-        /// <param name="engine"></param>
-        /// <param name="element"></param>
-        /// <param name="tablePid"></param>
-        /// <returns>Dictionary containing a list of properties objects by unique id.</returns>
-        private static List<object[]> GetClassCiRows(IEngine engine, Element element, int tablePid)
-        {
-            try
-            {
-                var dms = engine.GetDms();
-
-                var dmsElement = dms.GetElement(new DmsElementId(element.DmaId, element.ElementId));
-
-                var dmsTable = dmsElement.GetTable(tablePid);
-
-                var table = dmsTable.GetRows();
-
-                return GetRowList(table);
-            }
-            catch (ElementStoppedException)
-            {
-                engine.GenerateInformation("GetClassCiRows| Element '" + element.Name + "' is stopped.");
-                return new List<object[]>();
-            }
-            catch (Exception ex)
-            {
-                engine.Log("GetClassCiRows| Exception:\n\n" + ex + "\n\n");
-                return new List<object[]>();
-            }
-        }
-
-        private static List<object[]> GetRowList(object[][] table)
-        {
-            var rowList = new List<object[]>();
-
-            for (int i = 0; i < table.Length; i++)
-            {
-                rowList.Add(table[i]);
-            }
-
-            return rowList;
-        }
-
-        private void ParseRowProperties(Dictionary<string, List<Property>> propertiesByPK, Dictionary<string, Dictionary<string, List<string>>> propertiesByFK, KeyValuePair<int, List<object[]>> rowByTableKvp)
-        {
-            int tablePid = rowByTableKvp.Key;
-            var rows = rowByTableKvp.Value;
-
-            var primaryKeyAttribute = AttributesByTableID[tablePid].FirstOrDefault(x => x.Name.Equals("pk"));
-            var foreignKeyAttribute = AttributesByTableID[tablePid].FirstOrDefault(x => x.Name.Equals("fk"));
-
-            foreach (var row in rows)
-            {
-                if (primaryKeyAttribute != null)
-                {
-                    ParsePropertiesByRowPK(propertiesByPK, tablePid, primaryKeyAttribute, row);
-                }
-
-                if (foreignKeyAttribute != null)
-                {
-                    var fk = Convert.ToString(row[foreignKeyAttribute.ColumnIdx]);
-
-                    if (String.IsNullOrWhiteSpace(fk) || fk.Equals("-1") || fk.Equals("NA")) continue;
-
-                    if (!propertiesByFK.ContainsKey(fk))
-                    {
-                        propertiesByFK.Add(fk, new Dictionary<string, List<string>>());
-                    }
-
-                    ParsePropertiesByRowFK(propertiesByFK[fk], row, tablePid);
-                }
-            }
-        }
-
-        private void ParsePropertiesByRowPK(Dictionary<string, List<Property>> propertiesByPK, int tablePid, ClassProperty primaryKeyAttribute, object[] row)
-        {
-            var pk = Convert.ToString(row[primaryKeyAttribute.ColumnIdx]);
-
-            if (String.IsNullOrWhiteSpace(pk) || pk.Equals("-1") || pk.Equals("NA")) return;
-
-            if (!propertiesByPK.ContainsKey(pk))
-            {
-                propertiesByPK.Add(pk, new List<Property>());
-            }
-
-            foreach (var classAttribute in AttributesByTableID[tablePid])
-            {
-                if (classAttribute.Name.Equals("pk")) continue;
-
-                string value = classAttribute.ColumnIdx >= 0 ? Convert.ToString(row[classAttribute.ColumnIdx]) : String.Empty;
-
-                propertiesByPK[pk].Add(new Property(classAttribute.Name, Class, value));
-            }
-        }
-
-        private void ParsePropertiesByRowFK(Dictionary<string, List<string>> propertiesValuesByAttributeName, object[] row, int tablePid)
-        {
-            foreach (var classAttribute in AttributesByTableID[tablePid])
-            {
-                if (classAttribute.Name.Equals("fk")) continue;
-
-                if (propertiesValuesByAttributeName.ContainsKey(classAttribute.Name))
-                {
-                    propertiesValuesByAttributeName[classAttribute.Name].Add(Convert.ToString(row[classAttribute.ColumnIdx]));
-                }
-                else
-                {
-                    propertiesValuesByAttributeName.Add(classAttribute.Name, new List<string> { Convert.ToString(row[classAttribute.ColumnIdx]) });
-                }
-            }
-        }
-
-        private string GetCiRowUniqueID(IEngine engine, string pk, List<Property> properties, string parentElementName)
-        {
-            if (String.IsNullOrWhiteSpace(parentElementName))
-            {
-                engine.GenerateInformation("GetCiRowUniqueID| Empty parent element name.");
-                return String.Empty;
-            }
-
-            switch (NamingDetails.Format)
-            {
-                case NamingFormat.PrimaryKey:
-                    {
-                        return !String.IsNullOrWhiteSpace(pk) ? parentElementName + "." + pk : String.Empty;
-                    }
-
-                case NamingFormat.PrimaryKey_Label:
-                    {
-                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + pk + "." + labelProperty.Value : String.Empty;
-                    }
-
-                case NamingFormat.Label:
-                    {
-                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value : String.Empty;
-                    }
-
-                case NamingFormat.Label_PrimaryKey:
-                    {
-                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value + "." + pk : String.Empty;
-                    }
-
-                case NamingFormat.Custom:
-                    {
-                        return parentElementName + "." + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
-                    }
-
-                default:
-                    engine.GenerateInformation("GetCiRowUniqueID| Unsupported naming format.");
-                    return String.Empty;
-            }
-        }
 
         /// <summary>
         /// Method used to retrieve supported connector table values that should be sent into the update solution push request.
@@ -1352,10 +1047,64 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         /// <param name="engine"></param>
         /// <param name="parentElementName"></param>
         /// <param name="pk"></param>
+        /// <returns>Instance unique ID.</returns>
+        public string GetUniqueID(IEngine engine, string pk, List<Property> properties, string parentElementName)
+        {
+            if (String.IsNullOrWhiteSpace(parentElementName))
+            {
+                engine.GenerateInformation("GetCiRowUniqueID| Empty parent element name.");
+                return String.Empty;
+            }
+
+            switch (NamingDetails.Format)
+            {
+                case NamingFormat.PrimaryKey:
+                    {
+                        return !String.IsNullOrWhiteSpace(pk) ? parentElementName + "." + pk : String.Empty;
+                    }
+
+                case NamingFormat.PrimaryKey_Label:
+                    {
+                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + pk + "." + labelProperty.Value : String.Empty;
+                    }
+
+                case NamingFormat.Label:
+                    {
+                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value : String.Empty;
+                    }
+
+                case NamingFormat.Label_PrimaryKey:
+                    {
+                        var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value + "." + pk : String.Empty;
+                    }
+
+                case NamingFormat.Custom:
+                    {
+                        return parentElementName + "." + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
+                    }
+
+                default:
+                    engine.GenerateInformation("GetCiRowUniqueID| Unsupported naming format.");
+                    return String.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Method used to retrieve the unique ID of a given instance.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="parentElementName"></param>
+        /// <param name="pk"></param>
         /// <param name="classNamingFormat"></param>
         /// <param name="parameterDetails"></param>
         /// <returns>Instance unique ID.</returns>
-        public string GetInstanceUniqueID(IEngine engine, string parentElementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
+        public string GetUniqueID(IEngine engine, string parentElementName, string pk, NamingFormat classNamingFormat, List<ParameterDetails> parameterDetails)
         {
             if (String.IsNullOrWhiteSpace(parentElementName))
             {
@@ -1411,37 +1160,16 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         ///// <param name="properties"></param>
         ///// <param name="pk"></param>
         ///// <returns>Remote instance unique ID.</returns>
-        private string GetDialogDemodulatorUniqueID(Engine engine, List<Property> properties, string pk)
-        {
-            engine.GenerateInformation("GetDialogDemodulatorUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
-
-            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-            var roleIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_role_id"));
-
-            var hpsProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hps"));
-
-            return labelProperty != null && roleIdProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(roleIdProperty.Value)
-                ? roleIdProperty.Value + "." + labelProperty.Value : String.Empty;
-        }
-
-        ///// <summary>
-        ///// Method used to retrieve the unique ID of a given Dialog Demodulator instance.
-        ///// </summary>
-        ///// <param name="engine"></param>
-        ///// <param name="properties"></param>
-        ///// <param name="pk"></param>
-        ///// <returns>Remote instance unique ID.</returns>
         private string GetDialogLinuxServerUniqueID(Engine engine, List<Property> properties, string pk)
         {
             engine.GenerateInformation("GetDialogLinuxServerUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
 
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-            var deviceNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_device_name"));
+            var hubNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_name"));
 
-            return labelProperty != null && deviceNameProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(deviceNameProperty.Value)
-                ? deviceNameProperty.Value + "." + labelProperty.Value : String.Empty;
+            return labelProperty != null && hubNameProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(hubNameProperty.Value)
+                ? hubNameProperty.Value + "." + labelProperty.Value : String.Empty;
         }
 
         ///// <summary>
