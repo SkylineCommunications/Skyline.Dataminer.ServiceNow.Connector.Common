@@ -709,34 +709,65 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             };
         }
 
-        private static Dictionary<string, Action<string, List<Property>>> classLabelMapper;
+        private static Dictionary<string, Action<string, List<Property>>> classPropertyProcessingMapper;
 
         /// <summary>
-        /// Data structure that provides the methods used to retrieve the label property value for given supported CI Classes
+        /// Data structure that provides the methods used to process necessary property values for given supported CI Classes
         /// </summary>
-        public static Dictionary<string, Action<string, List<Property>>> ClassLabelMapper
+        public static Dictionary<string, Action<string, List<Property>>> ClassPropertyProcessingMapper
         {
             get
             {
-                if (classLabelMapper != null)
+                if (classPropertyProcessingMapper != null)
                 {
-                    return classLabelMapper;
+                    return classPropertyProcessingMapper;
                 }
 
-                classLabelMapper = new Dictionary<string, Action<string, List<Property>>>
+                classPropertyProcessingMapper = new Dictionary<string, Action<string, List<Property>>>
                 {
-                    // TODO: Add class label mapping methods here
+                    // TODO: Add class property processing methods here
                     // Dialog Infrastructure
-                    { "Dialog Modulator", GetDialogModDemodLabel },
-                    { "Dialog Demodulator", GetDialogModDemodLabel },
-                    { "Dialog Switch", GetDialogSwitchLabel },
+                    { "Evolution Network", ProcessEvolutionNetworkProperties },
+                    { "Evolution Chassis", ProcessEvolutionChassisProperties },
+                    // Dialog Infrastructure
+                    { "Dialog Modulator", ProcessDialogModDemodProperties },
+                    { "Dialog Demodulator", ProcessDialogModDemodProperties },
+                    { "Dialog Switch", ProcessDialogSwitchProperties },
                 };
 
-                return classLabelMapper;
+                return classPropertyProcessingMapper;
             }
         }
 
-        private static void GetDialogModDemodLabel(string className, List<Property> properties)
+        private static void ProcessEvolutionNetworkProperties(string className, List<Property> properties)
+        {
+            var networkIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_network_id"));
+
+            if (networkIdProperty == null) return;
+
+            var primaryKeyProperty = properties.FirstOrDefault(x => x.Name.Equals("pk"));
+
+            if (primaryKeyProperty != null && !String.IsNullOrWhiteSpace(primaryKeyProperty.Value))
+            {
+                networkIdProperty.Value = primaryKeyProperty.Value;
+            }
+        }
+
+        private static void ProcessEvolutionChassisProperties(string className, List<Property> properties)
+        {
+            var chassisIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_chassis_id"));
+
+            if (chassisIdProperty == null) return;
+
+            var primaryKeyProperty = properties.FirstOrDefault(x => x.Name.Equals("pk"));
+
+            if (primaryKeyProperty != null && !String.IsNullOrWhiteSpace(primaryKeyProperty.Value))
+            {
+                chassisIdProperty.Value = primaryKeyProperty.Value;
+            }
+        }
+
+        private static void ProcessDialogModDemodProperties(string className, List<Property> properties)
         {
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
@@ -807,7 +838,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             }
         }
 
-        private static void GetDialogSwitchLabel(string className, List<Property> properties)
+        private static void ProcessDialogSwitchProperties(string className, List<Property> properties)
         {
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
@@ -842,11 +873,18 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
 
             foreach (var connector in supportedConnectors)
             {
-                var foundElements = engine.FindElementsByProtocol(connector.ProtocolName);
-
-                if (foundElements.Length > 0)
+                try
                 {
-                    elements.AddRange(foundElements);
+                    var foundElements = engine.FindElementsByProtocol(connector.ProtocolName);
+
+                    if (foundElements.Length > 0)
+                    {
+                        elements.AddRange(foundElements);
+                    }
+                }
+                catch (Exception )
+                {
+                    // Do nothing...
                 }
             }
 
