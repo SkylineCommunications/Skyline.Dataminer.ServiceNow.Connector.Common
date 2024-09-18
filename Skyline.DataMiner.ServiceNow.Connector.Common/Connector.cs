@@ -159,8 +159,8 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                     new Relationship("Evolution NMS", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_nms_name", String.Empty) }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution Remote", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink("u_inroute_group", String.Empty) }, new List<PropertyLink> { }, "Connected by::Connects", false),
                                     new Relationship("Evolution Remote", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
-                                    new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_id", String.Empty) }, new List<PropertyLink> { }, "Depends on::Used by", false),
-                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_chassis_slot_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
+                                    new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
+                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_chassis_id", "u_chassis_slot_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     // TODO: External CI Relationship Example:
@@ -416,6 +416,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                         new ClassProperty("u_teleport_id", 6, false, false),
                         new ClassProperty("u_pp_id", 7, false, false),
                         new ClassProperty("u_nms_name", 8, false, false),
+                        new ClassProperty("u_network_id", -1, false, false),
                     }
                 },
                 {
@@ -444,6 +445,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                         new ClassProperty("u_status", 3, true, false),
                         new ClassProperty("u_nms_ip", 4, false, false),
                         new ClassProperty("u_nms_name", 5, false, false),
+                        new ClassProperty("u_chassis_id", -1, false, false),
                     }
                 },
             };
