@@ -115,7 +115,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Evolution Protocol Processor Blade",
                                         TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Protocol Processor Blade"].Invoke(),
                                     },
                                     //new ClassMapping
@@ -285,7 +285,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                     new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Demodulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { }, new List<PropertyLink> { }, "Depends on::Used by", true),
-                                    new Relationship("Dialog Modulator", "Dialog Modulator", new List < PropertyLink > { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
+                                    new Relationship("Dialog Modulator", "Dialog Modulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                 }),
@@ -709,12 +709,12 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             };
         }
 
-        private static Dictionary<string, Action<string, List<Property>>> classPropertyProcessingMapper;
+        private static Dictionary<string, Action<Engine, List<Property>, string>> classPropertyProcessingMapper;
 
         /// <summary>
         /// Data structure that provides the methods used to process necessary property values for given supported CI Classes
         /// </summary>
-        public static Dictionary<string, Action<string, List<Property>>> ClassPropertyProcessingMapper
+        public static Dictionary<string, Action<Engine, List<Property>, string>> ClassPropertyProcessingMapper
         {
             get
             {
@@ -723,7 +723,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                     return classPropertyProcessingMapper;
                 }
 
-                classPropertyProcessingMapper = new Dictionary<string, Action<string, List<Property>>>
+                classPropertyProcessingMapper = new Dictionary<string, Action<Engine, List<Property>, string>>
                 {
                     // TODO: Add class property processing methods here
                     // Dialog Infrastructure
@@ -739,7 +739,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             }
         }
 
-        private static void ProcessEvolutionNetworkProperties(string className, List<Property> properties)
+        private static void ProcessEvolutionNetworkProperties(Engine engine, List<Property> properties, string className)
         {
             var networkIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_network_id"));
 
@@ -753,7 +753,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             }
         }
 
-        private static void ProcessEvolutionChassisProperties(string className, List<Property> properties)
+        private static void ProcessEvolutionChassisProperties(Engine engine, List<Property> properties, string className)
         {
             var chassisIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_chassis_id"));
 
@@ -767,8 +767,10 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             }
         }
 
-        private static void ProcessDialogModDemodProperties(string className, List<Property> properties)
+        private static void ProcessDialogModDemodProperties(Engine engine, List<Property> properties, string className)
         {
+            engine.GenerateInformation("ProcessDialogModDemodProperties| ************** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
             if (labelProperty == null) return;
@@ -838,7 +840,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             }
         }
 
-        private static void ProcessDialogSwitchProperties(string className, List<Property> properties)
+        private static void ProcessDialogSwitchProperties(Engine engine, List<Property> properties, string className)
         {
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
