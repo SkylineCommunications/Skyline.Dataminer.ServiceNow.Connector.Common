@@ -154,15 +154,15 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                 new List<Relationship>
                                 {
                                     // TODO: Add class relationships here
-                                    new Relationship("Evolution NMS", "Evolution Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Evolution NMS", "Evolution Linecard", new List < PropertyLink > { new PropertyLink("u_nms_name", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Evolution NMS", "Evolution Network", new List < PropertyLink > { new PropertyLink("u_nms_name", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Evolution Remote", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink("u_inroute_group", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Connected by::Connects", false),
-                                    new Relationship("Evolution Remote", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", false),
-                                    new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_id", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", false),
-                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_chassis_slot_id") }, String.Empty, String.Empty, String.Empty, String.Empty, "Located in::Houses", true),
-                                    new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
-                                    new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
+                                    new Relationship("Evolution NMS", "Evolution Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Evolution NMS", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_nms_name", String.Empty) }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Evolution NMS", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_nms_name", String.Empty) }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Evolution Remote", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink("u_inroute_group", String.Empty) }, new List<PropertyLink> { }, "Connected by::Connects", false),
+                                    new Relationship("Evolution Remote", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
+                                    new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_id", String.Empty) }, new List<PropertyLink> { }, "Depends on::Used by", false),
+                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_chassis_slot_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
+                                    new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     // TODO: External CI Relationship Example:
                                     //new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
                                 })
@@ -203,9 +203,9 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                 new List<Relationship>
                                 {
                                     // TODO: Add class relationships here
-                                    new Relationship("Dialog NMS", "Dialog Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog NMS", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Remote", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_active_beam", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", false),
+                                    new Relationship("Dialog NMS", "Dialog Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Dialog NMS", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Dialog Remote", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_active_beam", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
                                     // TODO: External CI Relationships:
                                     //new Relationship("Dialog Remote", "Dialog Application", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
                                     //new Relationship("Dialog Satellite Network", "Dialog Application", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
@@ -277,17 +277,17 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                 new List<Relationship>
                                 {
                                     // TODO: Add class relationships here
-                                    new Relationship("Dialog Hub", "Dialog Modulator", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") } , String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Hub", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Hub", "Dialog Switch", new List < PropertyLink > { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Hub", "Dialog Linux Server", new List < PropertyLink > { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
-                                    new Relationship("Dialog Satellite Network", "Dialog Hub", new List < PropertyLink > { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Demodulator", new List < PropertyLink > { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Switch", new List<PropertyLink> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
-                                    new Relationship("Dialog Modulator", "Dialog Modulator", new List < PropertyLink > { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
-                                    new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Dialog Hub", "Dialog Modulator", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Switch", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    new Relationship("Dialog Satellite Network", "Dialog Hub", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog Modulator", new List < PropertyLink > { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
+                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                 }),
                         }
                     },
@@ -1437,7 +1437,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         /// <summary>
         /// Describes the external property requirements necessary to build a given relationship.
         /// </summary>
-        public PropertyLink ExternalPropertyLink { get; set; }
+        public List<PropertyLink> ExternalProperties { get; set; }
 
         /// <summary>
         /// Relationship type/description.
@@ -1455,19 +1455,16 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         /// <param name="childClass"></param>
         /// <param name="parentClass"></param>
         /// <param name="internalProperties"></param>
-        /// <param name="childExternalProperty"></param>
-        /// <param name="parentExternalProperty"></param>
-        /// <param name="childExternalClass"></param>
-        /// <param name="parentExternalClass"></param>
+        /// <param name="externalProperties"></param>
         /// <param name="type"></param>
         /// <param name="isMappedFromParent"></param>
-        public Relationship(string childClass, string parentClass, List<PropertyLink> internalProperties, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass, string type, bool isMappedFromParent)
+        public Relationship(string childClass, string parentClass, List<PropertyLink> internalProperties, List<PropertyLink> externalProperties, string type, bool isMappedFromParent)
         {
             Name = childClass + "/" + type + "/" + parentClass;
             ParentClass = parentClass;
             ChildClass = childClass;
             InternalProperties = internalProperties;
-            ExternalPropertyLink = new PropertyLink(childExternalProperty, parentExternalProperty, childExternalClass, parentExternalClass);
+            ExternalProperties = externalProperties;
             Type = type;
             IsMappedFromParent = isMappedFromParent;
         }
