@@ -58,7 +58,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Evolution NMS",
                                         TargetTable = "u_cmdb_ci_appl_nms_evolution",
                                         IsParent = true,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
                                     },
                                     new ClassMapping
@@ -66,7 +66,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Evolution Remote",
                                         TargetTable = "u_cmdb_ci_modem_evolution_remote",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Remote"].Invoke(),
                                     },
                                     new ClassMapping
@@ -74,7 +74,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Evolution Linecard",
                                         TargetTable = "u_cmdb_ci_modem_evolution_linecard",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Linecard"].Invoke(),
                                     },
                                     new ClassMapping
@@ -82,7 +82,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Evolution Network",
                                         TargetTable = "u_cmdb_ci_group_evolution_network",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Network"].Invoke(),
                                     },
                                     new ClassMapping
@@ -90,7 +90,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Evolution Chassis",
                                         TargetTable = "cmdb_ci_chassis",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Chassis"].Invoke(),
                                     },
                                     new ClassMapping
@@ -98,7 +98,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Evolution Inroute Group",
                                         TargetTable = "u_cmdb_ci_evolution_inroute_group",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Inroute Group"].Invoke(),
                                     },
                                     new ClassMapping
@@ -106,7 +106,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Evolution Protocol Processor",
                                         TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_ppb_network_id" }, new ExternalPropertyLink("u_network_pp_name", "Evolution Network", "u_pp_id", "Evolution Network")),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Protocol Processor"].Invoke(),
                                     },
@@ -115,7 +115,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Evolution Protocol Processor Blade",
                                         TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey_Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Protocol Processor Blade"].Invoke(),
                                     },
                                     //new ClassMapping
@@ -154,15 +154,15 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                 new List<Relationship>
                                 {
                                     // TODO: Add class relationships here
-                                    new Relationship("Evolution NMS", "Evolution Remote", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Evolution NMS", "Evolution Linecard", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Evolution NMS", "Evolution Network", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Evolution Remote", "Evolution Inroute Group", new List<string> { "u_inroute_group" }, String.Empty, String.Empty, String.Empty, String.Empty, "Connected by::Connects", false),
-                                    new Relationship("Evolution Remote", "Evolution Network", new List<string> { "u_network_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", false),
-                                    new Relationship("Evolution Linecard", "Evolution Network", new List<string> { "u_network_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", false),
-                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<string> { "u_chassis_slot_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "Located in::Houses", true),
-                                    new Relationship("Evolution Protocol Processor", "Evolution Network", new List<string> { "u_network_pp_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
-                                    new Relationship("Evolution Linecard", "Evolution Linecard", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
+                                    new Relationship("Evolution NMS", "Evolution Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Evolution NMS", "Evolution Linecard", new List < PropertyLink > { new PropertyLink("u_nms_name", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Evolution NMS", "Evolution Network", new List < PropertyLink > { new PropertyLink("u_nms_name", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Evolution Remote", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink("u_inroute_group", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Connected by::Connects", false),
+                                    new Relationship("Evolution Remote", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", false),
+                                    new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_id", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", false),
+                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_chassis_slot_id") }, String.Empty, String.Empty, String.Empty, String.Empty, "Located in::Houses", true),
+                                    new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
                                     // TODO: External CI Relationship Example:
                                     //new Relationship("Evolution Linecard", "Evolution Linecard", "u_label", "u_linecard", "u_redundancy_linecard", String.Empty, "Evolution Chassis", "DR provided by::Provides DR for", false),
                                 })
@@ -180,7 +180,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog NMS",
                                         TargetTable = "u_cmdb_ci_appl_nms_dialog",
                                         IsParent = true,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
                                     },
                                     new ClassMapping
@@ -188,7 +188,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Remote",
                                         TargetTable = "u_cmdb_ci_modem_dialog_remote",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Remote"].Invoke(),
                                     },
                                     new ClassMapping
@@ -196,16 +196,16 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Satellite Network",
                                         TargetTable = "u_cmdb_ci_dialog_satellite_network",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Satellite Network"].Invoke(),
                                     },
                                 },
                                 new List<Relationship>
                                 {
                                     // TODO: Add class relationships here
-                                    new Relationship("Dialog NMS", "Dialog Remote", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog NMS", "Dialog Satellite Network", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Remote", "Dialog Satellite Network", new List<string> { "u_active_beam" }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", false),
+                                    new Relationship("Dialog NMS", "Dialog Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog NMS", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog Remote", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_active_beam", String.Empty) }, String.Empty, String.Empty, String.Empty, String.Empty, "Receives data from::Sends data to", false),
                                     // TODO: External CI Relationships:
                                     //new Relationship("Dialog Remote", "Dialog Application", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
                                     //new Relationship("Dialog Satellite Network", "Dialog Application", new List<string> { "u_redundancy_linecard" }, String.Empty, String.Empty, "u_active_beam", "u_active_beam", "Depends on::Used by", true),
@@ -222,7 +222,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Hub",
                                         TargetTable = "u_cmdb_ci_dialog_hub",
                                         IsParent = true,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Hub"].Invoke(),
                                     },
                                     new ClassMapping
@@ -230,7 +230,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Modulator",
                                         TargetTable = "u_cmdb_ci_dialog_modulator",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Modulator"].Invoke(),
                                     },
                                     new ClassMapping
@@ -238,7 +238,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Demodulator",
                                         TargetTable = "u_cmdb_ci_dialog_demodulator",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new ExternalPropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new PropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Demodulator"].Invoke(),
                                     },
                                     new ClassMapping
@@ -246,7 +246,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Switch",
                                         TargetTable = "u_cmdb_ci_dialog_switch",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Switch"].Invoke(),
                                     },
                                     new ClassMapping
@@ -254,7 +254,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Linux Server",
                                         TargetTable = "u_cmdb_ci_dialog_linux_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_label" }, new ExternalPropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_label" }, new PropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
                                     },
                                     new ClassMapping
@@ -262,7 +262,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog MS Server",
                                         TargetTable = "u_cmdb_ci_dialog_microsoft_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog MS Server"].Invoke(),
                                     },
                                     new ClassMapping
@@ -270,24 +270,24 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                         Class = "Dialog Application",
                                         TargetTable = "u_cmdb_ci_dialog_application",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
                                     },
                                 },
                                 new List<Relationship>
                                 {
                                     // TODO: Add class relationships here
-                                    new Relationship("Dialog Hub", "Dialog Modulator", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Hub", "Dialog Demodulator", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Hub", "Dialog Switch", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
-                                    new Relationship("Dialog Hub", "Dialog Linux Server", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
-                                    new Relationship("Dialog Satellite Network", "Dialog Hub", new List<string> { "u_nms_name" }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<string> { "u_hps_id", "u_dp_id", "u_role_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Switch", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
-                                    new Relationship("Dialog Modulator", "Dialog Modulator", new List<string> { "u_hps_id", "u_dp_id", "u_role_id" }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
-                                    new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<string> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Dialog Hub", "Dialog Modulator", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") } , String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Switch", new List < PropertyLink > { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog Linux Server", new List < PropertyLink > { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Dialog Satellite Network", "Dialog Hub", new List < PropertyLink > { new PropertyLink(String.Empty, "u_nms_name") }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Demodulator", new List < PropertyLink > { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Switch", new List<PropertyLink> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog Modulator", new List < PropertyLink > { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, String.Empty, String.Empty, String.Empty, String.Empty, "DR provided by::Provides DR for", true),
+                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { }, String.Empty, String.Empty, String.Empty, String.Empty, "Depends on::Used by", true),
                                 }),
                         }
                     },
@@ -1430,14 +1430,14 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         public string ChildClass { get; set; }
 
         /// <summary>
-        /// Name of the internal properties used to build the relationship.
+        /// Describes the internal property requirements necessary to build a given relationship.
         /// </summary>
-        public List<string> InternalProperties { get; set; }
+        public List<PropertyLink> InternalProperties { get; set; }
 
         /// <summary>
         /// Describes the external property requirements necessary to build a given relationship.
         /// </summary>
-        public ExternalPropertyLink ExternalPropertyLink { get; set; }
+        public PropertyLink ExternalPropertyLink { get; set; }
 
         /// <summary>
         /// Relationship type/description.
@@ -1461,13 +1461,13 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         /// <param name="parentExternalClass"></param>
         /// <param name="type"></param>
         /// <param name="isMappedFromParent"></param>
-        public Relationship(string childClass, string parentClass, List<string> internalProperties, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass, string type, bool isMappedFromParent)
+        public Relationship(string childClass, string parentClass, List<PropertyLink> internalProperties, string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass, string type, bool isMappedFromParent)
         {
             Name = childClass + "/" + type + "/" + parentClass;
             ParentClass = parentClass;
             ChildClass = childClass;
             InternalProperties = internalProperties;
-            ExternalPropertyLink = new ExternalPropertyLink(childExternalProperty, parentExternalProperty, childExternalClass, parentExternalClass);
+            ExternalPropertyLink = new PropertyLink(childExternalProperty, parentExternalProperty, childExternalClass, parentExternalClass);
             Type = type;
             IsMappedFromParent = isMappedFromParent;
         }
@@ -1476,38 +1476,49 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
     /// <summary>
     /// Describes how a given property is used to link property values between CIs.
     /// </summary>
-    public class ExternalPropertyLink
+    public class PropertyLink
     {
         /// <summary>
-        /// Contains the details of a property that belongs to an external child CI, but is needed to make a certain data connection.
+        /// Contains the details of a property that belongs to a child CI, but is needed to make a certain data connection.
         /// </summary>
         public Property ChildProperty { get; set; }
 
         /// <summary>
-        /// Contains the details of a property that belongs to an external parent CI, but is needed to make a certain data connection.
+        /// Contains the details of a property that belongs to a parent CI, but is needed to make a certain data connection.
         /// </summary>
         public Property ParentProperty { get; set; }
 
         /// <summary>
         /// ExternalPropertyLink default class constructor.
         /// </summary>
-        public ExternalPropertyLink()
+        public PropertyLink()
         {
             ChildProperty = new Property(String.Empty, String.Empty, String.Empty);
             ParentProperty = new Property(String.Empty, String.Empty, String.Empty);
         }
 
         /// <summary>
-        /// ExternalPropertyLink class constructor.
+        /// PropertyLink class constructor.
         /// </summary>
-        /// <param name="childExternalProperty"></param>
-        /// <param name="parentExternalProperty"></param>
-        /// <param name="childExternalClass"></param>
-        /// <param name="parentExternalClass"></param>
-        public ExternalPropertyLink(string childExternalProperty, string parentExternalProperty, string childExternalClass, string parentExternalClass)
+        /// <param name="childProperty"></param>
+        /// <param name="parentProperty"></param>
+        public PropertyLink(string childProperty, string parentProperty)
         {
-            ChildProperty = new Property(childExternalProperty, childExternalClass, String.Empty);
-            ParentProperty = new Property(parentExternalProperty, parentExternalClass, String.Empty);
+            ChildProperty = new Property(childProperty, String.Empty, String.Empty);
+            ParentProperty = new Property(parentProperty, String.Empty, String.Empty);
+        }
+
+        /// <summary>
+        /// PropertyLink class constructor.
+        /// </summary>
+        /// <param name="childProperty"></param>
+        /// <param name="parentProperty"></param>
+        /// <param name="childClass"></param>
+        /// <param name="parentClass"></param>
+        public PropertyLink(string childProperty, string parentProperty, string childClass, string parentClass)
+        {
+            ChildProperty = new Property(childProperty, childClass, String.Empty);
+            ParentProperty = new Property(parentProperty, parentClass, String.Empty);
         }
     }
 
@@ -1630,7 +1641,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         /// <summary>
         /// Describes the external property requirements necessary to build a certain unique ID.
         /// </summary>
-        public ExternalPropertyLink ExternalPropertyLink { get; set; }
+        public PropertyLink ExternalPropertyLink { get; set; }
 
         /// <summary>
         /// NamingDetails default class constructor.
@@ -1639,7 +1650,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         {
             Format = NamingFormat.Unknown;
             RequiredProperties = new List<string>();
-            ExternalPropertyLink = new ExternalPropertyLink();
+            ExternalPropertyLink = new PropertyLink();
         }
 
         /// <summary>
@@ -1648,7 +1659,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         /// <param name="format"></param>
         /// <param name="requiredProperties"></param>
         /// <param name="externalPropertyLink"></param>
-        public NamingDetails(NamingFormat format, List<string> requiredProperties, ExternalPropertyLink externalPropertyLink)
+        public NamingDetails(NamingFormat format, List<string> requiredProperties, PropertyLink externalPropertyLink)
         {
             Format = format;
             RequiredProperties = requiredProperties;
