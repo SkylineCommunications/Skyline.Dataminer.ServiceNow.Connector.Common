@@ -21,11 +21,25 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         {
             // TODO: Check which prefix better serves the purpose of protecting ID uniqueness (Element DMA ID might cause trouble if swarming is used in the future)
             // Naming format always includes parent element name to avoid duplicating unique IDs (for instance in case there are duplicate elements)
-            Unknown,
+            /// <summary>
+            /// Unique ID is the instance primary key.
+            /// </summary>
             PrimaryKey,
+            /// <summary>
+            /// Unique ID is formed by a combination between instance primary key and label.
+            /// </summary>
             PrimaryKey_Label,
+            /// <summary>
+            /// Unique ID is instance label parameter.
+            /// </summary>
             Label,
+            /// <summary>
+            /// Unique ID is formed by a combination between instance label and primary key.
+            /// </summary>
             Label_PrimaryKey,
+            /// <summary>
+            /// Unique ID is retrieved from a custom method.
+            /// </summary>
             Custom,
         }
 
@@ -112,7 +126,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
                                     },
                                     new ClassMapping
                                     {
-                                        Class = "Evolution Protocol Processor Blade",
+                                        Class = "q",
                                         TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                         IsParent = false,
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
@@ -1149,6 +1163,7 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
         /// Method used to retrieve the unique ID of a given instance.
         /// </summary>
         /// <param name="engine"></param>
+        /// <param name="properties"></param>
         /// <param name="parentElementName"></param>
         /// <param name="pk"></param>
         /// <returns>Instance unique ID.</returns>
