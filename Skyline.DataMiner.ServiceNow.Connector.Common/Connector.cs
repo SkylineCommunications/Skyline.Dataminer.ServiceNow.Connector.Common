@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Skyline.DataMiner.ServiceNow.Connector.Common
+﻿namespace Skyline.DataMiner.ServiceNow.Connector.Common
 {
     using System;
     using System.Collections.Generic;
