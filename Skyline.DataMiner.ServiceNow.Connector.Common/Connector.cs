@@ -254,7 +254,7 @@
                                         Class = "Dialog Demodulator",
                                         TargetTable = "u_cmdb_ci_dialog_demodulator",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Demodulator"].Invoke(),
                                     },
                                     new ClassMapping
@@ -984,6 +984,7 @@
                     { "Dialog Linux Server", GetDialogLinuxServerUniqueID },
                     { "Dialog Switch", GetDialogSwitchUniqueID },
                     { "Dialog Modulator", GetDialogModulatorUniqueID },
+                    { "Dialog Demodulator", GetDialogDemodulatorUniqueID },
                 };
 
                 return ciUniqueIdFunctionMapper;
@@ -1298,7 +1299,7 @@
                 {
                     labelProperty.Value = deviceLabelProperty.Value;
 
-                    return parentElementName + "." + labelProperty.Value;
+                    return labelProperty.Value.Contains(".MOD-") ? parentElementName + "." + labelProperty.Value : String.Empty;
                 }
             }
 
@@ -1328,6 +1329,19 @@
             labelProperty.Value = modulatorLabel;
 
             return parentElementName + "." + labelProperty.Value;
+        }
+
+        private string GetDialogDemodulatorUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
+        {
+            engine.GenerateInformation("GetDialogDemodulatorUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+
+            if (additionalNamingComponents.Count == 0) return String.Empty;
+
+            string parentElementName = additionalNamingComponents[0];
+
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            return labelProperty != null && !labelProperty.Value.Contains(".MOD-") ? parentElementName + "." + labelProperty.Value : String.Empty;
         }
 
         ///// <summary>
