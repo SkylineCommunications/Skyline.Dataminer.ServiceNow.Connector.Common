@@ -128,7 +128,7 @@
                                     },
                                     new ClassMapping
                                     {
-                                        Class = "q",
+                                        Class = "Evolution Protocol Processor Blade",
                                         TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
                                         IsParent = false,
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
@@ -246,7 +246,7 @@
                                         Class = "Dialog Modulator",
                                         TargetTable = "u_cmdb_ci_dialog_modulator",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Modulator"].Invoke(),
                                     },
                                     new ClassMapping
@@ -254,7 +254,7 @@
                                         Class = "Dialog Demodulator",
                                         TargetTable = "u_cmdb_ci_dialog_demodulator",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new PropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Demodulator"].Invoke(),
                                     },
                                     new ClassMapping
@@ -262,7 +262,7 @@
                                         Class = "Dialog Switch",
                                         TargetTable = "u_cmdb_ci_dialog_switch",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Switch"].Invoke(),
                                     },
                                     new ClassMapping
@@ -531,7 +531,6 @@
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 2, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -645,8 +644,7 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", -1, false, false),
-                        new ClassProperty("u_label_device", 4, false, false),
+                        new ClassProperty("u_label", 4, false, false),
                         new ClassProperty("u_hps_id", 7, false, false),
                         new ClassProperty("u_role_id", 8, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
@@ -725,37 +723,35 @@
             };
         }
 
-        private static Dictionary<string, Action<Engine, List<Property>, string>> classPropertyProcessingMapper;
+        private static Dictionary<string, Action<Engine, List<Property>>> relationshipPropertyProcessingMapper;
 
         /// <summary>
         /// Data structure that provides the methods used to process necessary property values for given supported CI Classes
         /// </summary>
-        public static Dictionary<string, Action<Engine, List<Property>, string>> ClassPropertyProcessingMapper
+        public static Dictionary<string, Action<Engine, List<Property>>> RelationshipPropertyProcessingMapper
         {
             get
             {
-                if (classPropertyProcessingMapper != null)
+                if (relationshipPropertyProcessingMapper != null)
                 {
-                    return classPropertyProcessingMapper;
+                    return relationshipPropertyProcessingMapper;
                 }
 
-                classPropertyProcessingMapper = new Dictionary<string, Action<Engine, List<Property>, string>>
+                relationshipPropertyProcessingMapper = new Dictionary<string, Action<Engine, List<Property>>>
                 {
                     // TODO: Add class property processing methods here
                     // Dialog Infrastructure
-                    { "Evolution Network", ProcessEvolutionNetworkProperties },
-                    { "Evolution Chassis", ProcessEvolutionChassisProperties },
+                    { "Evolution Network", ProcessEvolutionNetworkRelationshipProperties },
+                    { "Evolution Chassis", ProcessEvolutionChassisRelationshipProperties },
                     // Dialog Infrastructure
-                    { "Dialog Modulator", ProcessDialogModDemodProperties },
-                    { "Dialog Demodulator", ProcessDialogModDemodProperties },
-                    { "Dialog Switch", ProcessDialogSwitchProperties },
+                    { "Dialog Modulator", ProcessDialogModulatorRelationshipProperties },
                 };
 
-                return classPropertyProcessingMapper;
+                return relationshipPropertyProcessingMapper;
             }
         }
 
-        private static void ProcessEvolutionNetworkProperties(Engine engine, List<Property> properties, string className)
+        private static void ProcessEvolutionNetworkRelationshipProperties(Engine engine, List<Property> properties)
         {
             var networkIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_network_id"));
 
@@ -769,7 +765,7 @@
             }
         }
 
-        private static void ProcessEvolutionChassisProperties(Engine engine, List<Property> properties, string className)
+        private static void ProcessEvolutionChassisRelationshipProperties(Engine engine, List<Property> properties)
         {
             var chassisIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_chassis_id"));
 
@@ -783,13 +779,9 @@
             }
         }
 
-        private static void ProcessDialogModDemodProperties(Engine engine, List<Property> properties, string className)
+        private static void ProcessDialogModulatorRelationshipProperties(Engine engine, List<Property> properties)
         {
-            engine.GenerateInformation("ProcessDialogModDemodProperties| ************** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
-
-            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-            if (labelProperty == null) return;
+            engine.GenerateInformation("ProcessDialogModulatorRelationshipProperties| ************** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
 
             var deviceLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_device"));
 
@@ -797,11 +789,7 @@
             {
                 var labelParts = deviceLabelProperty.Value.Split('.');
 
-                if (labelParts.Length < 3 && (className.Equals("Dialog Modulator") && labelParts[2].Contains("MOD-") || className.Equals("Dialog Demodulator") && !labelParts[2].Contains("MOD-")))
-                {
-                    labelProperty.Value = deviceLabelProperty.Value;
-                    return;
-                }
+                if (labelParts.Length == 3) return;
             }
 
             var modulatorLabel = String.Empty;
@@ -828,7 +816,6 @@
             var roleIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_role_id"));
 
             modulatorLabel = modulatorLabelParts[0].Trim();
-            labelProperty.Value = modulatorLabel;
 
             if (roleIdProperty != null && !String.IsNullOrWhiteSpace(modulatorLabelParts[0]))
             {
@@ -856,28 +843,6 @@
             }
         }
 
-        private static void ProcessDialogSwitchProperties(Engine engine, List<Property> properties, string className)
-        {
-            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-            if (labelProperty == null) return;
-
-            var accessSwitchLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_access"));
-
-            if (accessSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(accessSwitchLabelProperty.Value))
-            {
-                labelProperty.Value = accessSwitchLabelProperty.Value;
-                return;
-            }
-
-            var rfSwitchLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_rf"));
-
-            if (rfSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(rfSwitchLabelProperty.Value))
-            {
-                labelProperty.Value = rfSwitchLabelProperty.Value;
-            }
-        }
-
         /// <summary>
         /// Get elements running supported connectors as defined by the in the Connector class mappings.
         /// </summary>
@@ -900,7 +865,7 @@
                         elements.AddRange(foundElements);
                     }
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     // Do nothing...
                 }
@@ -1002,9 +967,9 @@
     public class ClassMapping
     {
         // TODO: Add support for CI discovery using External CI property values
-        private Dictionary<string, Func<Engine, List<Property>, string, string>> ciUniqueIdFunctionMapper;
+        private Dictionary<string, Func<Engine, List<Property>, List<string>, string>> ciUniqueIdFunctionMapper;
 
-        public Dictionary<string, Func<Engine, List<Property>, string, string>> CiUniqueIdFunctionMapper
+        public Dictionary<string, Func<Engine, List<Property>, List<string>, string>> CiUniqueIdFunctionMapper
         {
             get
             {
@@ -1013,10 +978,12 @@
                     return ciUniqueIdFunctionMapper;
                 }
 
-                ciUniqueIdFunctionMapper = new Dictionary<string, Func<Engine, List<Property>, string, string>>
+                ciUniqueIdFunctionMapper = new Dictionary<string, Func<Engine, List<Property>, List<string>, string>>
                 {
                     //  TODO: Add methods used to build CIs using custom methods
                     { "Dialog Linux Server", GetDialogLinuxServerUniqueID },
+                    { "Dialog Switch", GetDialogSwitchUniqueID },
+                    { "Dialog Modulator", GetDialogModulatorUniqueID },
                 };
 
                 return ciUniqueIdFunctionMapper;
@@ -1173,7 +1140,7 @@
         {
             if (String.IsNullOrWhiteSpace(parentElementName))
             {
-                engine.GenerateInformation("GetCiRowUniqueID| Empty parent element name.");
+                engine.GenerateInformation("GetUniqueID| Empty parent element name.");
                 return String.Empty;
             }
 
@@ -1207,11 +1174,17 @@
 
                 case NamingFormat.Custom:
                     {
-                        return parentElementName + "." + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
+                        if (!CiUniqueIdFunctionMapper.ContainsKey(Class))
+                        {
+                            engine.GenerateInformation("GetUniqueID| Could not map custom method for '" + Class + "'.");
+                            return String.Empty;
+                        }
+
+                        return CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, new List<string> { parentElementName });
                     }
 
                 default:
-                    engine.GenerateInformation("GetCiRowUniqueID| Unsupported naming format.");
+                    engine.GenerateInformation("GetUniqueID| Unsupported naming format.");
                     return String.Empty;
             }
         }
@@ -1229,7 +1202,7 @@
         {
             if (String.IsNullOrWhiteSpace(parentElementName))
             {
-                engine.GenerateInformation("GetInstanceUniqueID| Empty parent element name.");
+                engine.GenerateInformation("GetUniqueID| Empty parent element name.");
                 return String.Empty;
             }
 
@@ -1263,13 +1236,19 @@
 
                 case NamingFormat.Custom:
                     {
+                        if (!CiUniqueIdFunctionMapper.ContainsKey(Class))
+                        {
+                            engine.GenerateInformation("GetUniqueID| Could not map custom method for '" + Class + "'.");
+                            return String.Empty;
+                        }
+
                         var properties = parameterDetails.Select(p => new Property(p.AttributeName, Class, p.CurrentValue)).ToList();
 
-                        return parentElementName + "_" + CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, pk);
+                        return CiUniqueIdFunctionMapper[Class].Invoke((Engine)engine, properties, new List<string> { parentElementName });
                     }
 
                 default:
-                    engine.GenerateInformation("GetInstanceUniqueID| Unsupported naming format.");
+                    engine.GenerateInformation("GetUniqueID| Unsupported naming format.");
                     return String.Empty;
             }
         }
@@ -1281,16 +1260,114 @@
         ///// <param name="properties"></param>
         ///// <param name="pk"></param>
         ///// <returns>Remote instance unique ID.</returns>
-        private string GetDialogLinuxServerUniqueID(Engine engine, List<Property> properties, string pk)
+        private string GetDialogLinuxServerUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
             engine.GenerateInformation("GetDialogLinuxServerUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
+
+            if (additionalNamingComponents.Count == 0) return String.Empty;
+
+            string parentElementName = additionalNamingComponents[0];
 
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
             var hubNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_name"));
 
             return labelProperty != null && hubNameProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(hubNameProperty.Value)
-                ? hubNameProperty.Value + "." + labelProperty.Value : String.Empty;
+                ? parentElementName + "." + hubNameProperty.Value + "." + labelProperty.Value : String.Empty;
+        }
+
+        private string GetDialogModulatorUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
+        {
+            engine.GenerateInformation("GetDialogModulatorUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+
+            if (additionalNamingComponents.Count == 0) return String.Empty;
+
+            string parentElementName = additionalNamingComponents[0];
+
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            if (labelProperty == null) return String.Empty;
+
+            var deviceLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_device"));
+
+            if (deviceLabelProperty != null && !String.IsNullOrWhiteSpace(deviceLabelProperty.Value))
+            {
+                var labelParts = deviceLabelProperty.Value.Split('.');
+
+                if (labelParts.Length == 3)
+                {
+                    labelProperty.Value = deviceLabelProperty.Value;
+
+                    return parentElementName + "." + labelProperty.Value;
+                }
+            }
+
+            var modulatorLabel = String.Empty;
+
+            var mcm7500LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcm7500"));
+            var mcm6100LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_m6100"));
+
+            if (mcm7500LabelProperty != null && !String.IsNullOrWhiteSpace(mcm7500LabelProperty.Value))
+            {
+                modulatorLabel = mcm7500LabelProperty.Value;
+            }
+
+            if (mcm6100LabelProperty != null && !String.IsNullOrWhiteSpace(mcm6100LabelProperty.Value))
+            {
+                modulatorLabel = mcm6100LabelProperty.Value;
+            }
+
+            if (String.IsNullOrWhiteSpace(modulatorLabel)) return String.Empty;
+
+            var modulatorLabelParts = modulatorLabel.Split('[');
+
+            if (modulatorLabelParts.Length < 2) return String.Empty;
+
+            modulatorLabel = modulatorLabelParts[0].Trim();
+
+            labelProperty.Value = modulatorLabel;
+
+            return parentElementName + "." + labelProperty.Value;
+        }
+
+        ///// <summary>
+        ///// Method used to retrieve the unique ID of a given Dialog Switch instance.
+        ///// </summary>
+        ///// <param name="engine"></param>
+        ///// <param name="properties"></param>
+        ///// <param name="pk"></param>
+        ///// <returns>Remote instance unique ID.</returns>
+        private string GetDialogSwitchUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
+        {
+            engine.GenerateInformation("GetDialogSwitchUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
+
+            if (additionalNamingComponents.Count == 0) return String.Empty;
+
+            string parentElementName = additionalNamingComponents[0];
+
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            if (labelProperty == null) return String.Empty;
+
+            var accessSwitchLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_access"));
+
+            if (accessSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(accessSwitchLabelProperty.Value))
+            {
+                labelProperty.Value = accessSwitchLabelProperty.Value;
+
+                return parentElementName + "." + labelProperty.Value;
+            }
+
+            var rfSwitchLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_rf"));
+
+            if (rfSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(rfSwitchLabelProperty.Value))
+            {
+                labelProperty.Value = rfSwitchLabelProperty.Value;
+
+                return parentElementName + "." + labelProperty.Value;
+            }
+
+            return String.Empty;
         }
 
         ///// <summary>
