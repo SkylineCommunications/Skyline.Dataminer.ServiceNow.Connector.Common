@@ -22,6 +22,10 @@ namespace Skyline.DataMiner.ServiceNow.Connector.Common
             // TODO: Check which prefix better serves the purpose of protecting ID uniqueness (Element DMA ID might cause trouble if swarming is used in the future)
             // Naming format always includes parent element name to avoid duplicating unique IDs (for instance in case there are duplicate elements)
             /// <summary>
+            /// Unique ID format is undefined.
+            /// </summary>
+            Unknown,
+            /// <summary>
             /// Unique ID is the instance primary key.
             /// </summary>
             PrimaryKey,
