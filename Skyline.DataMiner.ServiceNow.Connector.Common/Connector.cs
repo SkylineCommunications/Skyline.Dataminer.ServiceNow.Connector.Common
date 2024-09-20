@@ -171,12 +171,12 @@
                                 {
                                     // TODO: Add class relationships here
                                     new Relationship("Evolution NMS", "Evolution Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
-                                    new Relationship("Evolution NMS", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_nms_name", String.Empty) }, new List<PropertyLink> { }, "Managed by::Manages", true),
-                                    new Relationship("Evolution NMS", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_nms_name", String.Empty) }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Evolution NMS", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Evolution NMS", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution Remote", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink("u_inroute_group", String.Empty) }, new List<PropertyLink> { }, "Connected by::Connects", false),
                                     new Relationship("Evolution Remote", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
-                                    new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
-                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_chassis_id", "u_chassis_slot_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
+                                    new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_chassis_slot_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
+                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_chassis_id", "u_chassis_slot_id"), new PropertyLink("u_chassis_id", "u_chassis_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     // TODO: External CI Relationship Example:
@@ -426,12 +426,12 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_network_id", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
                         new ClassProperty("u_status", 3, true, false),
                         new ClassProperty("u_teleport_id", 6, false, false),
                         new ClassProperty("u_pp_id", 7, false, false),
                         new ClassProperty("u_nms_name", 8, false, false),
-                        new ClassProperty("u_network_id", -1, false, false),
                     }
                 },
                 {
@@ -455,12 +455,12 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_chassis_id", 0, false, false),
                         new ClassProperty("u_label", 1, false, false),
                         new ClassProperty("serial_number", 2, false, true),
                         new ClassProperty("u_status", 3, true, false),
                         new ClassProperty("u_nms_ip", 4, false, false),
                         new ClassProperty("u_nms_name", 5, false, false),
-                        new ClassProperty("u_chassis_id", -1, false, false),
                     }
                 },
             };
@@ -732,41 +732,10 @@
                 {
                     // TODO: Add class property processing methods here
                     // Dialog Infrastructure
-                    { "Evolution Network", ProcessEvolutionNetworkRelationshipProperties },
-                    { "Evolution Chassis", ProcessEvolutionChassisRelationshipProperties },
-                    // Dialog Infrastructure
                     { "Dialog Modulator", ProcessDialogModulatorRelationshipProperties },
                 };
 
                 return relationshipPropertyProcessingMapper;
-            }
-        }
-
-        private static void ProcessEvolutionNetworkRelationshipProperties(Engine engine, List<Property> properties)
-        {
-            var networkIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_network_id"));
-
-            if (networkIdProperty == null) return;
-
-            var primaryKeyProperty = properties.FirstOrDefault(x => x.Name.Equals("pk"));
-
-            if (primaryKeyProperty != null && !String.IsNullOrWhiteSpace(primaryKeyProperty.Value))
-            {
-                networkIdProperty.Value = primaryKeyProperty.Value;
-            }
-        }
-
-        private static void ProcessEvolutionChassisRelationshipProperties(Engine engine, List<Property> properties)
-        {
-            var chassisIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_chassis_id"));
-
-            if (chassisIdProperty == null) return;
-
-            var primaryKeyProperty = properties.FirstOrDefault(x => x.Name.Equals("pk"));
-
-            if (primaryKeyProperty != null && !String.IsNullOrWhiteSpace(primaryKeyProperty.Value))
-            {
-                chassisIdProperty.Value = primaryKeyProperty.Value;
             }
         }
 
