@@ -239,7 +239,7 @@
                                         TargetTable = "u_cmdb_ci_dialog_hub",
                                         IsParent = true,
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
-                                        AttributesByTableID = ClassPropertiesMapper["Dialog Hub"].Invoke(),
+                                        AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
                                     },
                                     new ClassMapping
                                     {
@@ -270,7 +270,7 @@
                                         Class = "Dialog Linux Server",
                                         TargetTable = "u_cmdb_ci_dialog_linux_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_label" }, new PropertyLink("u_label", String.Empty, "Dialog Hub", String.Empty)),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_hub_name", "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
                                     },
                                     new ClassMapping
@@ -342,7 +342,6 @@
                     { "Dialog Remote", GetDialogRemoteClassProperties },
                     { "Dialog Satellite Network", GetDialogSatelliteNetworkClassProperties },
                     // Dialog Infrastructure
-                    { "Dialog Hub", GetDialogHubClassProperties },
                     { "Dialog Modulator", GetDialogModulatorClassProperties },
                     { "Dialog Demodulator", GetDialogDemodulatorClassProperties },
                     { "Dialog Switch", GetDialogSwitchClassProperties },
@@ -520,22 +519,6 @@
             };
         }
 
-        private static Dictionary<int, List<ClassProperty>> GetDialogHubClassProperties()
-        {
-            return new Dictionary<int, List<ClassProperty>>
-            {
-                //  TODO: Add attributes here
-                {
-                    2800,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 2, false, false),
-                    }
-                },
-            };
-        }
-
         private static Dictionary<int, List<ClassProperty>> GetDialogRemoteClassProperties()
         {
             return new Dictionary<int, List<ClassProperty>>
@@ -609,8 +592,8 @@
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", -1, false, false),
                         new ClassProperty("u_label_device", 4, false, false),
-                        new ClassProperty("u_hps_id", 7, false, false),
-                        new ClassProperty("u_role_id", 8, false, false),
+                        new ClassProperty("u_hps_id", 6, false, false),
+                        new ClassProperty("u_role_id", 7, false, false),
                         new ClassProperty("u_dp_id", 9, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
@@ -645,8 +628,8 @@
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 4, false, false),
-                        new ClassProperty("u_hps_id", 7, false, false),
-                        new ClassProperty("u_role_id", 8, false, false),
+                        new ClassProperty("u_hps_id", 6, false, false),
+                        new ClassProperty("u_role_id", 7, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
@@ -706,7 +689,7 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("fk", 3, false, false),
+                        new ClassProperty("u_parent_fk", 3, false, false),
                         new ClassProperty("u_label", 4, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
@@ -716,8 +699,16 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("fk", 3, false, false),
+                        new ClassProperty("u_parent_fk", 3, false, false),
                         new ClassProperty("u_label", 4, false, false),
+                    }
+                },
+                {
+                    2800,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("u_parent_pk", 0, false, false),
+                        new ClassProperty("u_hub_name", 2, false, false),
                     }
                 },
             };
@@ -1299,7 +1290,7 @@
                 {
                     labelProperty.Value = deviceLabelProperty.Value;
 
-                    return labelProperty.Value.Contains(".MOD-") ? parentElementName + "." + labelProperty.Value : String.Empty;
+                    return labelProperty.Value.Contains("MOD-") ? parentElementName + "." + labelProperty.Value : String.Empty;
                 }
             }
 
