@@ -753,20 +753,7 @@
                 if (labelParts.Length == 3) return;
             }
 
-            var modulatorLabel = String.Empty;
-
-            var mcm7500LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcm7500"));
-            var mcm6100LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_m6100"));
-
-            if (mcm7500LabelProperty != null && !String.IsNullOrWhiteSpace(mcm7500LabelProperty.Value))
-            {
-                modulatorLabel = mcm7500LabelProperty.Value;
-            }
-
-            if (mcm6100LabelProperty != null && !String.IsNullOrWhiteSpace(mcm6100LabelProperty.Value))
-            {
-                modulatorLabel = mcm6100LabelProperty.Value;
-            }
+            string modulatorLabel = GetModulatorLabel(properties);
 
             if (String.IsNullOrWhiteSpace(modulatorLabel)) return;
 
@@ -802,6 +789,24 @@
             {
                 poolIdProperty.Value = modulatorLabelParts[2].Replace("DP-", String.Empty);
             }
+        }
+
+        private static string GetModulatorLabel(List<Property> properties)
+        {
+            var mcm7500LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcm7500"));
+            var mcm6100LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_m6100"));
+
+            if (mcm7500LabelProperty != null && !String.IsNullOrWhiteSpace(mcm7500LabelProperty.Value))
+            {
+                return mcm7500LabelProperty.Value;
+            }
+
+            if (mcm6100LabelProperty != null && !String.IsNullOrWhiteSpace(mcm6100LabelProperty.Value))
+            {
+                return mcm6100LabelProperty.Value;
+            }
+
+            return String.Empty;
         }
 
         /// <summary>
@@ -1267,6 +1272,11 @@
                 }
             }
 
+            return GetUniqueIdForModulator4IF(properties, parentElementName, labelProperty);
+        }
+
+        private static string GetUniqueIdForModulator4IF(List<Property> properties, string parentElementName, Property labelProperty)
+        {
             var modulatorLabel = String.Empty;
 
             var mcm7500LabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_mcm7500"));
