@@ -630,6 +630,7 @@
                         new ClassProperty("u_label", 4, false, false),
                         new ClassProperty("u_hps_id", 6, false, false),
                         new ClassProperty("u_role_id", 7, false, false),
+                        new ClassProperty("u_dp_id", 9, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
@@ -1239,8 +1240,6 @@
 
         private string GetDialogModulatorUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            engine.GenerateInformation("GetDialogModulatorUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
-
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
             string parentElementName = additionalNamingComponents[0];
@@ -1250,6 +1249,11 @@
             if (labelProperty == null) return String.Empty;
 
             var deviceLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_device"));
+
+            if (deviceLabelProperty != null && String.IsNullOrWhiteSpace(deviceLabelProperty.Value))
+            {
+                engine.GenerateInformation("GetDialogModulatorUniqueID| ********** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+            }
 
             if (deviceLabelProperty != null && !String.IsNullOrWhiteSpace(deviceLabelProperty.Value))
             {
