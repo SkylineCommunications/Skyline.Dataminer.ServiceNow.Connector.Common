@@ -603,7 +603,12 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label", -1, false, false),
                         new ClassProperty("u_label_mcm7500", 2, false, false),
+                        new ClassProperty("u_hps_id", -1, false, false),
+                        new ClassProperty("u_role_id", -1, false, false),
+                        new ClassProperty("u_dp_id", -1, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
                 {
@@ -611,7 +616,12 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label", -1, false, false),
                         new ClassProperty("u_label_m6100", 2, false, false),
+                        new ClassProperty("u_hps_id", -1, false, false),
+                        new ClassProperty("u_role_id", -1, false, false),
+                        new ClassProperty("u_dp_id", -1, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -657,7 +667,9 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_label", -1, false, false),
                         new ClassProperty("u_label_rf", 2, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
             };
@@ -702,6 +714,7 @@
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_parent_fk", 3, false, false),
                         new ClassProperty("u_label", 4, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
                 {
@@ -1262,6 +1275,7 @@
 
             if (deviceLabelProperty != null && !String.IsNullOrWhiteSpace(deviceLabelProperty.Value))
             {
+                // Modulator XIF Workflow 
                 var labelParts = deviceLabelProperty.Value.Split('.');
 
                 if (labelParts.Length == 3)
@@ -1272,10 +1286,10 @@
                 }
             }
 
-            return GetUniqueIdForModulator4IF(properties, parentElementName, labelProperty);
+            return GetUniqueIdForModulator4IF(engine, properties, parentElementName, labelProperty);
         }
 
-        private static string GetUniqueIdForModulator4IF(List<Property> properties, string parentElementName, Property labelProperty)
+        private static string GetUniqueIdForModulator4IF(Engine engine, List<Property> properties, string parentElementName, Property labelProperty)
         {
             var modulatorLabel = String.Empty;
 
@@ -1292,6 +1306,8 @@
                 modulatorLabel = mcm6100LabelProperty.Value;
             }
 
+            engine.GenerateInformation("GetUniqueIdForModulator4IF| ********** MODULATOR LABEL => " + modulatorLabel);
+
             if (String.IsNullOrWhiteSpace(modulatorLabel)) return String.Empty;
 
             var modulatorLabelParts = modulatorLabel.Split('[');
@@ -1299,6 +1315,8 @@
             if (modulatorLabelParts.Length < 2) return String.Empty;
 
             modulatorLabel = modulatorLabelParts[0].Trim();
+
+            engine.GenerateInformation("GetUniqueIdForModulator4IF| ********** MODULATOR LABEL => " + modulatorLabel);
 
             labelProperty.Value = modulatorLabel;
 
