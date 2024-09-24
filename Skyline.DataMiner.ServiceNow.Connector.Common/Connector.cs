@@ -260,7 +260,7 @@
                                     new ClassMapping
                                     {
                                         Class = "Dialog Switch",
-                                        TargetTable = "u_cmdb_ci_dialog_switch",
+                                        TargetTable = "cmdb_ci_ip_switch",
                                         IsParent = false,
                                         NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Switch"].Invoke(),
@@ -268,7 +268,7 @@
                                     new ClassMapping
                                     {
                                         Class = "Dialog Linux Server",
-                                        TargetTable = "u_cmdb_ci_dialog_linux_server",
+                                        TargetTable = "u_cmdb_ci_linux_server",
                                         IsParent = false,
                                         NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_hub_name", "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
@@ -276,7 +276,7 @@
                                     new ClassMapping
                                     {
                                         Class = "Dialog MS Server",
-                                        TargetTable = "u_cmdb_ci_dialog_microsoft_server",
+                                        TargetTable = "u_cmdb_ci_microsoft_server",
                                         IsParent = false,
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog MS Server"].Invoke(),
@@ -1242,7 +1242,7 @@
         ///// <returns>Remote instance unique ID.</returns>
         private string GetDialogLinuxServerUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            engine.GenerateInformation("GetDialogLinuxServerUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
+            engine.GenerateInformation("GetDialogLinuxServerUniqueID| ********** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
 
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
