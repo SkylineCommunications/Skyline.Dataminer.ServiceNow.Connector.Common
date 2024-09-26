@@ -713,38 +713,46 @@
                     {
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 4, false, false),
-                        new ClassProperty("u_blade_server", 5, false, false),
+                        new ClassProperty("u_parent_fk", 5, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
                 {
-                    2900,
+                    14200,
                     new List<ClassProperty>
                     {
-                        //new ClassProperty("u_server_pk", 0, false, false),
-                        new ClassProperty("u_server_fk", 3, false, false),
-                        new ClassProperty("u_server_name", 4, false, false),
-                        new ClassProperty("u_virtual_machines", 7, false, false),
+                        new ClassProperty("u_parent_pk", 0, false, false),
+                        new ClassProperty("u_hub_name", 7, false, false),
                     }
                 },
-                {
-                    3780,
-                    new List<ClassProperty>
-                    {
-                        //new ClassProperty("u_server_pk", 0, false, false),
-                        new ClassProperty("u_server_fk", 3, false, false),
-                        new ClassProperty("u_server_name", 4, false, false),
-                        new ClassProperty("u_served_satnet", 7, false, false),
-                    }
-                },
-                {
-                    2800,
-                    new List<ClassProperty>
-                    {
-                        new ClassProperty("u_hub_pk", 0, false, false),
-                        new ClassProperty("u_hub_name", 2, false, false),
-                    }
-                },
+                //{
+                //    2900,
+                //    new List<ClassProperty>
+                //    {
+                //        //new ClassProperty("u_server_pk", 0, false, false),
+                //        new ClassProperty("u_server_fk", 2, false, false),
+                //        new ClassProperty("u_server_name", 4, false, false),
+                //        new ClassProperty("u_virtual_machines", 7, false, false),
+                //    }
+                //},
+                //{
+                //    3780,
+                //    new List<ClassProperty>
+                //    {
+                //        //new ClassProperty("u_server_pk", 0, false, false),
+                //        new ClassProperty("u_server_fk", 2, false, false),
+                //        new ClassProperty("u_server_name", 4, false, false),
+                //        new ClassProperty("u_served_satnet", 7, false, false),
+                //    }
+                //},
+                //{
+                //    2800,
+                //    new List<ClassProperty>
+                //    {
+                //        new ClassProperty("u_hub_pk", 0, false, false),
+                //        new ClassProperty("u_hub_name", 2, false, false),
+                //    }
+                //},
             };
         }
 
@@ -1273,7 +1281,7 @@
             var hubNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_name"));
 
             return labelProperty != null && hubNameProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(hubNameProperty.Value)
-                ? parentElementName + "." + hubNameProperty.Value + "." + labelProperty.Value : String.Empty;
+                ? parentElementName + "." + hubNameProperty.Value.Replace(".ENC", String.Empty) + "." + labelProperty.Value : String.Empty;
         }
 
         private string GetDialogModulatorUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
