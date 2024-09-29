@@ -297,14 +297,15 @@
                                     new Relationship("Dialog Hub", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Switch", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    new Relationship("Dialog Hub", "Dialog MS Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Satellite Network", "Dialog Hub", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Demodulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { }, new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_name") }, "Depends on::Used by", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Modulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
-                                    new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink("u_label", "u_parent_fk") }, new List<PropertyLink> { }, "Located in::Houses", true),
+                                    new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_hub_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Dialog MS Server", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink("u_hub_name", "u_hub_name") }, new List<PropertyLink> { }, "Virtualized::Virtualizes", true),
                                 }),
                         }
@@ -722,11 +723,11 @@
             {
                 //  TODO: Add attributes here
                 {
-                    12200,
+                    3800,
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 2, false, false),
+                        new ClassProperty("u_label", 1, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
