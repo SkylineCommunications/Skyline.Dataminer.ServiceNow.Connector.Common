@@ -176,7 +176,7 @@
                                     new Relationship("Evolution Remote", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink("u_inroute_group", String.Empty) }, new List<PropertyLink> { }, "Connected by::Connects", false),
                                     new Relationship("Evolution Remote", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
                                     new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_chassis_slot_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
-                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_chassis_id", "u_chassis_slot_id"), new PropertyLink("u_chassis_id", "u_chassis_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
+                                    new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_chassis_id", "u_chassis_slot_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                 })
