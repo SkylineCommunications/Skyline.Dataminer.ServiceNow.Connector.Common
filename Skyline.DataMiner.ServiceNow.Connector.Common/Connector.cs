@@ -779,7 +779,7 @@
                     14200,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("u_parent_pk", 0, false, false),
+                        new ClassProperty("u_parent_pk", 4, false, false),
                         new ClassProperty("u_hub_name", 7, false, false),
                     }
                 },
@@ -889,14 +889,14 @@
                 poolIdProperty.Value = modulatorLabelParts[2].Replace("DP-", String.Empty);
             }
 
-            var chainIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_chain_id"));
+            //var chainIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_chain_id"));
 
-            var satnetProperty = properties.FirstOrDefault(x => x.Name.Equals("u_satnet"));
+            //var satnetProperty = properties.FirstOrDefault(x => x.Name.Equals("u_satnet"));
 
-            if (chainIdProperty != null && satnetProperty != null)
-            {
-                chainIdProperty.Value = modulatorLabelParts[2].Replace("DP-", String.Empty);
-            }
+            //if (chainIdProperty != null && satnetProperty != null)
+            //{
+            //    chainIdProperty.Value = modulatorLabelParts[2].Replace("DP-", String.Empty);
+            //}
         }
 
         private static string GetModulatorLabel(List<Property> properties)
@@ -1411,8 +1411,6 @@
                 modulatorLabel = mcm6100LabelProperty.Value;
             }
 
-            engine.GenerateInformation("GetUniqueIdForModulator4IF| ********** MODULATOR LABEL => " + modulatorLabel);
-
             if (String.IsNullOrWhiteSpace(modulatorLabel)) return String.Empty;
 
             var modulatorLabelParts = modulatorLabel.Split('[');
@@ -1420,8 +1418,6 @@
             if (modulatorLabelParts.Length < 2) return String.Empty;
 
             modulatorLabel = modulatorLabelParts[0].Trim();
-
-            engine.GenerateInformation("GetUniqueIdForModulator4IF| ********** MODULATOR LABEL => " + modulatorLabel);
 
             labelProperty.Value = modulatorLabel;
 
