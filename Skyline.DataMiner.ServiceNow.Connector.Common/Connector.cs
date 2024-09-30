@@ -298,7 +298,7 @@
                                     new Relationship("Dialog Hub", "Dialog Switch", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Hub", "Dialog MS Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
-                                    new Relationship("Dialog Satellite Network", "Dialog Hub", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    //new Relationship("Dialog Satellite Network", "Dialog Hub", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Demodulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
@@ -649,15 +649,22 @@
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
-                //{
-                //    3200,
-                //    new List<ClassProperty>
-                //    {
-                //        new ClassProperty("u_label_1_1", 4, false, false),
-                //        new ClassProperty("u_chain_id", 8, false, false),
-                //        new ClassProperty("u_hps", -1, false, false),
-                //    }
-                //},
+                {
+                    3200,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("u_label_1_1", 4, false, false),
+                        new ClassProperty("u_chain_id", 8, false, false),
+                    }
+                },
+                {
+                    3000,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("u_hps_chain", 4, false, false),
+                        new ClassProperty("u_active_chain", 5, false, false),
+                    }
+                },
             };
         }
 
@@ -706,14 +713,22 @@
                         new ClassProperty("u_nms_name", -1, false, false),
                     }
                 },
-                //{
-                //    3200,
-                //    new List<ClassProperty>
-                //    {
-                //        new ClassProperty("u_label_1_1", 4, false, false),
-                //        new ClassProperty("u_chain_id", 8, false, false),
-                //    }
-                //},
+                {
+                    3200,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("u_label_1_1", 4, false, false),
+                        new ClassProperty("u_chain_id", 8, false, false),
+                    }
+                },
+                {
+                    3000,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("u_hps_chain", 4, false, false),
+                        new ClassProperty("u_active_chain", 5, false, false),
+                    }
+                },
             };
         }
 
@@ -889,15 +904,6 @@
             {
                 poolIdProperty.Value = modulatorLabelParts[2].Replace("DP-", String.Empty);
             }
-
-            //var chainIdProperty = properties.FirstOrDefault(x => x.Name.Equals("u_chain_id"));
-
-            //var satnetProperty = properties.FirstOrDefault(x => x.Name.Equals("u_satnet"));
-
-            //if (chainIdProperty != null && satnetProperty != null)
-            //{
-            //    chainIdProperty.Value = modulatorLabelParts[2].Replace("DP-", String.Empty);
-            //}
         }
 
         private static string GetModulatorLabel(List<Property> properties)
