@@ -260,7 +260,7 @@
                                     new ClassMapping
                                     {
                                         Class = "Dialog Enclosure",
-                                        TargetTable = "u_cmdb_ci_enclosure",
+                                        TargetTable = "cmdb_ci_enclosure",
                                         IsParent = false,
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Enclosure"].Invoke(),
@@ -268,15 +268,15 @@
                                     new ClassMapping
                                     {
                                         Class = "Dialog Linux Server",
-                                        TargetTable = "u_cmdb_ci_linux_server",
+                                        TargetTable = "cmdb_ci_linux_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_hub_name", "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_hub_name", "u_hub_nms", "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
                                     },
                                     new ClassMapping
                                     {
                                         Class = "Dialog MS Server",
-                                        TargetTable = "u_cmdb_ci_microsoft_server",
+                                        TargetTable = "cmdb_ci_win_server",
                                         IsParent = false,
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog MS Server"].Invoke(),
@@ -300,11 +300,11 @@
                                     new Relationship("Dialog Hub", "Dialog MS Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     //new Relationship("Dialog Satellite Network", "Dialog Hub", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
-                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                   // new Relationship("Dialog Demodulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Modulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
-                                    new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_chain") }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_hub_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Dialog MS Server", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink("u_hub_name", "u_hub_name") }, new List<PropertyLink> { }, "Virtualized::Virtualizes", true),
                                 }),
@@ -776,9 +776,9 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
-                        //new ClassProperty("u_parent_fk", 3, false, false),
                         new ClassProperty("u_label", 4, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("u_hub_nms", -1, false, false),
                     }
                 },
                 {
@@ -1362,9 +1362,18 @@
 
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
+            if (labelProperty == null || String.IsNullOrWhiteSpace(labelProperty.Value)) return String.Empty;
+
+            var hubNmsProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_nms"));
+
+            if (hubNmsProperty != null && !String.IsNullOrWhiteSpace(hubNmsProperty.Value))
+            {
+                return parentElementName + "." + hubNmsProperty.Value + "." + labelProperty.Value;
+            }
+
             var hubNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_name"));
 
-            return labelProperty != null && hubNameProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(hubNameProperty.Value)
+            return hubNameProperty != null && !String.IsNullOrWhiteSpace(hubNameProperty.Value)
                 ? parentElementName + "." + hubNameProperty.Value.Replace(".ENC", String.Empty) + "." + labelProperty.Value : String.Empty;
         }
 
