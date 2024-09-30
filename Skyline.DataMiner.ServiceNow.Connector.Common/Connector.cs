@@ -270,7 +270,7 @@
                                         Class = "Dialog Linux Server",
                                         TargetTable = "cmdb_ci_linux_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_hub_name", "u_hub_nms", "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_hub_name", "u_label" }, new PropertyLink("u_hub_nms", String.Empty, "Dialog NMS", String.Empty)),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
                                     },
                                     new ClassMapping
@@ -778,7 +778,7 @@
                         new ClassProperty("pk", 0, false, false),
                         new ClassProperty("u_label", 4, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
-                        new ClassProperty("u_hub_nms", -1, false, false),
+                        //new ClassProperty("u_hub_nms", -1, false, false),
                     }
                 },
                 {
@@ -786,16 +786,18 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false),
+                        new ClassProperty("u_function_id", 2, false, false),
                         new ClassProperty("u_label", 4, false, false),
-                        new ClassProperty("u_parent_fk", 5, false, false),
+                        new ClassProperty("u_parent_blade_server", 5, false, false),
                         new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("u_hub_nms", -1, false, false),
                     }
                 },
                 {
                     14200,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("u_parent_pk", 4, false, false),
+                        new ClassProperty("u_blade_server", 1, false, false),
                         new ClassProperty("u_hub_name", 7, false, false),
                     }
                 },
@@ -1364,17 +1366,17 @@
 
             if (labelProperty == null || String.IsNullOrWhiteSpace(labelProperty.Value)) return String.Empty;
 
-            var hubNmsProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_nms"));
-
-            if (hubNmsProperty != null && !String.IsNullOrWhiteSpace(hubNmsProperty.Value))
-            {
-                return parentElementName + "." + hubNmsProperty.Value + "." + labelProperty.Value;
-            }
-
             var hubNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_name"));
 
-            return hubNameProperty != null && !String.IsNullOrWhiteSpace(hubNameProperty.Value)
-                ? parentElementName + "." + hubNameProperty.Value.Replace(".ENC", String.Empty) + "." + labelProperty.Value : String.Empty;
+            if (hubNameProperty != null && !String.IsNullOrWhiteSpace(hubNameProperty.Value))
+            {
+                return parentElementName + "." + hubNameProperty.Value.Replace(".ENC", String.Empty) + "." + labelProperty.Value ;
+            }
+
+            var hubNmsProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_nms"));
+
+            return hubNmsProperty != null && !String.IsNullOrWhiteSpace(hubNmsProperty.Value)
+                ? parentElementName + "." + hubNmsProperty.Value + "." + labelProperty.Value : String.Empty;
         }
 
         private string GetDialogModulatorUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
