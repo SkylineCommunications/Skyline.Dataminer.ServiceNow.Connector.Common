@@ -270,7 +270,7 @@
                                         Class = "Dialog Linux Server",
                                         TargetTable = "cmdb_ci_linux_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_hub_name", "u_label" }, new PropertyLink("u_hub_nms", String.Empty, "Dialog NMS", String.Empty)),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_hub_name", "u_label" }, new PropertyLink("u_hub_nms", "u_nms_name", "Dialog NMS", "Dialog NMS")),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
                                     },
                                     new ClassMapping
@@ -1368,14 +1368,14 @@
 
             var hubNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_name"));
 
-            if (hubNameProperty != null && !String.IsNullOrWhiteSpace(hubNameProperty.Value))
+            if (hubNameProperty != null && !String.IsNullOrWhiteSpace(hubNameProperty.Value) && !hubNameProperty.Value.Equals("NA"))
             {
                 return parentElementName + "." + hubNameProperty.Value.Replace(".ENC", String.Empty) + "." + labelProperty.Value ;
             }
 
             var hubNmsProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_nms"));
 
-            return hubNmsProperty != null && !String.IsNullOrWhiteSpace(hubNmsProperty.Value)
+            return hubNmsProperty != null && !String.IsNullOrWhiteSpace(hubNmsProperty.Value) && !hubNmsProperty.Value.Equals("NA")
                 ? parentElementName + "." + hubNmsProperty.Value + "." + labelProperty.Value : String.Empty;
         }
 
