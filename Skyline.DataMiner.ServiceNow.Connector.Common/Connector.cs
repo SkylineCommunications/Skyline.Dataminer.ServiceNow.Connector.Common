@@ -129,7 +129,7 @@
                                     new ClassMapping
                                     {
                                         Class = "Evolution Protocol Processor Blade",
-                                        TargetTable = "u_cmdb_ci_evolution_protocol_processor_blade",
+                                        TargetTable = "u_cmdb_ci_appl_evolution_pp_blade",
                                         IsParent = false,
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Protocol Processor Blade"].Invoke(),
@@ -859,7 +859,7 @@
 
         private static void ProcessDialogModulatorRelationshipProperties(Engine engine, List<Property> properties)
         {
-            engine.GenerateInformation("ProcessDialogModulatorRelationshipProperties| ************** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+            //engine.GenerateInformation("ProcessDialogModulatorRelationshipProperties| ************** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
 
             var deviceLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_device"));
 
@@ -1340,7 +1340,7 @@
 
         private string GetDialogSatelliteNetworkUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            engine.GenerateInformation("GetDialogSatelliteNetworkUniqueID| ********** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+            //engine.GenerateInformation("GetDialogSatelliteNetworkUniqueID| ********** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
 
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
@@ -1356,7 +1356,7 @@
 
         private string GetDialogLinuxServerUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            engine.GenerateInformation("GetDialogLinuxServerUniqueID| ********** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+            //engine.GenerateInformation("GetDialogLinuxServerUniqueID| ********** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
 
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
@@ -1391,10 +1391,7 @@
 
             var deviceLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_device"));
 
-            if (deviceLabelProperty != null && String.IsNullOrWhiteSpace(deviceLabelProperty.Value))
-            {
-                engine.GenerateInformation("GetDialogModulatorUniqueID| ********** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
-            }
+            //engine.GenerateInformation("GetDialogModulatorUniqueID| ********** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
 
             if (deviceLabelProperty != null && !String.IsNullOrWhiteSpace(deviceLabelProperty.Value))
             {
@@ -1444,7 +1441,7 @@
 
         private string GetDialogDemodulatorUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            engine.GenerateInformation("GetDialogDemodulatorUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+            //engine.GenerateInformation("GetDialogDemodulatorUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
 
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
@@ -1464,7 +1461,7 @@
         ///// <returns>Remote instance unique ID.</returns>
         private string GetDialogSwitchUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            engine.GenerateInformation("GetDialogSwitchUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
+            //engine.GenerateInformation("GetDialogSwitchUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
 
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
