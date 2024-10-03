@@ -1449,7 +1449,7 @@
 
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-            return labelProperty != null && !labelProperty.Value.Contains(".MOD-") ? parentElementName + "." + labelProperty.Value : String.Empty;
+            return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !labelProperty.Value.Contains(".MOD-") ? parentElementName + "." + labelProperty.Value : String.Empty;
         }
 
         ///// <summary>
@@ -1491,40 +1491,6 @@
 
             return String.Empty;
         }
-
-        ///// <summary>
-        ///// Method used to retrieve the unique ID of a given Evolution Chassis instance.
-        ///// </summary>
-        ///// <param name="engine"></param>
-        ///// <param name="properties"></param>
-        ///// <param name="pk"></param>
-        ///// <returns>Remote instance unique ID.</returns>
-        //public static string GetEvolutionChassisUniqueID(Engine engine, List<Property> properties, string pk)
-        //{
-        //    var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-        //    var serialNumberProperty = properties.FirstOrDefault(x => x.Name.Equals("serial_number"));
-
-        //    return labelProperty != null && serialNumberProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(serialNumberProperty.Value)
-        //        ? serialNumberProperty.Value + "." + labelProperty.Value : String.Empty;
-        //}
-
-        ///// <summary>
-        ///// Method used to retrieve the unique ID of a given Evolution Protocol Processor instance.
-        ///// </summary>
-        ///// <param name="engine"></param>
-        ///// <param name="properties"></param>
-        ///// <param name="pk"></param>
-        ///// <returns>Remote instance unique ID.</returns>
-        //public static string GetEvolutionProtocolProcessorUniqueID(Engine engine, List<Property> properties, string pk)
-        //{
-        //    var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
-
-        //    var networkProtocolProcessorProperty = properties.FirstOrDefault(x => x.Name.Equals("u_network_pp_name"));
-
-        //    return labelProperty != null && networkProtocolProcessorProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(networkProtocolProcessorProperty.Value)
-        //        ? networkProtocolProcessorProperty.Value + "." + pk + "." + labelProperty.Value : String.Empty;
-        //}
     }
 
     /// <summary>
