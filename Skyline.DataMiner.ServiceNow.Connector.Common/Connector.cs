@@ -74,7 +74,7 @@
                                         Class = "Evolution NMS",
                                         TargetTable = "u_cmdb_ci_appl_nms_evolution",
                                         IsParent = true,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new PropertyLink()),
                                         AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
                                     },
                                     new ClassMapping
@@ -82,7 +82,7 @@
                                         Class = "Evolution Remote",
                                         TargetTable = "u_cmdb_ci_modem_evolution_remote",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Remote"].Invoke(),
                                     },
                                     new ClassMapping
@@ -90,7 +90,7 @@
                                         Class = "Evolution Linecard",
                                         TargetTable = "u_cmdb_ci_modem_evolution_linecard",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Linecard"].Invoke(),
                                     },
                                     new ClassMapping
@@ -98,7 +98,7 @@
                                         Class = "Evolution Network",
                                         TargetTable = "u_cmdb_ci_group_evolution_network",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Network"].Invoke(),
                                     },
                                     new ClassMapping
@@ -106,7 +106,7 @@
                                         Class = "Evolution Chassis",
                                         TargetTable = "cmdb_ci_chassis",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Chassis"].Invoke(),
                                     },
                                     new ClassMapping
@@ -114,7 +114,7 @@
                                         Class = "Evolution Inroute Group",
                                         TargetTable = "u_cmdb_ci_evolution_inroute_group",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Inroute Group"].Invoke(),
                                     },
                                     new ClassMapping
@@ -122,7 +122,7 @@
                                         Class = "Evolution Protocol Processor",
                                         TargetTable = "u_cmdb_ci_appl_evolution_pp",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         //NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_ppb_network_id" }, new ExternalPropertyLink("u_network_pp_name", "Evolution Network", "u_pp_id", "Evolution Network")),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Protocol Processor"].Invoke(),
                                     },
@@ -131,7 +131,7 @@
                                         Class = "Evolution Protocol Processor Blade",
                                         TargetTable = "u_cmdb_ci_appl_evolution_pp_blade",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Protocol Processor Blade"].Invoke(),
                                     },
                                     //new ClassMapping
@@ -194,7 +194,7 @@
                                         Class = "Dialog NMS",
                                         TargetTable = "u_cmdb_ci_appl_nms_dialog",
                                         IsParent = true,
-                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.PrimaryKey, new PropertyLink()),
                                         AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
                                     },
                                     new ClassMapping
@@ -202,7 +202,7 @@
                                         Class = "Dialog Remote",
                                         TargetTable = "u_cmdb_ci_modem_dialog_remote",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Remote"].Invoke(),
                                     },
                                     new ClassMapping
@@ -210,7 +210,7 @@
                                         Class = "Dialog Satellite Network",
                                         TargetTable = "u_cmdb_ci_dialog_satellite_network",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label", "u_hps_name" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Satellite Network"].Invoke(),
                                     },
                                 },
@@ -230,7 +230,7 @@
                                         Class = "Dialog Hub",
                                         TargetTable = "u_cmdb_ci_dialog_hub",
                                         IsParent = true,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
                                     },
                                     new ClassMapping
@@ -238,7 +238,7 @@
                                         Class = "Dialog Modulator",
                                         TargetTable = "u_cmdb_ci_dialog_modulator",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string> { "u_label" }, new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Modulator"].Invoke(),
                                     },
                                     new ClassMapping
@@ -246,7 +246,7 @@
                                         Class = "Dialog Demodulator",
                                         TargetTable = "u_cmdb_ci_dialog_demodulator",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Demodulator"].Invoke(),
                                     },
                                     new ClassMapping
@@ -254,7 +254,7 @@
                                         Class = "Dialog Switch",
                                         TargetTable = "cmdb_ci_ip_switch",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Switch"].Invoke(),
                                     },
                                     new ClassMapping
@@ -262,7 +262,7 @@
                                         Class = "Dialog Enclosure",
                                         TargetTable = "cmdb_ci_enclosure",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Enclosure"].Invoke(),
                                     },
                                     new ClassMapping
@@ -270,7 +270,7 @@
                                         Class = "Dialog Linux Server",
                                         TargetTable = "cmdb_ci_linux_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new List<string>{ "u_hub_name", "u_label" }, new PropertyLink("u_hub_nms", "u_nms_name", "Dialog NMS", "Dialog NMS")),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink("u_hub_nms", "u_nms_name", "Dialog NMS", "Dialog NMS")),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
                                     },
                                     new ClassMapping
@@ -278,7 +278,7 @@
                                         Class = "Dialog MS Server",
                                         TargetTable = "cmdb_ci_win_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog MS Server"].Invoke(),
                                     },
                                     new ClassMapping
@@ -286,7 +286,7 @@
                                         Class = "Dialog Application",
                                         TargetTable = "u_cmdb_ci_dialog_application",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new PropertyLink()),
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
                                     },
                                 },
@@ -366,19 +366,19 @@
                     300,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_status", 6, true, false),
-                        new ClassProperty("u_network_id", 9, false, false),
-                        new ClassProperty("u_network_name", 10, true, false),
-                        new ClassProperty("u_inroute_group_id", 11, false, false),
-                        new ClassProperty("u_inroute_group", 12, false, false),
-                        new ClassProperty("u_customer_id", 13, false, false),
-                        new ClassProperty("u_active_sw_version", 14, false, false),
-                        new ClassProperty("u_hw_type", 15, false, false),
-                        new ClassProperty("u_pp_id", 16, false, false),
-                        new ClassProperty("serial_number", 17, false, true),
-                        new ClassProperty("u_nms_name", 18, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("u_status", 6, true, false, false),
+                        new ClassProperty("u_network_id", 9, false, false, false),
+                        new ClassProperty("u_network_name", 10, true, false, false),
+                        new ClassProperty("u_inroute_group_id", 11, false, false, false),
+                        new ClassProperty("u_inroute_group", 12, false, false, false),
+                        new ClassProperty("u_customer_id", 13, false, false, false),
+                        new ClassProperty("u_active_sw_version", 14, false, false, false),
+                        new ClassProperty("u_hw_type", 15, false, false, false),
+                        new ClassProperty("u_pp_id", 16, false, false, false),
+                        new ClassProperty("serial_number", 17, false, true, false),
+                        new ClassProperty("u_nms_name", 18, false, false, false),
                     }
                 },
             };
@@ -393,28 +393,28 @@
                     400,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_status", 4, true, false),
-                        new ClassProperty("u_inroute_group", 8, false, false),
-                        new ClassProperty("u_customer_id", 9, false, false),
-                        new ClassProperty("u_active_sw_version", 10, false , false),
-                        new ClassProperty("u_hw_type", 11, false, false),
-                        new ClassProperty("u_pp_id", 12, false, false),
-                        new ClassProperty("serial_number", 13, false, true),
-                        new ClassProperty("u_chassis_id", 14, false, false),
-                        new ClassProperty("u_chassis_slot_number", 15, false, false),
-                        new ClassProperty("u_network_id", 16, false, false),
-                        new ClassProperty("u_nms_name", 17, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("u_status", 4, true, false, false),
+                        new ClassProperty("u_inroute_group", 8, false, false, false),
+                        new ClassProperty("u_customer_id", 9, false, false, false),
+                        new ClassProperty("u_active_sw_version", 10, false , false, false),
+                        new ClassProperty("u_hw_type", 11, false, false, false),
+                        new ClassProperty("u_pp_id", 12, false, false, false),
+                        new ClassProperty("serial_number", 13, false, true, false),
+                        new ClassProperty("u_chassis_id", 14, false, false, false),
+                        new ClassProperty("u_chassis_slot_number", 15, false, false, false),
+                        new ClassProperty("u_network_id", 16, false, false, false),
+                        new ClassProperty("u_nms_name", 17, false, false, false),
                     }
                 },
                 {
                     1700,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("u_chassis_slot_id", 1, true, false),
-                        new ClassProperty("fk", 6, false, false),
-                        new ClassProperty("u_redundancy_linecard", 8, true, false),
+                        new ClassProperty("u_chassis_slot_id", 1, true, false, false),
+                        new ClassProperty("fk", 6, false, false, false),
+                        new ClassProperty("u_redundancy_linecard", 8, true, false, false),
                     }
                 },
             };
@@ -429,21 +429,21 @@
                     600,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_network_id", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_status", 3, true, false),
-                        new ClassProperty("u_teleport_id", 6, false, false),
-                        new ClassProperty("u_pp_id", 7, false, false),
-                        new ClassProperty("u_nms_name", 8, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_network_id", 0, false, false, false),
+                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("u_status", 3, true, false, false),
+                        new ClassProperty("u_teleport_id", 6, false, false, false),
+                        new ClassProperty("u_pp_id", 7, false, false, false),
+                        new ClassProperty("u_nms_name", 8, false, false, false),
                     }
                 },
                 {
                     6000,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_network_pp_name", 30, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_network_pp_name", 30, false, false, false),
                     }
                 },
             };
@@ -458,13 +458,13 @@
                     1500,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_chassis_id", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("serial_number", 2, false, true),
-                        new ClassProperty("u_status", 3, true, false),
-                        new ClassProperty("u_nms_ip", 4, false, false),
-                        new ClassProperty("u_nms_name", 5, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_chassis_id", 0, false, false, false),
+                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("serial_number", 2, false, true, false),
+                        new ClassProperty("u_status", 3, true, false, false),
+                        new ClassProperty("u_nms_ip", 4, false, false, false),
+                        new ClassProperty("u_nms_name", 5, false, false, false),
                     }
                 },
             };
@@ -479,10 +479,10 @@
                     7400,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_network_id", 2, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("u_network_id", 2, false, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
             };
@@ -497,9 +497,9 @@
                     6000,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 30, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 30, false, false, true),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
             };
@@ -514,10 +514,10 @@
                     6300,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_ppb_network_id", 2, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("u_ppb_network_id", 2, false, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
             };
@@ -532,46 +532,46 @@
                 //    12500,
                 //    new List<ClassProperty>
                 //    {
-                //        new ClassProperty("pk", 0, false, false),
-                //        new ClassProperty("u_label", 11, false, false),
-                //        new ClassProperty("u_modem_name", 1, false, false),
-                //        new ClassProperty("u_modem_type", 2, false, false),
-                //        new ClassProperty("u_return_technology", 3, false, false),
-                //        new ClassProperty("u_mac_address", 4, false, false),
-                //        new ClassProperty("u_monitoring_type", 5, false, false),
-                //        new ClassProperty("u_nms_name", -1, false, false),
+                //        new ClassProperty("pk", 0, false, false, false),
+                //        new ClassProperty("u_label", 11, false, false, false),
+                //        new ClassProperty("u_modem_name", 1, false, false, false),
+                //        new ClassProperty("u_modem_type", 2, false, false, false),
+                //        new ClassProperty("u_return_technology", 3, false, false, false),
+                //        new ClassProperty("u_mac_address", 4, false, false, false),
+                //        new ClassProperty("u_monitoring_type", 5, false, false, false),
+                //        new ClassProperty("u_nms_name", -1, false, false, false),
                 //    }
                 //},
                 //{
                 //    12700,
                 //    new List<ClassProperty>
                 //    {
-                //        new ClassProperty("pk", 0, false, false),
-                //        new ClassProperty("u_network_name", 6, false, false),
-                //        new ClassProperty("u_network_config", 8, false, false),
-                //        new ClassProperty("u_sw_version", 9, false, false),
+                //        new ClassProperty("pk", 0, false, false, false),
+                //        new ClassProperty("u_network_name", 6, false, false, false),
+                //        new ClassProperty("u_network_config", 8, false, false, false),
+                //        new ClassProperty("u_sw_version", 9, false, false, false),
                 //        new ClassProperty("u_last_network_config", 10, false, false),
-                //        new ClassProperty("u_status", 149, true, false),
-                //        new ClassProperty("u_nms_name", -1, false, false),
+                //        new ClassProperty("u_status", 149, true, false, false),
+                //        new ClassProperty("u_nms_name", -1, false, false, false),
                 //    }
                 //},
                 //{
                 //    21000,
                 //    new List<ClassProperty>
                 //    {
-                //        new ClassProperty("u_beam_state", 2, false, false),
-                //        new ClassProperty("u_active_beam", 5, true, false),
-                //        new ClassProperty("fk", 7, false, false),
+                //        new ClassProperty("u_beam_state", 2, false, false, false),
+                //        new ClassProperty("u_active_beam", 5, true, false, false),
+                //        new ClassProperty("fk", 7, false, false, false),
                 //    }
                 //},
                 {
                     100,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_satnet", 44, true, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("u_satnet", 44, true, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
             };
@@ -586,20 +586,20 @@
                 //    15000,
                 //    new List<ClassProperty>
                 //    {
-                //        new ClassProperty("pk", 0, false, false),
-                //        new ClassProperty("u_label", 18, false, false),
-                //        new ClassProperty("u_nms_name", -1, false, false),
+                //        new ClassProperty("pk", 0, false, false, false),
+                //        new ClassProperty("u_label", 18, false, false, false),
+                //        new ClassProperty("u_nms_name", -1, false, false, false),
                 //    }
                 //},
                 {
                     4300,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_beam_name", 4, false, false),
-                        new ClassProperty("u_hps_name", 22, false, false),
-                        new ClassProperty("u_label", 26, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_beam_name", 4, false, false, false),
+                        new ClassProperty("u_hps_name", 22, true, false, true),
+                        new ClassProperty("u_label", 26, false, false, true),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
             };
@@ -614,55 +614,55 @@
                     3100,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", -1, false, false),
-                        new ClassProperty("u_label_device", 4, false, false),
-                        new ClassProperty("u_hps_id", 6, false, false),
-                        new ClassProperty("u_role_id", 7, false, false),
-                        new ClassProperty("u_dp_id", 9, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", -1, false, false, false),
+                        new ClassProperty("u_label_device", 4, false, false, true),
+                        new ClassProperty("u_hps_id", 6, false, false, false),
+                        new ClassProperty("u_role_id", 7, true, false, false),
+                        new ClassProperty("u_dp_id", 9, false, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
                 {
                     2300,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", -1, false, false),
-                        new ClassProperty("u_label_mcm7500", 2, false, false),
-                        new ClassProperty("u_hps_id", -1, false, false),
-                        new ClassProperty("u_role_id", -1, false, false),
-                        new ClassProperty("u_dp_id", -1, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", -1, false, false, false),
+                        new ClassProperty("u_label_mcm7500", 2, false, false, true),
+                        new ClassProperty("u_hps_id", -1, false, false, false),
+                        new ClassProperty("u_role_id", -1, false, false, false),
+                        new ClassProperty("u_dp_id", -1, false, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
                 {
                     4300,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", -1, false, false),
-                        new ClassProperty("u_label_m6100", 2, false, false),
-                        new ClassProperty("u_hps_id", -1, false, false),
-                        new ClassProperty("u_role_id", -1, false, false),
-                        new ClassProperty("u_dp_id", -1, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", -1, false, false, false),
+                        new ClassProperty("u_label_m6100", 2, false, false, true),
+                        new ClassProperty("u_hps_id", -1, false, false, false),
+                        new ClassProperty("u_role_id", -1, false, false, false),
+                        new ClassProperty("u_dp_id", -1, false, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
                 {
                     3200,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("u_label_1_1", 4, false, false),
-                        new ClassProperty("u_chain_id", 8, false, false),
+                        new ClassProperty("u_label_1_1", 4, false, false, false),
+                        new ClassProperty("u_chain_id", 8, false, false, false),
                     }
                 },
                 {
                     3000,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("u_hps_chain", 4, false, false),
-                        new ClassProperty("u_active_chain", 5, false, false),
+                        new ClassProperty("u_hps_chain", 4, false, false, false),
+                        new ClassProperty("u_active_chain", 5, false, false, false),
                     }
                 },
             };
@@ -677,12 +677,12 @@
                     3100,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 4, false, false),
-                        new ClassProperty("u_hps_id", 6, false, false),
-                        new ClassProperty("u_role_id", 7, false, false),
-                        new ClassProperty("u_dp_id", 9, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 4, false, false, true),
+                        new ClassProperty("u_hps_id", 6, false, false, false),
+                        new ClassProperty("u_role_id", 7, true, false, false),
+                        new ClassProperty("u_dp_id", 9, false, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
             };
@@ -697,36 +697,36 @@
                     5400,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", -1, false, false),
-                        new ClassProperty("u_label_access", 1, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", -1, false, false, false),
+                        new ClassProperty("u_label_access", 1, false, false, true),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
                 {
                     6450,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", -1, false, false),
-                        new ClassProperty("u_label_rf", 2, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", -1, false, false, false),
+                        new ClassProperty("u_label_rf", 2, false, false, true),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
                 {
                     3200,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("u_label_1_1", 4, false, false),
-                        new ClassProperty("u_chain_id", 8, false, false),
+                        new ClassProperty("u_label_1_1", 4, false, false, false),
+                        new ClassProperty("u_chain_id", 8, false, false, false),
                     }
                 },
                 {
                     3000,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("u_hps_chain", 4, false, false),
-                        new ClassProperty("u_active_chain", 5, false, false),
+                        new ClassProperty("u_hps_chain", 4, false, false, false),
+                        new ClassProperty("u_active_chain", 5, false, false, false),
                     }
                 },
             };
@@ -741,9 +741,9 @@
                     3800,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
             };
@@ -758,9 +758,9 @@
                     4000,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 1, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
             };
@@ -775,58 +775,58 @@
                     13000,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_label", 4, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
-                        //new ClassProperty("u_hub_nms", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 4, false, false, true),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
+                        //new ClassProperty("u_hub_nms", -1, false, false, false),
                     }
                 },
                 {
                     14400,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false),
-                        new ClassProperty("u_function_id", 2, false, false),
-                        new ClassProperty("u_label", 4, false, false),
-                        new ClassProperty("u_parent_blade_server", 5, false, false),
-                        new ClassProperty("u_nms_name", -1, false, false),
-                        new ClassProperty("u_hub_nms", -1, false, false),
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_function_id", 2, false, false, false),
+                        new ClassProperty("u_label", 4, false, false, true),
+                        new ClassProperty("u_parent_blade_server", 5, false, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
+                        new ClassProperty("u_hub_nms", -1, false, false, false),
                     }
                 },
                 {
                     14200,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("u_blade_server", 1, false, false),
-                        new ClassProperty("u_hub_name", 7, false, false),
+                        new ClassProperty("u_blade_server", 1, false, false, false),
+                        new ClassProperty("u_hub_name", 7, false, false, true),
                     }
                 },
                 //{
                 //    2900,
                 //    new List<ClassProperty>
                 //    {
-                //        //new ClassProperty("u_server_pk", 0, false, false),
-                //        new ClassProperty("u_server_fk", 2, false, false),
-                //        new ClassProperty("u_server_name", 4, false, false),
-                //        new ClassProperty("u_virtual_machines", 7, false, false),
+                //        //new ClassProperty("u_server_pk", 0, false, false, false),
+                //        new ClassProperty("u_server_fk", 2, false, false, false),
+                //        new ClassProperty("u_server_name", 4, false, false, false),
+                //        new ClassProperty("u_virtual_machines", 7, false, false, false),
                 //    }
                 //},
                 //{
                 //    3780,
                 //    new List<ClassProperty>
                 //    {
-                //        //new ClassProperty("u_server_pk", 0, false, false),
-                //        new ClassProperty("u_server_fk", 2, false, false),
-                //        new ClassProperty("u_server_name", 4, false, false),
-                //        new ClassProperty("u_served_satnet", 7, false, false),
+                //        //new ClassProperty("u_server_pk", 0, false, false, false),
+                //        new ClassProperty("u_server_fk", 2, false, false, false),
+                //        new ClassProperty("u_server_name", 4, false, false, false),
+                //        new ClassProperty("u_served_satnet", 7, false, false, false),
                 //    }
                 //},
                 //{
                 //    2800,
                 //    new List<ClassProperty>
                 //    {
-                //        new ClassProperty("u_hub_pk", 0, false, false),
-                //        new ClassProperty("u_hub_name", 2, false, false),
+                //        new ClassProperty("u_hub_pk", 0, false, false, false),
+                //        new ClassProperty("u_hub_name", 2, false, false, false),
                 //    }
                 //},
             };
@@ -983,16 +983,9 @@
 
                         if (pushAttributes.Count == 0) continue;
 
-                        foreach (var namingAttribute in classMapping.NamingDetails.RequiredProperties)
-                        {
-                            var attributeToAdd = attributeKvp.Value.FirstOrDefault(x => x.Name.Equals(namingAttribute));
+                        var namingAttributes = attributeKvp.Value.Where(attribute => attribute.IsNamingProperty).ToList();
 
-                            if (attributeToAdd != null)
-                            {
-                                // Add class attributes that will be used to retrieve instances Unique IDs
-                                pushAttributes.Add(attributeToAdd);
-                            }
-                        }
+                        pushAttributes.AddRange(namingAttributes);
 
                         var parameterDetails = pushAttributes
                             .Select(attribute => new ParameterDetails(attribute.Name, classMapping.Class, new KeyValuePair<int, int>(attributeKvp.Key, attribute.ColumnIdx), attribute.HasPushEvent, attribute.IsClassAttribute));
@@ -1519,18 +1512,25 @@
         public bool IsClassAttribute { get; set; }
 
         /// <summary>
+        /// Indicates if the attribute is used to build the unique ID for CIs.
+        /// </summary>
+        public bool IsNamingProperty { get; set; }
+
+        /// <summary>
         /// ClassAttribute class constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="columnIdx"></param>
         /// <param name="hasPushEvent"></param>
         /// <param name="isClassAttribute"></param>
-        public ClassProperty(string name, int columnIdx, bool hasPushEvent, bool isClassAttribute)
+        /// <param name="isNamingProperty"></param>
+        public ClassProperty(string name, int columnIdx, bool hasPushEvent, bool isClassAttribute, bool isNamingProperty)
         {
             Name = name;
             ColumnIdx = columnIdx;
             HasPushEvent = hasPushEvent;
             IsClassAttribute = isClassAttribute;
+            IsNamingProperty = isNamingProperty;
         }
     }
 
@@ -1855,11 +1855,6 @@
         public NamingFormat Format { get; set; }
 
         /// <summary>
-        /// List of properties that are required to build the unique ID of a given CI.
-        /// </summary>
-        public List<string> RequiredProperties { get; set; }
-
-        /// <summary>
         /// Describes the external property requirements necessary to build a certain unique ID.
         /// </summary>
         public PropertyLink ExternalPropertyLink { get; set; }
@@ -1870,7 +1865,6 @@
         public NamingDetails()
         {
             Format = NamingFormat.Unknown;
-            RequiredProperties = new List<string>();
             ExternalPropertyLink = new PropertyLink();
         }
 
@@ -1878,12 +1872,10 @@
         /// NamingDetails class constructor.
         /// </summary>
         /// <param name="format"></param>
-        /// <param name="requiredProperties"></param>
         /// <param name="externalPropertyLink"></param>
-        public NamingDetails(NamingFormat format, List<string> requiredProperties, PropertyLink externalPropertyLink)
+        public NamingDetails(NamingFormat format, PropertyLink externalPropertyLink)
         {
             Format = format;
-            RequiredProperties = requiredProperties;
             ExternalPropertyLink = externalPropertyLink;
         }
     }
