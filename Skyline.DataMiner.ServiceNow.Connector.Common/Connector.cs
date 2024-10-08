@@ -1456,7 +1456,7 @@
         ///// <returns>Remote instance unique ID.</returns>
         private string GetDialogSwitchUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            //engine.GenerateInformation("GetDialogSwitchUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
+            engine.GenerateInformation("GetDialogSwitchUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
 
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
