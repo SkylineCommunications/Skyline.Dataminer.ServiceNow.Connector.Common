@@ -759,7 +759,7 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false, false),
-                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("u_label", 2, false, false, true),
                         new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
