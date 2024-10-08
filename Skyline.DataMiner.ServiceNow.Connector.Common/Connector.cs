@@ -1429,6 +1429,8 @@
 
             labelProperty.Value = modulatorLabel;
 
+            //engine.GenerateInformation("GetUniqueIdForModulator4IF| ********** Properties:\n\n" + JsonConvert.SerializeObject(properties) + "\n\n");
+
             return parentElementName + "." + labelProperty.Value;
         }
 
