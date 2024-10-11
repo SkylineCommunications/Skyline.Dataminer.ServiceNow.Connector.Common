@@ -177,14 +177,13 @@
                                     new Relationship("Evolution NMS", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution NMS", "Evolution Protocol Processor", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution NMS", "Evolution Protocol Processor Blade", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
-                                    //new Relationship("Evolution NMS", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Use End Point To::Implement End Point From", true),
                                     new Relationship("Evolution Inroute Group", "Evolution Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_inroute_group") }, new List<PropertyLink> { }, "Connected by::Connects", true),
-                                    new Relationship("Evolution Remote", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
-                                    //new Relationship("Evolution Remote", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
+                                    //new Relationship("Evolution Remote", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
+                                    new Relationship("Evolution Remote", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_network_id", "u_network_id") }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
                                     new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_chassis_slot_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
                                     new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_chassis_id", "u_chassis_slot_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
-                                    new Relationship("Evolution Protocol Processor", "Evolution Protocol Processor Blade", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    new Relationship("Evolution Protocol Processor", "Evolution Protocol Processor Blade", new List<PropertyLink> { new PropertyLink("u_network_id", "u_ppb_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                 })
                             }
@@ -377,8 +376,8 @@
                         new ClassProperty("pk", 0, false, false, false),
                         new ClassProperty("u_label", 1, false, false, true),
                         new ClassProperty("u_status", 6, true, false, false),
-                        new ClassProperty("u_network_id", 9, false, false, false),
-                        new ClassProperty("u_network_name", 10, true, false, false),
+                        new ClassProperty("u_network_id", 9, true, false, false),
+                        new ClassProperty("u_network_name", 10, false, false, false),
                         new ClassProperty("u_inroute_group_id", 11, false, false, false),
                         new ClassProperty("u_inroute_group", 12, false, false, false),
                         new ClassProperty("u_customer_id", 13, false, false, false),
@@ -412,7 +411,7 @@
                         new ClassProperty("serial_number", 13, false, true, false),
                         new ClassProperty("u_chassis_id", 14, false, false, false),
                         new ClassProperty("u_chassis_slot_number", 15, false, false, false),
-                        new ClassProperty("u_network_id", 16, false, false, false),
+                        new ClassProperty("u_network_id", 16, true, false, false),
                         new ClassProperty("u_nms_name", 17, false, false, false),
                     }
                 },
@@ -489,7 +488,7 @@
                     {
                         new ClassProperty("pk", 0, false, false, false),
                         new ClassProperty("u_label", 1, false, false, true),
-                        new ClassProperty("u_network_id", 2, false, false, false),
+                        new ClassProperty("u_network_id", 2, true, false, false),
                         new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
@@ -506,6 +505,7 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_network_id", 0, true, false, false),
                         new ClassProperty("u_label", 30, false, false, true),
                         new ClassProperty("u_nms_name", -1, false, false, false),
                     }
@@ -524,7 +524,7 @@
                     {
                         new ClassProperty("pk", 0, false, false, false),
                         new ClassProperty("u_label", 1, false, false, true),
-                        new ClassProperty("u_ppb_network_id", 2, false, false, false),
+                        new ClassProperty("u_ppb_network_id", 2, true, false, false),
                         new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
