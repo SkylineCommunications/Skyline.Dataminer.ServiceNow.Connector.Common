@@ -134,14 +134,14 @@
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Evolution Protocol Processor Blade"].Invoke(),
                                     },
-                                    //new ClassMapping
-                                    //{
-                                    //    Class = "Evolution Teleport",
-                                    //    TargetTable = "u_cmdb_ci_group_evolution_teleport",
-                                    //    IsParent = false,
-                                    //    NamingDetails = new NamingDetails(NamingFormat.Label, new List<string>(), new ExternalPropertyLink()),
-                                    //    AttributesByTableID = new Dictionary<int, List<ClassProperty>>(),
-                                    //},
+                                    new ClassMapping
+                                    {
+                                        Class = "Evolution Teleport",
+                                        TargetTable = "u_cmdb_ci_group_evolution_teleport",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
+                                        AttributesByTableID = ClassPropertiesMapper["Evolution Teleport"].Invoke(),
+                                    },
                                     //new ClassMapping
                                     //{
                                     //    Class = "Evolution Application",
@@ -177,14 +177,16 @@
                                     new Relationship("Evolution NMS", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution NMS", "Evolution Protocol Processor", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution NMS", "Evolution Protocol Processor Blade", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Evolution NMS", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution Inroute Group", "Evolution Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_inroute_group") }, new List<PropertyLink> { }, "Connected by::Connects", true),
-                                    //new Relationship("Evolution Remote", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_network_name", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
                                     new Relationship("Evolution Remote", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_network_id", "u_network_id") }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
                                     new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_chassis_slot_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
                                     new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_chassis_id", "u_chassis_slot_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Protocol Processor", "Evolution Protocol Processor Blade", new List<PropertyLink> { new PropertyLink("u_network_id", "u_ppb_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
+                                    //new Relationship("Evolution Protocol Processor", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Contains::Contained By", true),
+                                    //new Relationship("Evolution Chassis", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Contains::Contained By", true),
                                 })
                             }
                     },
@@ -313,7 +315,7 @@
                                     new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_chain") }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_hub_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
-                                    new Relationship("Dialog MS Server", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink("u_hub_name", "u_hub_name") }, new List<PropertyLink> { }, "Virtualized::Virtualizes", true),
+                                    //new Relationship("Dialog MS Server", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink("u_hub_name", "u_hub_name") }, new List<PropertyLink> { }, "Virtualized::Virtualizes", true),
                                 }),
                         }
                     },
@@ -348,6 +350,7 @@
                     { "Evolution Inroute Group", GetEvolutionInrouteGroupClassProperties },
                     { "Evolution Protocol Processor", GetEvolutionProtocolProcessorClassProperties },
                     { "Evolution Protocol Processor Blade", GetEvolutionProtocolProcessorBladeClassProperties },
+                    { "Evolution Teleport", GetEvolutionTeleportClassProperties },
                     // Dialog TSDB
                     { "Dialog Remote", GetDialogRemoteClassProperties },
                     { "Dialog Satellite Network", GetDialogSatelliteNetworkClassProperties },
@@ -505,8 +508,8 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("pk", 0, false, false, false),
-                        new ClassProperty("u_network_id", 0, true, false, false),
-                        new ClassProperty("u_label", 30, false, false, true),
+                        new ClassProperty("u_network_id", 0, false, false, false),
+                        new ClassProperty("u_label", 30, true, false, false),
                         new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
@@ -525,6 +528,24 @@
                         new ClassProperty("pk", 0, false, false, false),
                         new ClassProperty("u_label", 1, false, false, true),
                         new ClassProperty("u_ppb_network_id", 2, true, false, false),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
+                    }
+                },
+            };
+        }
+
+        private static Dictionary<int, List<ClassProperty>> GetEvolutionTeleportClassProperties()
+        {
+            return new Dictionary<int, List<ClassProperty>>
+            {
+                //  TODO: Add attributes here
+                {
+                    6000,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_network_id", 0, false, false, false),
+                        new ClassProperty("u_label", 18, true, false, true),
                         new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
