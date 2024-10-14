@@ -179,14 +179,15 @@
                                     new Relationship("Evolution NMS", "Evolution Protocol Processor Blade", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution NMS", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution Inroute Group", "Evolution Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_inroute_group") }, new List<PropertyLink> { }, "Connected by::Connects", true),
+                                    new Relationship("Evolution Linecard", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink("u_inroute_group", String.Empty) }, new List<PropertyLink> { }, "Connected by::Connects", false),
                                     new Relationship("Evolution Remote", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_network_id", "u_network_id") }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
-                                    new Relationship("Evolution Linecard", "Evolution Network", new List<PropertyLink> { new PropertyLink("u_chassis_slot_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
+                                    new Relationship("Evolution Network", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_network_id", "u_chassis_slot_id") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_chassis_id", "u_chassis_slot_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
-                                    new Relationship("Evolution Protocol Processor", "Evolution Protocol Processor Blade", new List<PropertyLink> { new PropertyLink("u_network_id", "u_ppb_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    new Relationship("Evolution Protocol Processor Blade", "Evolution Protocol Processor", new List<PropertyLink> { new PropertyLink("u_ppb_network_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
                                     new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    //new Relationship("Evolution Protocol Processor", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Contains::Contained By", true),
-                                    //new Relationship("Evolution Chassis", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Contains::Contained By", true),
+                                    new Relationship("Evolution Protocol Processor", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Contains::Contained By", true),
+                                    new Relationship("Evolution Chassis", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Contains::Contained By", true),
                                 })
                             }
                     },
@@ -507,6 +508,7 @@
                     6000,
                     new List<ClassProperty>
                     {
+                        // TODO: PP: Validate for multiple networks
                         new ClassProperty("pk", 0, false, false, false),
                         new ClassProperty("u_network_id", 0, false, false, false),
                         new ClassProperty("u_label", 30, true, false, false),
@@ -543,6 +545,7 @@
                     6000,
                     new List<ClassProperty>
                     {
+                        // TODO: Teleport: Validate for multiple networks
                         new ClassProperty("pk", 0, false, false, false),
                         new ClassProperty("u_network_id", 0, false, false, false),
                         new ClassProperty("u_label", 18, true, false, true),
