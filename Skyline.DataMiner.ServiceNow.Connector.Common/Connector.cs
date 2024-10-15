@@ -17,7 +17,6 @@
         /// </summary>
         public enum NamingFormat
         {
-            // TODO: Check which prefix better serves the purpose of protecting ID uniqueness (Element DMA ID might cause trouble if swarming is used in the future)
             // Naming format always includes parent element name to avoid duplicating unique IDs (for instance in case there are duplicate elements)
             /// <summary>
             /// Unique ID format is undefined.
@@ -180,7 +179,7 @@
                                     new Relationship("Evolution NMS", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Evolution Inroute Group", "Evolution Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_inroute_group") }, new List<PropertyLink> { }, "Connected by::Connects", true),
                                     new Relationship("Evolution Linecard", "Evolution Inroute Group", new List<PropertyLink> { new PropertyLink("u_inroute_group", String.Empty) }, new List<PropertyLink> { }, "Connected by::Connects", false),
-                                    new Relationship("Evolution Remote", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_network_id", "u_network_id"), new PropertyLink(String.Empty, "u_type") }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
+                                    new Relationship("Evolution Linecard", "Evolution Remote", new List<PropertyLink> { new PropertyLink("u_network_id", "u_network_id"), new PropertyLink("u_type", String.Empty) }, new List<PropertyLink> { }, "Receives data from::Sends data to", true),
                                     new Relationship("Evolution Network", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_network_id", "u_chassis_slot_id") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Chassis", "Evolution Linecard", new List<PropertyLink> { new PropertyLink("u_chassis_id", "u_chassis_slot_id") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
@@ -228,7 +227,7 @@
                                     // TODO: Add class relationships here
                                     new Relationship("Dialog NMS", "Dialog Remote", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Dialog NMS", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
-                                    new Relationship("Dialog Remote", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_satnet", "u_label") }, new List<PropertyLink> { }, "Receives data from::Sends data to", false),
+                                    new Relationship("Dialog Satellite Network", "Dialog Remote", new List<PropertyLink> { new PropertyLink("u_label", "u_satnet") }, new List<PropertyLink> { }, "Connected by::Connects", true),
                                 }),
                             new ConnectorMapping(
                                 "Newtec Dialog Infrastructure",
@@ -274,13 +273,21 @@
                                         NamingDetails = new NamingDetails(NamingFormat.Label, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Enclosure"].Invoke(),
                                     },
-                                    new ClassMapping
+                                     new ClassMapping
                                     {
                                         Class = "Dialog Linux Server",
                                         TargetTable = "cmdb_ci_linux_server",
                                         IsParent = false,
-                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink("u_hub_nms", "u_nms_name", "Dialog NMS", "Dialog NMS")),
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink()),
                                         AttributesByTableID = ClassPropertiesMapper["Dialog Linux Server"].Invoke(),
+                                    },
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog Linux VM",
+                                        TargetTable = "cmdb_ci_linux_server",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink("u_hub_nms", "u_nms_name", "Dialog NMS", "Dialog NMS")),
+                                        AttributesByTableID = ClassPropertiesMapper["Dialog Linux VM"].Invoke(),
                                     },
                                     new ClassMapping
                                     {
@@ -307,16 +314,16 @@
                                     new Relationship("Dialog Hub", "Dialog Switch", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Enclosure", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
+                                    new Relationship("Dialog Hub", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Hub", "Dialog MS Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     //new Relationship("Dialog Satellite Network", "Dialog Hub", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                   // new Relationship("Dialog Demodulator", "Dialog Switch", new List<PropertyLink> { }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Modulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_chain") }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { new PropertyLink("u_chain_id", "u_chain_id") }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
-                                    new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_hub_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
-                                    //new Relationship("Dialog MS Server", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink("u_hub_name", "u_hub_name") }, new List<PropertyLink> { }, "Virtualized::Virtualizes", true),
+                                    new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_enclosure_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
+                                    new Relationship("Dialog Linux Server", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_parent_blade_server") }, new List<PropertyLink> { }, "Virtualized::Virtualizes", true),
                                 }),
                         }
                     },
@@ -362,6 +369,7 @@
                     { "Dialog Enclosure", GetDialogEnclosureClassProperties },
                     { "Dialog MS Server", GetDialogMicrosoftServerClassProperties },
                     { "Dialog Linux Server", GetDialogLinuxServerClassProperties },
+                    { "Dialog Linux VM", GetDialogLinuxVmClassProperties },
                 };
 
                 return classPropertiesMapper;
@@ -771,11 +779,11 @@
             {
                 //  TODO: Add attributes here
                 {
-                    3800,
+                    14200,
                     new List<ClassProperty>
                     {
-                        new ClassProperty("pk", 0, false, false, false),
-                        new ClassProperty("u_label", 1, false, false, true),
+                        new ClassProperty("pk", 1, false, false, false),
+                        new ClassProperty("u_label", 7, false, false, true),
                         new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
@@ -800,6 +808,24 @@
         }
 
         private static Dictionary<int, List<ClassProperty>> GetDialogLinuxServerClassProperties()
+        {
+            return new Dictionary<int, List<ClassProperty>>
+            {
+                //  TODO: Add attributes here               
+                {
+                    14200,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("pk", 0, false, false, false),
+                        new ClassProperty("u_label", 4, false, false, false),
+                        new ClassProperty("u_enclosure_name", 7, false, false, true),
+                        new ClassProperty("u_nms_name", -1, false, false, false),
+                    }
+                },
+            };
+        }
+
+        private static Dictionary<int, List<ClassProperty>> GetDialogLinuxVmClassProperties()
         {
             return new Dictionary<int, List<ClassProperty>>
             {
@@ -831,7 +857,7 @@
                     new List<ClassProperty>
                     {
                         new ClassProperty("u_blade_server", 1, false, false, false),
-                        new ClassProperty("u_hub_name", 7, false, false, true),
+                        new ClassProperty("u_enclosure_name", 7, false, false, true),
                     }
                 },
                 //{
@@ -1092,6 +1118,7 @@
                     //  TODO: Add methods used to build CIs using custom methods
                     { "Dialog Satellite Network", GetDialogSatelliteNetworkUniqueID },
                     { "Dialog Linux Server", GetDialogLinuxServerUniqueID },
+                    { "Dialog Linux VM", GetDialogLinuxServerUniqueID },
                     { "Dialog Switch", GetDialogSwitchUniqueID },
                     { "Dialog Modulator", GetDialogModulatorUniqueID },
                     { "Dialog Demodulator", GetDialogDemodulatorUniqueID },
@@ -1392,7 +1419,7 @@
 
             if (labelProperty == null || String.IsNullOrWhiteSpace(labelProperty.Value)) return String.Empty;
 
-            var hubNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_name"));
+            var hubNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_enclosure_name"));
 
             if (hubNameProperty != null && !String.IsNullOrWhiteSpace(hubNameProperty.Value) && !hubNameProperty.Value.Equals("NA"))
             {
