@@ -185,8 +185,8 @@
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Protocol Processor Blade", "Evolution Protocol Processor", new List<PropertyLink> { new PropertyLink("u_ppb_network_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
                                     new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    new Relationship("Evolution Protocol Processor", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Contains::Contained By", true),
-                                    new Relationship("Evolution Chassis", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Contains::Contained By", true),
+                                    new Relationship("Evolution Protocol Processor", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Contains::Contained by", true),
+                                    new Relationship("Evolution Chassis", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Contains::Contained by", true),
                                 })
                             }
                     },
@@ -323,7 +323,7 @@
                                     new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { new PropertyLink("u_chain_id", "u_chain_id") }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_enclosure_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
-                                    new Relationship("Dialog Linux Server", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_parent_blade_server") }, new List<PropertyLink> { }, "Virtualized::Virtualizes", true),
+                                    new Relationship("Dialog Linux Server", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_parent_blade_server") }, new List<PropertyLink> { }, "Virtualized by::Virtualizes", true),
                                 }),
                         }
                     },
@@ -1293,21 +1293,21 @@
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + pk + "." + labelProperty.Value : String.Empty;
+                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !labelProperty.Value.Equals("NA") ? parentElementName + "." + pk + "." + labelProperty.Value : String.Empty;
                     }
 
                 case NamingFormat.Label:
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value : String.Empty;
+                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !labelProperty.Value.Equals("NA") ? parentElementName + "." + labelProperty.Value : String.Empty;
                     }
 
                 case NamingFormat.Label_PrimaryKey:
                     {
                         var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value + "." + pk : String.Empty;
+                        return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !labelProperty.Value.Equals("NA") ? parentElementName + "." + labelProperty.Value + "." + pk : String.Empty;
                     }
 
                 case NamingFormat.Custom:
@@ -1403,8 +1403,14 @@
 
             var hpsNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hps_name"));
 
-            return labelProperty != null && hpsNameProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !String.IsNullOrWhiteSpace(hpsNameProperty.Value)
-                ? parentElementName + "." + hpsNameProperty.Value + "." + labelProperty.Value : String.Empty;
+            return labelProperty != null 
+                && hpsNameProperty != null 
+                && !String.IsNullOrWhiteSpace(labelProperty.Value) 
+                && !labelProperty.Value.Equals("NA") 
+                && !String.IsNullOrWhiteSpace(hpsNameProperty.Value) 
+                && !hpsNameProperty.Value.Equals("NA")
+                ? parentElementName + "." + hpsNameProperty.Value + "." + labelProperty.Value 
+                : String.Empty;
         }
 
         private string GetDialogLinuxServerUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
@@ -1479,8 +1485,6 @@
                 modulatorLabel = mcm6100LabelProperty.Value;
             }
 
-            if (String.IsNullOrWhiteSpace(modulatorLabel)) return String.Empty;
-
             var modulatorLabelParts = modulatorLabel.Split('[');
 
             if (modulatorLabelParts.Length < 2) return String.Empty;
@@ -1504,7 +1508,7 @@
 
             var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
 
-            return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !labelProperty.Value.Contains(".MOD-") ? parentElementName + "." + labelProperty.Value : String.Empty;
+            return labelProperty != null && !String.IsNullOrWhiteSpace(labelProperty.Value) && !labelProperty.Value.Equals("NA") && !labelProperty.Value.Contains(".MOD-") ? parentElementName + "." + labelProperty.Value : String.Empty;
         }
 
         ///// <summary>
@@ -1528,7 +1532,7 @@
 
             var accessSwitchLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_access"));
 
-            if (accessSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(accessSwitchLabelProperty.Value))
+            if (accessSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(accessSwitchLabelProperty.Value) && !accessSwitchLabelProperty.Value.Equals("NA"))
             {
                 labelProperty.Value = accessSwitchLabelProperty.Value;
 
@@ -1537,7 +1541,7 @@
 
             var rfSwitchLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_rf"));
 
-            if (rfSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(rfSwitchLabelProperty.Value))
+            if (rfSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(rfSwitchLabelProperty.Value) && !rfSwitchLabelProperty.Value.Equals("NA"))
             {
                 labelProperty.Value = rfSwitchLabelProperty.Value;
 
