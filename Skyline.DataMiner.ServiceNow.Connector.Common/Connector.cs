@@ -259,11 +259,19 @@
                                     },
                                     new ClassMapping
                                     {
-                                        Class = "Dialog Switch",
+                                        Class = "Dialog IP Switch",
                                         TargetTable = "cmdb_ci_ip_switch",
                                         IsParent = false,
                                         NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink()),
-                                        AttributesByTableID = ClassPropertiesMapper["Dialog Switch"].Invoke(),
+                                        AttributesByTableID = ClassPropertiesMapper["Dialog IP Switch"].Invoke(),
+                                    },
+                                    new ClassMapping
+                                    {
+                                        Class = "Dialog RF Switch",
+                                        TargetTable = "u_cmdb_ci_radio_rf_switch",
+                                        IsParent = false,
+                                        NamingDetails = new NamingDetails(NamingFormat.Custom, new PropertyLink()),
+                                        AttributesByTableID = ClassPropertiesMapper["Dialog RF Switch"].Invoke(),
                                     },
                                     new ClassMapping
                                     {
@@ -311,7 +319,8 @@
                                     // TODO: Add class relationships here
                                     new Relationship("Dialog Hub", "Dialog Modulator", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
-                                    new Relationship("Dialog Hub", "Dialog Switch", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog IP Switch", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
+                                    new Relationship("Dialog Hub", "Dialog RF Switch", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Enclosure", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Managed by::Manages", true),
                                     new Relationship("Dialog Hub", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Hub", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_nms_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
@@ -320,7 +329,8 @@
                                     new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Modulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Modulator", "Dialog Switch", new List<PropertyLink> { new PropertyLink("u_chain_id", "u_chain_id") }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog IP Switch", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog RF Switch", new List<PropertyLink> { new PropertyLink("u_chain_id", "u_chain_id") }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_enclosure_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Dialog Linux Server", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_parent_blade_server") }, new List<PropertyLink> { }, "Virtualized by::Virtualizes", true),
@@ -365,7 +375,8 @@
                     // Dialog Infrastructure
                     { "Dialog Modulator", GetDialogModulatorClassProperties },
                     { "Dialog Demodulator", GetDialogDemodulatorClassProperties },
-                    { "Dialog Switch", GetDialogSwitchClassProperties },
+                    { "Dialog IP Switch", GetDialogIpSwitchClassProperties },
+                    { "Dialog RF Switch", GetDialogRfSwitchClassProperties },
                     { "Dialog Enclosure", GetDialogEnclosureClassProperties },
                     { "Dialog MS Server", GetDialogMicrosoftServerClassProperties },
                     { "Dialog Linux Server", GetDialogLinuxServerClassProperties },
@@ -729,7 +740,7 @@
             };
         }
 
-        private static Dictionary<int, List<ClassProperty>> GetDialogSwitchClassProperties()
+        private static Dictionary<int, List<ClassProperty>> GetDialogIpSwitchClassProperties()
         {
             return new Dictionary<int, List<ClassProperty>>
             {
@@ -744,6 +755,14 @@
                         new ClassProperty("u_nms_name", -1, false, false, false),
                     }
                 },
+            };
+        }
+
+        private static Dictionary<int, List<ClassProperty>> GetDialogRfSwitchClassProperties()
+        {
+            return new Dictionary<int, List<ClassProperty>>
+            {
+                //  TODO: Add attributes here
                 {
                     6450,
                     new List<ClassProperty>
@@ -1119,7 +1138,8 @@
                     { "Dialog Satellite Network", GetDialogSatelliteNetworkUniqueID },
                     { "Dialog Linux Server", GetDialogLinuxServerUniqueID },
                     { "Dialog Linux VM", GetDialogLinuxServerUniqueID },
-                    { "Dialog Switch", GetDialogSwitchUniqueID },
+                    { "Dialog IP Switch", GetDialogSwitchIpUniqueID },
+                    { "Dialog RF Switch", GetDialogSwitchRfUniqueID },
                     { "Dialog Modulator", GetDialogModulatorUniqueID },
                     { "Dialog Demodulator", GetDialogDemodulatorUniqueID },
                 };
@@ -1512,15 +1532,15 @@
         }
 
         ///// <summary>
-        ///// Method used to retrieve the unique ID of a given Dialog Switch instance.
+        ///// Method used to retrieve the unique ID of a given Dialog IP Switch instance.
         ///// </summary>
         ///// <param name="engine"></param>
         ///// <param name="properties"></param>
         ///// <param name="pk"></param>
         ///// <returns>Remote instance unique ID.</returns>
-        private string GetDialogSwitchUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
+        private string GetDialogSwitchIpUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            engine.GenerateInformation("GetDialogSwitchUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
+            engine.GenerateInformation("GetDialogSwitchIpUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
 
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
@@ -1539,11 +1559,35 @@
                 return parentElementName + "." + labelProperty.Value;
             }
 
+            return String.Empty;
+        }
+
+        ///// <summary>
+        ///// Method used to retrieve the unique ID of a given Dialog RF Switch instance.
+        ///// </summary>
+        ///// <param name="engine"></param>
+        ///// <param name="properties"></param>
+        ///// <param name="pk"></param>
+        ///// <returns>Remote instance unique ID.</returns>
+        private string GetDialogSwitchRfUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
+        {
+            engine.GenerateInformation("GetDialogSwitchRfUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
+
+            if (additionalNamingComponents.Count == 0) return String.Empty;
+
+            string parentElementName = additionalNamingComponents[0];
+
+            var labelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label"));
+
+            if (labelProperty == null) return String.Empty;
+
             var rfSwitchLabelProperty = properties.FirstOrDefault(x => x.Name.Equals("u_label_rf"));
 
             if (rfSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(rfSwitchLabelProperty.Value) && !rfSwitchLabelProperty.Value.Equals("NA"))
             {
-                labelProperty.Value = rfSwitchLabelProperty.Value;
+                var hubName = rfSwitchLabelProperty.Value.Replace("USS Main Unit - ", String.Empty);
+
+                labelProperty.Value = hubName + ".USS";
 
                 return parentElementName + "." + labelProperty.Value;
             }
