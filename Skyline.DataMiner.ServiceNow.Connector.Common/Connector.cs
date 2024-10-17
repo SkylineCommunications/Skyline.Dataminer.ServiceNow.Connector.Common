@@ -333,7 +333,7 @@
                                     new Relationship("Dialog Modulator", "Dialog IP Switch", new List<PropertyLink> { new PropertyLink("u_chain_id", "u_active_chain") }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog RF Switch", new List<PropertyLink> { }, new List<PropertyLink> { new PropertyLink("u_nms_name", "u_nms_name") }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
-                                    new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_enclosure_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
+                                    new Relationship("Dialog Linux Server", "Dialog Enclosure", new List<PropertyLink> { new PropertyLink("u_enclosure_name", String.Empty) }, new List<PropertyLink> { }, "Located in::Houses", false),
                                     new Relationship("Dialog Linux Server", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_parent_blade_server") }, new List<PropertyLink> { }, "Virtualized by::Virtualizes", true),
                                 }),
                         }
@@ -1553,13 +1553,21 @@
 
             if (accessSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(accessSwitchLabelProperty.Value) && !accessSwitchLabelProperty.Value.Equals("NA"))
             {
-                string pattern = @"(\w+_\d+-\w+)";
-                var matches = Regex.Matches(accessSwitchLabelProperty.Value, pattern);
-                var matchValues = matches.Cast<Match>().Select(m => m.Value).ToArray();
+                string pattern = @"(\w+_\d+-\w+_\d+-\w+)";
+                var match = Regex.Match(accessSwitchLabelProperty.Value, pattern);
 
-                labelProperty.Value = String.Join(".", matchValues);
+                if (match.Success)
+                {
+                    // Split the matched string to get the desired parts
+                    var parts = match.Value.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length >= 3)
+                    {
+                        // Construct the desired output
+                        labelProperty.Value = $"{parts}.{parts}";
+                    }
+                }
 
-                return parentElementName + "." + labelProperty.Value;
+                return !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value : String.Empty;
             }
 
             return String.Empty;
@@ -1590,7 +1598,7 @@
 
                 labelProperty.Value = hubName + ".USS";
 
-                return parentElementName + "." + labelProperty.Value;
+                return !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value : String.Empty;
             }
 
             return String.Empty;
