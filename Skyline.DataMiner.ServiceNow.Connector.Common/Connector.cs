@@ -186,8 +186,8 @@
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Protocol Processor Blade", "Evolution Protocol Processor", new List<PropertyLink> { new PropertyLink("u_ppb_network_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
                                     new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    new Relationship("Evolution Protocol Processor", "Evolution Teleport", new List<PropertyLink> { }, new List<PropertyLink> { }, "Contains::Contained by", true),
-                                    new Relationship("Evolution Chassis", "Evolution Teleport", new List<PropertyLink> { }, new List<PropertyLink> { }, "Contains::Contained by", true),
+                                    new Relationship("Evolution Protocol Processor", "Evolution Teleport", new List<PropertyLink> { new PropertyLink("u_nms_name", "u_nms_name") }, new List<PropertyLink> { }, "Contains::Contained by", true),
+                                    new Relationship("Evolution Chassis", "Evolution Teleport", new List<PropertyLink> { new PropertyLink("u_nms_name", "u_nms_name") }, new List<PropertyLink> { }, "Contains::Contained by", true),
                                 })
                             }
                     },
@@ -1541,8 +1541,6 @@
         ///// <returns>Remote instance unique ID.</returns>
         private string GetDialogSwitchIpUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            engine.GenerateInformation("GetDialogSwitchIpUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
-
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
             string parentElementName = additionalNamingComponents[0];
@@ -1555,14 +1553,11 @@
 
             if (accessSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(accessSwitchLabelProperty.Value) && !accessSwitchLabelProperty.Value.Equals("NA"))
             {
-                // Define the pattern to match the desired part of the string
                 string pattern = @"(\w+_\d+-\w+)";
+                var matches = Regex.Matches(accessSwitchLabelProperty.Value, pattern);
+                var matchValues = matches.Cast<Match>().Select(m => m.Value).ToArray();
 
-                // Use Regex to find all matches
-                MatchCollection matches = Regex.Matches(accessSwitchLabelProperty.Value, pattern);
-
-                // Combine the matches with a dot separator
-                labelProperty.Value = String.Join(".", matches);
+                labelProperty.Value = String.Join(".", matchValues);
 
                 return parentElementName + "." + labelProperty.Value;
             }
@@ -1579,8 +1574,6 @@
         ///// <returns>Remote instance unique ID.</returns>
         private string GetDialogSwitchRfUniqueID(Engine engine, List<Property> properties, List<string> additionalNamingComponents)
         {
-            engine.GenerateInformation("GetDialogSwitchRfUniqueID| Properties:\n\n" + JsonConvert.SerializeObject(properties.Select(x => x.Name)) + "\n\n");
-
             if (additionalNamingComponents.Count == 0) return String.Empty;
 
             string parentElementName = additionalNamingComponents[0];
