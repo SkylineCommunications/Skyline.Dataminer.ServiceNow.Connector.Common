@@ -39,7 +39,7 @@
             /// Unique ID is formed by a combination between instance label and primary key.
             /// </summary>
             Label_PrimaryKey,
-            /// <summary>
+            /// <summary>   
             /// Unique ID is retrieved from a custom method.
             /// </summary>
             Custom,
@@ -330,7 +330,7 @@
                                     new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Modulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Modulator", "Dialog IP Switch", new List<PropertyLink> { new PropertyLink("u_chain_id", "u_chain_id") }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog IP Switch", new List<PropertyLink> { new PropertyLink("u_chain_id", "u_active_chain") }, new List<PropertyLink> { }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog RF Switch", new List<PropertyLink> { }, new List<PropertyLink> { new PropertyLink("u_nms_name", "u_nms_name") }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_enclosure_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
