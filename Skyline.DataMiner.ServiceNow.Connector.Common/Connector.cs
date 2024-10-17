@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using global::Skyline.DataMiner.Automation;
     using Newtonsoft.Json;
     using static Skyline.DataMiner.ServiceNow.Connector.Common.Connector;
@@ -185,8 +186,8 @@
                                     new Relationship("Evolution Protocol Processor", "Evolution Network", new List<PropertyLink> { new PropertyLink(String.Empty, "u_network_pp_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Evolution Protocol Processor Blade", "Evolution Protocol Processor", new List<PropertyLink> { new PropertyLink("u_ppb_network_id", "u_network_id") }, new List<PropertyLink> { }, "Depends on::Used by", false),
                                     new Relationship("Evolution Linecard", "Evolution Linecard", new List<PropertyLink> { new PropertyLink(String.Empty, "u_redundancy_linecard") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    new Relationship("Evolution Protocol Processor", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Contains::Contained by", true),
-                                    new Relationship("Evolution Chassis", "Evolution Teleport", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Contains::Contained by", true),
+                                    new Relationship("Evolution Protocol Processor", "Evolution Teleport", new List<PropertyLink> { }, new List<PropertyLink> { }, "Contains::Contained by", true),
+                                    new Relationship("Evolution Chassis", "Evolution Teleport", new List<PropertyLink> { }, new List<PropertyLink> { }, "Contains::Contained by", true),
                                 })
                             }
                     },
@@ -329,8 +330,8 @@
                                     new Relationship("Dialog Demodulator", "Dialog Demodulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
                                     new Relationship("Dialog Demodulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Modulator", new List<PropertyLink> { new PropertyLink("u_hps_id", "u_hps_id"), new PropertyLink("u_dp_id", "u_dp_id"), new PropertyLink("u_role_id", "u_role_id") }, new List<PropertyLink> { }, "DR provided by::Provides DR for", true),
-                                    new Relationship("Dialog Modulator", "Dialog IP Switch", new List<PropertyLink> { new PropertyLink(String.Empty, String.Empty) }, new List<PropertyLink> { }, "Uses::Used by", true),
-                                    new Relationship("Dialog Modulator", "Dialog RF Switch", new List<PropertyLink> { new PropertyLink("u_chain_id", "u_chain_id") }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog IP Switch", new List<PropertyLink> { new PropertyLink("u_chain_id", "u_chain_id") }, new List<PropertyLink> { }, "Uses::Used by", true),
+                                    new Relationship("Dialog Modulator", "Dialog RF Switch", new List<PropertyLink> { }, new List<PropertyLink> { new PropertyLink("u_nms_name", "u_nms_name") }, "Uses::Used by", true),
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Enclosure", "Dialog Linux Server", new List<PropertyLink> { new PropertyLink(String.Empty, "u_enclosure_name") }, new List<PropertyLink> { }, "Located in::Houses", true),
                                     new Relationship("Dialog Linux Server", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_parent_blade_server") }, new List<PropertyLink> { }, "Virtualized by::Virtualizes", true),
@@ -1554,7 +1555,14 @@
 
             if (accessSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(accessSwitchLabelProperty.Value) && !accessSwitchLabelProperty.Value.Equals("NA"))
             {
-                labelProperty.Value = accessSwitchLabelProperty.Value;
+                // Define the pattern to match the desired part of the string
+                string pattern = @"(\w+_\d+-\w+)";
+
+                // Use Regex to find all matches
+                MatchCollection matches = Regex.Matches(accessSwitchLabelProperty.Value, pattern);
+
+                // Combine the matches with a dot separator
+                labelProperty.Value = String.Join(".", matches);
 
                 return parentElementName + "." + labelProperty.Value;
             }
