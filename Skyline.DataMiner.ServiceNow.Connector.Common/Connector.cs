@@ -335,7 +335,7 @@
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Linux Server", "Dialog Enclosure", new List<PropertyLink> { new PropertyLink("u_enclosure_name", String.Empty) }, new List<PropertyLink> { }, "Located in::Houses", false),
                                     new Relationship("Dialog Linux Server", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_parent_blade_server") }, new List<PropertyLink> { }, "Virtualized by::Virtualizes", true),
-                                    new Relationship("Dialog Linux VM", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_served_satnet", String.Empty) }, new List<PropertyLink> { }, "Depends on::Used by", false),
+                                    new Relationship("Dialog Linux VM", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_served_satnet", String.Empty) }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                 }),
                         }
                     },
@@ -1423,13 +1423,13 @@
 
             var hpsNameProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hps_name"));
 
-            return labelProperty != null 
-                && hpsNameProperty != null 
-                && !String.IsNullOrWhiteSpace(labelProperty.Value) 
-                && !labelProperty.Value.Equals("NA") 
-                && !String.IsNullOrWhiteSpace(hpsNameProperty.Value) 
+            return labelProperty != null
+                && hpsNameProperty != null
+                && !String.IsNullOrWhiteSpace(labelProperty.Value)
+                && !labelProperty.Value.Equals("NA")
+                && !String.IsNullOrWhiteSpace(hpsNameProperty.Value)
                 && !hpsNameProperty.Value.Equals("NA")
-                ? parentElementName + "." + hpsNameProperty.Value + "." + labelProperty.Value 
+                ? parentElementName + "." + hpsNameProperty.Value + "." + labelProperty.Value
                 : String.Empty;
         }
 
@@ -1449,7 +1449,7 @@
 
             if (hubNameProperty != null && !String.IsNullOrWhiteSpace(hubNameProperty.Value) && !hubNameProperty.Value.Equals("NA"))
             {
-                return parentElementName + "." + hubNameProperty.Value.Replace(".ENC", String.Empty) + "." + labelProperty.Value ;
+                return parentElementName + "." + hubNameProperty.Value.Replace(".ENC", String.Empty) + "." + labelProperty.Value;
             }
 
             var hubNmsProperty = properties.FirstOrDefault(x => x.Name.Equals("u_hub_nms"));
@@ -1552,18 +1552,13 @@
 
             if (accessSwitchLabelProperty != null && !String.IsNullOrWhiteSpace(accessSwitchLabelProperty.Value) && !accessSwitchLabelProperty.Value.Equals("NA"))
             {
-                string pattern = @"(\w+_\d+-\w+_\d+-\w+)";
+                string pattern = @"(\w+_\d+-\w+_\d+)-(\w+_\d+)";
+
                 var match = Regex.Match(accessSwitchLabelProperty.Value, pattern);
 
                 if (match.Success)
                 {
-                    // Split the matched string to get the desired parts
-                    var parts = match.Value.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (parts.Length >= 3)
-                    {
-                        // Construct the desired output
-                        labelProperty.Value = $"{parts}.{parts}";
-                    }
+                    labelProperty.Value = $"{match.Groups[2].Value}.{match.Groups[3].Value}";
                 }
 
                 return !String.IsNullOrWhiteSpace(labelProperty.Value) ? parentElementName + "." + labelProperty.Value : String.Empty;
