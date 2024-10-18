@@ -335,6 +335,7 @@
                                     new Relationship("Dialog Modulator", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_hps_chain", "u_hps_name") }, new List<PropertyLink> { }, "Depends on::Used by", true),
                                     new Relationship("Dialog Linux Server", "Dialog Enclosure", new List<PropertyLink> { new PropertyLink("u_enclosure_name", String.Empty) }, new List<PropertyLink> { }, "Located in::Houses", false),
                                     new Relationship("Dialog Linux Server", "Dialog Linux VM", new List<PropertyLink> { new PropertyLink(String.Empty, "u_parent_blade_server") }, new List<PropertyLink> { }, "Virtualized by::Virtualizes", true),
+                                    new Relationship("Dialog Linux VM", "Dialog Satellite Network", new List<PropertyLink> { new PropertyLink("u_served_satnet", String.Empty) }, new List<PropertyLink> { }, "Depends on::Used by", false),
                                 }),
                         }
                     },
@@ -880,6 +881,14 @@
                         new ClassProperty("u_enclosure_name", 7, false, false, true),
                     }
                 },
+                                {
+                    3780,
+                    new List<ClassProperty>
+                    {
+                        new ClassProperty("u_server_name", 4, false, false, false),
+                        new ClassProperty("u_served_satnet", 7, false, false, false),
+                    }
+                },
                 //{
                 //    2900,
                 //    new List<ClassProperty>
@@ -888,16 +897,6 @@
                 //        new ClassProperty("u_server_fk", 2, false, false, false),
                 //        new ClassProperty("u_server_name", 4, false, false, false),
                 //        new ClassProperty("u_virtual_machines", 7, false, false, false),
-                //    }
-                //},
-                //{
-                //    3780,
-                //    new List<ClassProperty>
-                //    {
-                //        //new ClassProperty("u_server_pk", 0, false, false, false),
-                //        new ClassProperty("u_server_fk", 2, false, false, false),
-                //        new ClassProperty("u_server_name", 4, false, false, false),
-                //        new ClassProperty("u_served_satnet", 7, false, false, false),
                 //    }
                 //},
                 //{
